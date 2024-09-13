@@ -15,6 +15,14 @@
               background-color: #333;
             }
 
+            .banner {
+                display: block;
+                width: 100%;
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
             .navbar a {
               float: left;
               font-size: 16px;
@@ -69,6 +77,37 @@
             .dropdown:hover .dropdown-content {
               display: block;
             }
+
+            form.example input[type=text] {
+              padding: 10px;
+              font-size: 17px;
+              border: 1px solid grey;
+              float: left;
+              width: 80%;
+              background: #f1f1f1;
+            }
+
+            form.example button {
+              float: left;
+              width: 20%;
+              padding: 10px;
+              background: #2196F3;
+              color: white;
+              font-size: 17px;
+              border: 1px solid grey;
+              border-left: none;
+              cursor: pointer;
+            }
+
+            form.example button:hover {
+              background: #0b7dda;
+            }
+
+            form.example::after {
+              content: "";
+              clear: both;
+              display: table;
+            }
         </style>
     </head>
     <body style="background-color:white;">
@@ -81,15 +120,18 @@
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
+              <a href="#">Enterprise</a>
+              <a href="#">ICS</a>
+              <a href="#">MOBILE</a>
             </div>
           </div>
         </div>
+        
+        <img class="banner" src="https://www.manss.com/files/media-image/fachhochschule-brandenburg/fachhochschule-brandenburg-identity-1-1992.jpg" alt="Logo Webanwendung">
 
-        <h3>Test11</h3>
-        <p></p>
-
+        <form class="example" style="margin:auto;max-width:300px" method="POST">{% csrf_token %}
+            <input type="text" placeholder="Search.." name="suchbegriff">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
     </body>
 </html>

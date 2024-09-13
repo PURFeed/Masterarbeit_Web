@@ -6,10 +6,45 @@ from urlextract import URLExtract
 # Create your views here.
 
 def home(request):
+    if request.method == 'POST':
+
+        suchbegriff = request.POST.get('suchbegriff')
+        mitre_attack_data = MitreAttackData("C:\\Users\\phill\\PycharmProjects\\Masterarbeit_Mitre_Attack\\json-Datein\\enterprise-attack.json")
+        objects = mitre_attack_data.get_objects_by_content(suchbegriff, remove_revoked_deprecated=True)
+
+        tech = []
+        miti = []
+        soft = []
+        tac = []
+        groups = []
+        refs = []
+
+        for obj in objects:
+            if Techniques.objects.filter(id=obj.id):
+                tech.append(Techniques.objects.get(name))
+
+            if Mitigations.objects.filter(id=obj.id):
+                miti.append()
+
+            if Software.objects.filter(id=obj.id):
+                soft.append()
+
+            if Taktiks.objects.filter(id=obj.id):
+                tac.append()
+
+            if Taktiks.objects.filter(id=obj.id):
+                groups.append()
+
+
+        return render(request, 'ausgabe.html', {'tech': tech, 'miti': miti, 'soft': soft, 'tac': tac, 'groups': groups})
+
     return render(request, 'suche.html')
 
 def index(request):
     return render(request, 'index.html')
+
+def test(request):
+    return render(request, 'ausgabe.html')
 
 def import_data(request):
 

@@ -3,70 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <STYLE>
+        .fancy{
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: auto;
+            font-size:150%;
+            padding: 1rem;
+            width: 15rem;
+            height: 8rem;
+        }
+        .fancy_text{
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: auto;
+            font-size:150%;
+            padding: 1rem;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .navbar a {
+              float: left;
+              font-size: 16px;
+              color: white;
+              text-align: center;
+              padding: 14px 16px;
+              text-decoration: none;
+        }
+
+        .dropdown {
+              float: left;
+              overflow: hidden;
+        }
+
+        .dropdown .dropbtn {
+              font-size: 16px;
+              border: none;
+              outline: none;
+              color: white;
+              padding: 14px 16px;
+              background-color: inherit;
+              font-family: inherit;
+              margin: 0;
+        }
+
+        .navbar a:hover, .dropdown:hover .dropbtn {
+              background-color: red;
+        }
+
+        .dropdown-content {
+              display: none;
+              position: absolute;
+              background-color: #f9f9f9;
+              min-width: 160px;
+              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+              z-index: 1;
+        }
+
+        .dropdown-content a {
+              float: none;
+              color: black;
+              padding: 12px 16px;
+              text-decoration: none;
+              display: block;
+              text-align: left;
+        }
+
+        .dropdown-content a:hover {
+              background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+              display: block;
+        }
+
+    </STYLE>
     <body>
-    <div style="display: flex; align-items: center; background-color: red;">
-  <h1 style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem">
-    Test
-  </h1>
-    <h1 style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem">
-      Test
-  </h1>
-      <h1 style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem">
-      Test
-  </h1>
-      <h1 style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem">
-      Test
-  </h1>
-</div>
+        <div class="navbar">
+          <a href="/">Home</a>
+          <a href="/index">Index</a>
+          <div class="dropdown">
+            <button class="dropbtn">Dropdown
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+              <a href="#">Enterprise</a>
+              <a href="#">ICS</a>
+              <a href="#">MOBILE</a>
+            </div>
+          </div>
+        </div>
 
-<div style="display: flex; align-items: center;">
-  <textarea style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem; width: 15rem; height: 8rem">
-    Test
-  </textarea>
-    <textarea style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem; width: 15rem; height: 8rem">
-      Test
-  </textarea>
-      <textarea style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem; width: 15rem; height: 8rem">
-      Test
-  </textarea>
-      <textarea style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem; width: 15rem; height: 8rem">
-      Test
-  </textarea>
-</div>
+        <div style="display: flex; align-items: center; background-color: red;">
+          <h1 class="fancy_text">
+            Techniques
+          </h1>
+          <h1 class="fancy_text">
+            Tactics
+          </h1>
+          <h1 class="fancy_text">
+            Software
+          </h1>
+        </div>
 
-<div>
-</div>
+        <div style="display: flex; align-items: center;">
+          <textarea class="fancy">
+              {% for row in tech %}
+                {{ row }}
+              {% endfor %}
+          </textarea>
+          <textarea class="fancy">
+            {% for row in tac %}
+                {{ row }}
+              {% endfor %}
+          </textarea>
+          <textarea class="fancy">
+             {% for row in soft %}
+                {{ row }}
+              {% endfor %}
+          </textarea>
+        </div>
 
-    <div style="display: flex; align-items: center; background-color: red; padding: 1rem">
-      <h1 style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem">
-        Test
-      </h1>
-        <h1 style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem">
-          Test
-      </h1>
-          <h1 style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem">
-          Test
-      </h1>
-          <h1 style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem">
-          Test
-      </h1>
-    </div>
+        <div style="display: flex; align-items: center; background-color: red; padding: 1rem">
+          <h1 class="fancy_text">
+              Mitigations
+          </h1>
+          <h1 class="fancy_text">
+              Groups
+          </h1>
+          <h1 class="fancy_text">
+              Refs
+          </h1>
+        </div>
 
-</div>
-<div style="display: flex; align-items: center;">
-  <textarea style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem; width: 15rem; height: 8rem">
-    Test
-  </textarea>
-    <textarea style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem; width: 15rem; height: 8rem">
-      Test
-  </textarea>
-      <textarea style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem; width: 15rem; height: 8rem">
-      Test
-  </textarea>
-      <textarea style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; font-size:150%; padding: 1rem; width: 15rem; height: 8rem">
-      Test
-  </textarea>
-</div>
-</body>
-</head>
+        <div style="display: flex; align-items: center;">
+            <textarea class="fancy">
+                {% for row in miti %}
+                {{ row }}
+              {% endfor %}
+            </textarea>
+            <textarea class="fancy">
+                {% for row in groups %}
+                {{ row }}
+                {% endfor %}
+            </textarea>
+            <textarea class="fancy">
+                Test
+            </textarea>
+        </div>
+    </body>
 </html>
