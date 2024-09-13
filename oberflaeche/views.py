@@ -35,14 +35,14 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = Url_Refs_Tech_E(
+            ref = URL_Refs_tech_I(
                 external_reference=i,
                 technique_ics=technique
             )
             ref.save()
 
     for s in alle_tactics:
-        tactic = Taktiks(
+        tactic = Taktiks_ics(
            name=s.name,
            id=s.id,
            type=s.type,
@@ -54,14 +54,14 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = URL_Refs_tact_E(
+            ref = URL_Refs_tac_I(
                 external_reference=i,
-                taktik=tactic
+                taktik_ics=tactic
             )
             ref.save()
 
     for s in alle_software:
-        software = Software(
+        software = Software_ics(
             name=s.name,
             id=s.id,
             type=s.type,
@@ -73,14 +73,14 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = URL_Refs_soft_E(
+            ref = URL_Refs_soft_I(
                 external_reference=i,
-                software=software
+                software_ics=software
             )
             ref.save()
 
     for s in alle_mitigations:
-        mitigations = Mitigations(
+        mitigations = Mitigations_ics(
             name=s.name,
             id=s.id,
             type=s.type,
@@ -92,14 +92,14 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = URL_Refs_miti_E(
+            ref = URL_Refs_miti_I(
                 external_reference=i,
-                mitigation=mitigations
+                mitigation_ics=mitigations
             )
             ref.save()
 
     for s in alle_groups:
-        groups = Groups(
+        groups = Groups_ics(
             name=s.name,
             id=s.id,
             type=s.type,
@@ -111,9 +111,9 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = URL_Refs_groups_E(
+            ref = URL_Refs_groups_I(
                 external_reference=i,
-                group=groups
+                group_ics=groups
             )
             ref.save()
 
