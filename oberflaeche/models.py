@@ -6,6 +6,7 @@ from django.db import models
 class Techniques(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -18,6 +19,7 @@ class Url_Refs_Tech_E(models.Model):
 class Mitigations(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -30,6 +32,7 @@ class URL_Refs_miti_E(models.Model):
 class Software(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -43,6 +46,7 @@ class URL_Refs_soft_E(models.Model):
 class Groups(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -56,6 +60,7 @@ class URL_Refs_groups_E(models.Model):
 class Taktiks(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -65,11 +70,24 @@ class URL_Refs_tact_E(models.Model):
     taktik = models.ForeignKey(Taktiks, on_delete=models.CASCADE)
 
 #############################################################################
+class Szenarien_E(models.Model):
+    name = models.CharField(max_length=100)
+    id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
+    type = models.CharField(max_length=100)
+    description = models.TextField(max_length=1000)
+
+# URL-Table
+class URL_Refs_Szen_E(models.Model):
+    external_reference = models.URLField(max_length=500)
+    taktik = models.ForeignKey(Taktiks, on_delete=models.CASCADE)
+#############################################################################
 #############################################################################
 # Mobile matrix
 class Techniques_mobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -82,6 +100,7 @@ class URL_Refs_tech_M(models.Model):
 class Mitigations_mobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -94,6 +113,7 @@ class URL_Refs_miti_M(models.Model):
 class Software_mobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -106,6 +126,7 @@ class URL_Refs_soft_M(models.Model):
 class Groups_mobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -118,6 +139,7 @@ class URL_Refs_groups_M(models.Model):
 class Taktiks_mobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -127,16 +149,27 @@ class URL_Refs_tac_M(models.Model):
     taktik_mobile = models.ForeignKey(Taktiks_mobile, on_delete=models.CASCADE)
 
 #############################################################################
+class Szenarien_M(models.Model):
+    name = models.CharField(max_length=100)
+    id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
+    type = models.CharField(max_length=100)
+    description = models.TextField(max_length=1000)
+
+# URL-Table
+class URL_Refs_Szen_M(models.Model):
+    external_reference = models.URLField(max_length=500)
+    taktik = models.ForeignKey(Taktiks, on_delete=models.CASCADE)
+#############################################################################
 #############################################################################
 # ICS-Matrix
 class Techniques_ics(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
-    def __str__(self):
-        return self.question_text
 # URL-Refs
 class URL_Refs_tech_I(models.Model):
     external_reference = models.URLField(max_length=500)
@@ -146,6 +179,7 @@ class URL_Refs_tech_I(models.Model):
 class Mitigations_ics(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -158,6 +192,7 @@ class URL_Refs_miti_I(models.Model):
 class Software_ics(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -170,6 +205,7 @@ class URL_Refs_soft_I(models.Model):
 class Groups_ics(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -182,6 +218,7 @@ class URL_Refs_groups_I(models.Model):
 class Taktiks_ics(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
 
@@ -189,3 +226,16 @@ class Taktiks_ics(models.Model):
 class URL_Refs_tac_I(models.Model):
     external_reference = models.URLField(max_length=500)
     taktik_ics = models.ForeignKey(Taktiks_ics, on_delete=models.CASCADE)
+
+#############################################################################
+class Szenarien_ics(models.Model):
+    name = models.CharField(max_length=100)
+    id = models.CharField(max_length=100, primary_key=True)
+    mitre = models.CharField(max_length=100, null=True)
+    type = models.CharField(max_length=100)
+    description = models.TextField(max_length=1000)
+
+# URL-Table
+class URL_Refs_Szen_I(models.Model):
+    external_reference = models.URLField(max_length=500)
+    taktik = models.ForeignKey(Taktiks, on_delete=models.CASCADE)
