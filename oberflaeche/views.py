@@ -10,9 +10,34 @@ def home(request):
 
         suchbegriff = request.POST.get('suchbegriff')
 
-        test1 = Techniques.objects.all()
+        test1 = Techniques.objects.all().filter(description__contains=suchbegriff)
+        test2 = Mitigations.objects.all().filter(description__contains=suchbegriff)
+        test3 = Software.objects.all().filter(description__contains=suchbegriff)
+        test4 = Szenarien_E.objects.all().filter(description__contains=suchbegriff)
+        test5 = Groups.objects.all().filter(description__contains=suchbegriff)
+        test6 = Taktiks.objects.all().filter(description__contains=suchbegriff)
 
-        return render(request, 'ausgabe.html', {"test1": test1})
+        ausgabe_technique = []
+        ausgabe_groups = []
+        ausgabe_mitigations = []
+        ausgabe_software = []
+        ausgabe_senarien = []
+        ausgabe_taktiks = []
+
+        for i in test1:
+             ausgabe_technique.append(i.mitre)
+        for i in test2:
+             ausgabe_groups.append(i.mitre)
+        for i in test3:
+             ausgabe_mitigations.append(i.mitre)
+        for i in test4:
+             ausgabe_software.append(i.mitre)
+        for i in test5:
+             ausgabe_senarien.append(i.mitre)
+        for i in test6:
+             ausgabe_taktiks.append(i.mitre)
+
+        return render(request, 'ausgabe.html', {"T1": ausgabe_technique,"T2": ausgabe_groups, "T3": ausgabe_mitigations, "T4": ausgabe_software,"T5": ausgabe_senarien, "T6": ausgabe_taktiks})
 
     return render(request, 'suche.html')
 

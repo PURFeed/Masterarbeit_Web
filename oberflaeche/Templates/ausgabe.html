@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Result</title>
     <STYLE>
         .fancy{
             flex-grow: 1;
@@ -97,62 +97,41 @@
           </div>
         </div>
 
-        <div style="display: flex; align-items: center; background-color: red;">
-          <h1 class="fancy_text">
-            Techniques
-          </h1>
-          <h1 class="fancy_text">
-            Tactics
-          </h1>
-          <h1 class="fancy_text">
-            Software
-          </h1>
+        <h1>Technique</h1>
+        <div>
+            {% for i in T1 %}
+                {{i}} <br />
+            {% endfor %}
         </div>
-
-        <div style="display: flex; align-items: center;">
-          <textarea class="fancy">
-              {% for row in test1 %}
-                {{ row }}
-              {% endfor %}
-          </textarea>
-          <textarea class="fancy">
-            {% for row in tac %}
-                {{ row }}
-              {% endfor %}
-          </textarea>
-          <textarea class="fancy">
-             {% for row in soft %}
-                {{ row }}
-              {% endfor %}
-          </textarea>
+        <h1>Groups</h1>
+        <div>
+            {% for i in T2 %}
+                {{i}}   <br />
+            {% endfor %}
         </div>
-
-        <div style="display: flex; align-items: center; background-color: red; padding: 1rem">
-          <h1 class="fancy_text">
-              Mitigations
-          </h1>
-          <h1 class="fancy_text">
-              Groups
-          </h1>
-          <h1 class="fancy_text">
-              Refs
-          </h1>
+        <h1>Mitigations</h1>
+        <div>
+            {% for i in T3 %}
+                {{i}}   <br />
+            {% endfor %}
         </div>
-
-        <div style="display: flex; align-items: center;">
-            <textarea class="fancy">
-                {% for row in miti %}
-                {{ row }}
-              {% endfor %}
-            </textarea>
-            <textarea class="fancy">
-                {% for row in groups %}
-                {{ row }}
-                {% endfor %}
-            </textarea>
-            <textarea class="fancy">
-                Test
-            </textarea>
+        <h1>Software</h1>
+        <div>
+            {% for i in T4 %}
+                {{i}}   <br />
+            {% endfor %}
+        </div>
+        <h1>Campaings</h1>
+        <div>
+            {% for i in T5 %}
+                {{i}}   <br />
+            {% endfor %}
+        </div>
+        <h1>Tactics</h1>
+        <div>
+            {% for i in T6 %}
+                {{i}}   <br />
+            {% endfor %}
         </div>
     </body>
 </html>
