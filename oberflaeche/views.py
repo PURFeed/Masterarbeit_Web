@@ -35,7 +35,7 @@ def import_data(request):
     alle_szenarien = mitre_attack_data.get_campaigns(remove_revoked_deprecated=True)
 
     for s in alle_technik:
-        technique = Techniques_mobile(
+        technique = Techniques_ics(
            name=s.name,
            id=s.id,
            type=s.type,
@@ -48,14 +48,14 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = URL_Refs_tech_M(
+            ref = URL_Refs_tech_I(
                 external_reference=i,
-                technique_mobile=technique
+                technique_ics=technique
             )
             ref.save()
 
     for s in alle_tactics:
-        tactic = Taktiks_mobile(
+        tactic = Taktiks_ics(
            name=s.name,
            id=s.id,
            type=s.type,
@@ -68,14 +68,14 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = URL_Refs_tac_M(
+            ref = URL_Refs_tac_I(
                 external_reference=i,
-                taktik_mobile=tactic
+                taktik_ics=tactic
             )
             ref.save()
 
     for s in alle_software:
-        software = Software_mobile(
+        software = Software_ics(
             name=s.name,
             id=s.id,
             type=s.type,
@@ -88,14 +88,14 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = URL_Refs_soft_M(
+            ref = URL_Refs_soft_I(
                 external_reference=i,
-                software_mobile=software
+                software_ics=software
             )
             ref.save()
 
     for s in alle_mitigations:
-        mitigations = Mitigations_mobile(
+        mitigations = Mitigations_ics(
             name=s.name,
             id=s.id,
             type=s.type,
@@ -108,14 +108,14 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = URL_Refs_miti_M(
+            ref = URL_Refs_miti_I(
                 external_reference=i,
-                mitigation_mobile=mitigations
+                mitigation_ics=mitigations
             )
             ref.save()
 
     for s in alle_groups:
-        groups = Groups_mobile(
+        groups = Groups_ics(
             name=s.name,
             id=s.id,
             type=s.type,
@@ -128,14 +128,14 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = URL_Refs_groups_M(
+            ref = URL_Refs_groups_I(
                 external_reference=i,
-                group_mobile=groups
+                group_ics=groups
             )
             ref.save()
 
     for s in alle_szenarien:
-        szenario = Szenarien_M(
+        szenario = Szenarien_ics(
            name=s.name,
            id=s.id,
            type=s.type,
@@ -148,9 +148,9 @@ def import_data(request):
         temp2 = extract.find_urls(temp)
 
         for i in temp2:
-            ref = URL_Refs_Szen_M(
+            ref = URL_Refs_Szen_I(
                 external_reference=i,
-                szenario_mobile=szenario
+                szenario=szenario
             )
             ref.save()
 
