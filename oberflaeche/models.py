@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 # Enterprise matrix
@@ -22,6 +23,7 @@ class Mitigations(models.Model):
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(Techniques)
 
 # URL-Table
 class URL_Refs_miti_E(models.Model):
@@ -35,6 +37,7 @@ class Software(models.Model):
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(Techniques)
 
 # URL-Table
 
@@ -49,6 +52,8 @@ class Groups(models.Model):
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(Techniques)
+    software = models.ManyToManyField(Software)
 
 # URL-Table
 
@@ -63,6 +68,7 @@ class Taktiks(models.Model):
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(Techniques)
 
 # URL-Table
 class URL_Refs_tact_E(models.Model):
@@ -76,6 +82,9 @@ class Szenarien_E(models.Model):
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    software = models.ManyToManyField(Software)
+    groups = models.ManyToManyField(Groups)
+    techniques = models.ManyToManyField(Techniques)
 
 # URL-Table
 class URL_Refs_Szen_E(models.Model):
@@ -239,3 +248,9 @@ class Szenarien_ics(models.Model):
 class URL_Refs_Szen_I(models.Model):
     external_reference = models.URLField(max_length=500)
     szenario = models.ForeignKey(Szenarien_ics, on_delete=models.CASCADE, null=True)
+
+#############################################################################
+#############################################################################
+#Index Model
+class Index(models.Model):
+    name = models.CharField(max_length=100)
