@@ -1,7 +1,6 @@
 from django.db import models
 
-
-# Create your models here.
+# All Models for DB
 
 # Enterprise matrix
 class Techniques(models.Model):
@@ -12,7 +11,7 @@ class Techniques(models.Model):
     description = models.TextField(max_length=1000)
 
 # URL-Table
-class Url_Refs_Tech_E(models.Model):
+class UrlReferencesTechniquesEnterprise(models.Model):
     external_reference = models.URLField(max_length=500)
     technique = models.ForeignKey(Techniques, on_delete=models.CASCADE)
 
@@ -26,7 +25,7 @@ class Mitigations(models.Model):
     techniques = models.ManyToManyField(Techniques)
 
 # URL-Table
-class URL_Refs_miti_E(models.Model):
+class UrlReferencesMitigationsEnterprise(models.Model):
     external_reference = models.URLField(max_length=500)
     mitigation = models.ForeignKey(Mitigations, on_delete=models.CASCADE)
 
@@ -41,7 +40,7 @@ class Software(models.Model):
 
 # URL-Table
 
-class URL_Refs_soft_E(models.Model):
+class UrlReferencesSoftwareEnterprise(models.Model):
     external_reference = models.URLField(max_length=500)
     software = models.ForeignKey(Software, on_delete=models.CASCADE)
 
@@ -57,12 +56,12 @@ class Groups(models.Model):
 
 # URL-Table
 
-class URL_Refs_groups_E(models.Model):
+class UrlReferencesGroupsEnterprise(models.Model):
     external_reference = models.URLField(max_length=500)
     group = models.ForeignKey(Groups, on_delete=models.CASCADE)
 
 #############################################################################
-class Taktiks(models.Model):
+class Tactics(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
@@ -71,12 +70,12 @@ class Taktiks(models.Model):
     techniques = models.ManyToManyField(Techniques)
 
 # URL-Table
-class URL_Refs_tact_E(models.Model):
+class UrlReferencesTacticEnterprise(models.Model):
     external_reference = models.URLField(max_length=500)
-    taktik = models.ForeignKey(Taktiks, on_delete=models.CASCADE)
+    tactic = models.ForeignKey(Tactics, on_delete=models.CASCADE)
 
 #############################################################################
-class Szenarien_E(models.Model):
+class Campaigns(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
@@ -87,13 +86,14 @@ class Szenarien_E(models.Model):
     techniques = models.ManyToManyField(Techniques)
 
 # URL-Table
-class URL_Refs_Szen_E(models.Model):
+class UrlReferencesCampaignsEnterprise(models.Model):
     external_reference = models.URLField(max_length=500)
-    szenario = models.ForeignKey(Szenarien_E, on_delete=models.CASCADE, null=True)
+    campaign = models.ForeignKey(Campaigns, on_delete=models.CASCADE, null=True)
+
 #############################################################################
 #############################################################################
 # Mobile matrix
-class Techniques_mobile(models.Model):
+class TechniquesMobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
@@ -101,78 +101,87 @@ class Techniques_mobile(models.Model):
     description = models.TextField(max_length=1000)
 
 # URL-Refs
-class URL_Refs_tech_M(models.Model):
+class UrlReferencesTechniquesMobile(models.Model):
     external_reference = models.URLField(max_length=500)
-    technique_mobile = models.ForeignKey(Techniques_mobile, on_delete=models.CASCADE)
+    technique_mobile = models.ForeignKey(TechniquesMobile, on_delete=models.CASCADE)
 
 #############################################################################
-class Mitigations_mobile(models.Model):
+class MitigationsMobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(TechniquesMobile)
 
 # URL-Refs
-class URL_Refs_miti_M(models.Model):
+class UrlReferencesMitigationsMobile(models.Model):
     external_reference = models.URLField(max_length=500)
-    mitigation_mobile = models.ForeignKey(Mitigations_mobile, on_delete=models.CASCADE)
+    mitigation_mobile = models.ForeignKey(MitigationsMobile, on_delete=models.CASCADE)
 
 #############################################################################
-class Software_mobile(models.Model):
+class SoftwareMobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(TechniquesMobile)
 
 # URL-Refs
-class URL_Refs_soft_M(models.Model):
+class UrlReferencesSoftwareMobile(models.Model):
     external_reference = models.URLField(max_length=500)
-    software_mobile = models.ForeignKey(Software_mobile, on_delete=models.CASCADE)
+    software_mobile = models.ForeignKey(SoftwareMobile, on_delete=models.CASCADE)
 
 #############################################################################
-class Groups_mobile(models.Model):
+class GroupsMobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(TechniquesMobile)
+    software = models.ManyToManyField(SoftwareMobile)
 
 # URL-Refs
-class URL_Refs_groups_M(models.Model):
+class UrlReferencesGroupsMobile(models.Model):
     external_reference = models.URLField(max_length=500)
-    group_mobile = models.ForeignKey(Groups_mobile, on_delete=models.CASCADE)
+    group_mobile = models.ForeignKey(GroupsMobile, on_delete=models.CASCADE)
 
 #############################################################################
-class Taktiks_mobile(models.Model):
+class TacticsMobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(TechniquesMobile)
 
 # URL-Refs
-class URL_Refs_tac_M(models.Model):
+class UrlRefsTacticMobile(models.Model):
     external_reference = models.URLField(max_length=500)
-    taktik_mobile = models.ForeignKey(Taktiks_mobile, on_delete=models.CASCADE)
+    tactic_mobile = models.ForeignKey(TacticsMobile, on_delete=models.CASCADE)
 
 #############################################################################
-class Szenarien_M(models.Model):
+class CampaignsMobile(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    software = models.ManyToManyField(SoftwareMobile)
+    groups = models.ManyToManyField(GroupsMobile)
+    techniques = models.ManyToManyField(TechniquesMobile)
 
 # URL-Table
-class URL_Refs_Szen_M(models.Model):
+class UrlReferencesCampaignsMobile(models.Model):
     external_reference = models.URLField(max_length=500)
-    szenario_mobile = models.ForeignKey(Szenarien_M, on_delete=models.CASCADE, null=True)
+    campaign_mobile = models.ForeignKey(CampaignsMobile, on_delete=models.CASCADE, null=True)
+
 #############################################################################
 #############################################################################
 # ICS-Matrix
-class Techniques_ics(models.Model):
+class TechniquesIcs(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100, null=True)
@@ -180,77 +189,114 @@ class Techniques_ics(models.Model):
     description = models.TextField(max_length=1000)
 
 # URL-Refs
-class URL_Refs_tech_I(models.Model):
+class UrlReferencesTechniquesIcs(models.Model):
     external_reference = models.URLField(max_length=500)
-    technique_ics = models.ForeignKey(Techniques_ics, on_delete=models.CASCADE)
+    technique_ics = models.ForeignKey(TechniquesIcs, on_delete=models.CASCADE)
 
 #############################################################################
-class Mitigations_ics(models.Model):
+class MitigationsIcs(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(TechniquesIcs)
 
 # URL-Refs
-class URL_Refs_miti_I(models.Model):
+class UrlReferencesMitigationsIcs(models.Model):
     external_reference = models.URLField(max_length=500)
-    mitigation_ics = models.ForeignKey(Mitigations_ics, on_delete=models.CASCADE)
+    mitigation_ics = models.ForeignKey(MitigationsIcs, on_delete=models.CASCADE)
 
 #############################################################################
-class Software_ics(models.Model):
+class SoftwareIcs(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(TechniquesIcs)
 
 # URL-Refs
-class URL_Refs_soft_I(models.Model):
+class UrlReferencesSoftwareIcs(models.Model):
     external_reference = models.URLField(max_length=500)
-    software_ics = models.ForeignKey(Software_ics, on_delete=models.CASCADE)
+    software_ics = models.ForeignKey(SoftwareIcs, on_delete=models.CASCADE)
 
 #############################################################################
-class Groups_ics(models.Model):
+class GroupsIcs(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(TechniquesIcs)
+    software = models.ManyToManyField(SoftwareIcs)
 
 # URL-Refs
-class URL_Refs_groups_I(models.Model):
+class UrlReferencesGroupsIcs(models.Model):
     external_reference = models.URLField(max_length=500)
-    group_ics = models.ForeignKey(Groups_ics, on_delete=models.CASCADE)
+    group_ics = models.ForeignKey(GroupsIcs, on_delete=models.CASCADE)
 
 #############################################################################
-class Taktiks_ics(models.Model):
+class TacticsIcs(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    techniques = models.ManyToManyField(TechniquesIcs)
 
 # URL-Refs
-class URL_Refs_tac_I(models.Model):
+class UrlReferencesTacticIcs(models.Model):
     external_reference = models.URLField(max_length=500)
-    taktik_ics = models.ForeignKey(Taktiks_ics, on_delete=models.CASCADE)
+    tactic_ics = models.ForeignKey(TacticsIcs, on_delete=models.CASCADE)
 
 #############################################################################
-class Szenarien_ics(models.Model):
+class CampaignsIcs(models.Model):
     name = models.CharField(max_length=100)
     id = models.CharField(max_length=100, primary_key=True)
     mitre = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
+    software = models.ManyToManyField(SoftwareIcs)
+    groups = models.ManyToManyField(GroupsIcs)
+    techniques = models.ManyToManyField(TechniquesIcs)
 
 # URL-Table
-class URL_Refs_Szen_I(models.Model):
+class UrlReferencesCampaignsIcs(models.Model):
     external_reference = models.URLField(max_length=500)
-    szenario = models.ForeignKey(Szenarien_ics, on_delete=models.CASCADE, null=True)
+    campaign = models.ForeignKey(CampaignsIcs, on_delete=models.CASCADE, null=True)
 
 #############################################################################
 #############################################################################
 #Index Model
-class Index(models.Model):
-    name = models.CharField(max_length=100)
+class IndexEnterprise(models.Model):
+    name = models.CharField(max_length=100, primary_key=True)
+    answer_count = models.IntegerField()
+    techniques = models.ManyToManyField(Techniques)
+    tactics = models.ManyToManyField(Tactics)
+    groups = models.ManyToManyField(Groups)
+    mitigations = models.ManyToManyField(Mitigations)
+    software = models.ManyToManyField(Software)
+    campaigns = models.ManyToManyField(Campaigns)
+
+#############################################################################
+class IndexMobile(models.Model):
+    name = models.CharField(max_length=100, primary_key=True)
+    answer_count = models.IntegerField()
+    techniques = models.ManyToManyField(TechniquesMobile)
+    tactics = models.ManyToManyField(TacticsMobile)
+    groups = models.ManyToManyField(GroupsMobile)
+    mitigations = models.ManyToManyField(MitigationsMobile)
+    software = models.ManyToManyField(SoftwareMobile)
+    campaigns = models.ManyToManyField(CampaignsMobile)
+
+#############################################################################
+class IndexIcs(models.Model):
+    name = models.CharField(max_length=100, primary_key=True)
+    answer_count = models.IntegerField()
+    techniques = models.ManyToManyField(TechniquesIcs)
+    tactics = models.ManyToManyField(TacticsIcs)
+    groups = models.ManyToManyField(GroupsIcs)
+    mitigations = models.ManyToManyField(MitigationsIcs)
+    software = models.ManyToManyField(SoftwareIcs)
+    campaigns = models.ManyToManyField(CampaignsIcs)
