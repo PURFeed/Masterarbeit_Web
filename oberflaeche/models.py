@@ -1,6 +1,7 @@
 from django.db import models
 
-# All Models for DB
+# All Models for DB basierend auf .json Data provided by Mitre
+# Dataversion: v15.1 letzter Stand: 17.10.2024
 
 # Enterprise matrix
 class Techniques(models.Model):
@@ -264,7 +265,7 @@ class CampaignsIcs(models.Model):
 # URL-Table
 class UrlReferencesCampaignsIcs(models.Model):
     external_reference = models.URLField(max_length=500)
-    campaign = models.ForeignKey(CampaignsIcs, on_delete=models.CASCADE, null=True)
+    campaign_ics = models.ForeignKey(CampaignsIcs, on_delete=models.CASCADE, null=True)
 
 #############################################################################
 #############################################################################
