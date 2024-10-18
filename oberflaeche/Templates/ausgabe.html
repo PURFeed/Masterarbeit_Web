@@ -98,6 +98,23 @@
         </div>
         <h1>Keyword: {{ Suchbegriff }}</h1>
         <h1>Results: {{ Suchergebnisanzahl }}</h1>
+
+        <form style="margin:auto; max-width:500px" action="{% url 'success' %}" method="POST">
+            {% csrf_token %}
+
+            <input type="hidden" name="tactics" value="{{ Tactics }}"/>
+            <input type="hidden" name="campaings" value="{{ Campaigns }}"/>
+            <input type="hidden" name="groups" value="{{ Groups }}"/>
+            <input type="hidden" name="techniques" value="{{ Techniques }}"/>
+            <input type="hidden" name="mitigation" value="{{ Mitigations }}"/>
+            <input type="hidden" name="software" value="{{ Software }}"/>
+
+            <input type="hidden" name="suchbegriff" value="{{ Suchbegriff }}"/>
+            <input type="hidden" name="result_count" value="{{ Suchergebnisanzahl }}"/>
+
+            <button type="submit"> Save Index</button>
+        </form>
+
         <h1>Tactics</h1>
         <div>
             {% for i in Tactics %}

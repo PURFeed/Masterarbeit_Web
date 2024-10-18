@@ -297,6 +297,15 @@ def index(request):
 def entry(request):
     return render(request, 'entry.html')
 
+def index_saved(request):
+    tactics = []
+
+    if request.method == 'POST':
+        tactics = request.POST.get('tactics')
+        print("Hello World")
+
+    return render(request, 'index_save_successfull.html', {"Tactics": tactics})
+
 def import_data(request):
 
     extract = URLExtract()

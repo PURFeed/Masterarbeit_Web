@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
 from oberflaeche import views
 
 urlpatterns = [
@@ -27,6 +26,8 @@ urlpatterns = [
     path('index/', views.index, name='index'),
 
     path('entry/', views.entry, name='entry'),
+
+    path('index_save_successfull/', views.index_saved, name='success')
 
     # path('import/', views.import_data, name='import')
 ]

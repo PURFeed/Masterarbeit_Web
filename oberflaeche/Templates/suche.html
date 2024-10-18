@@ -79,7 +79,7 @@
             }
 
             form.example button {
-              float: left;
+              float: none;
               width: 20%;
               padding: 10px;
               background: #2196F3;
@@ -110,7 +110,8 @@
         
         <img class="banner" src="https://www.manss.com/files/media-image/fachhochschule-brandenburg/fachhochschule-brandenburg-identity-1-1992.jpg" alt="Logo Webanwendung">
 
-        <form class="example" style="margin:auto;max-width:500px" method="POST">{% csrf_token %}
+        <form class="example" style="margin:auto;max-width:500px" method="POST">
+            {% csrf_token %}
             <input type="text" placeholder="Search..." name="suchbegriff">
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
