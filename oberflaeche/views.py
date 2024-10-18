@@ -10,35 +10,246 @@ def home(request):
 
         suchbegriff = request.POST.get('suchbegriff')
 
-        test1 = Techniques.objects.all().filter(description__contains=suchbegriff)
-        test2 = Mitigations.objects.all().filter(description__contains=suchbegriff)
-        test3 = Software.objects.all().filter(description__contains=suchbegriff)
-        test4 = Campaigns.objects.all().filter(description__contains=suchbegriff)
-        test5 = Groups.objects.all().filter(description__contains=suchbegriff)
-        test6 = Tactics.objects.all().filter(description__contains=suchbegriff)
-
-        ausgabe_technique = []
+        ausgabe_techniques = []
         ausgabe_groups = []
         ausgabe_mitigations = []
         ausgabe_software = []
-        ausgabe_senarien = []
-        ausgabe_taktiks = []
+        ausgabe_campaigns = []
+        ausgabe_tactics = []
 
-        for i in test1:
-             ausgabe_technique.append(i.mitre)
-        for i in test2:
-             ausgabe_groups.append(i.mitre)
-        for i in test3:
-             ausgabe_mitigations.append(i.mitre)
-        for i in test4:
-             ausgabe_software.append(i.mitre)
-        for i in test5:
-             ausgabe_senarien.append(i.mitre)
-        for i in test6:
-             ausgabe_taktiks.append(i.mitre)
+        ausgabe_techniques_refs = []
+        ausgabe_groups_refs = []
+        ausgabe_mitigations_refs = []
+        ausgabe_software_refs = []
+        ausgabe_campaigns_refs = []
+        ausgabe_tactics_refs = []
 
-        return render(request, 'ausgabe.html', {"T1": ausgabe_technique,"T2": ausgabe_groups, "T3": ausgabe_mitigations, "T4": ausgabe_software,"T5": ausgabe_senarien, "T6": ausgabe_taktiks})
+        techniques = Techniques.objects.all().filter(description__contains=suchbegriff)
+        mitigations = Mitigations.objects.all().filter(description__contains=suchbegriff)
+        software = Software.objects.all().filter(description__contains=suchbegriff)
+        campaigns = Campaigns.objects.all().filter(description__contains=suchbegriff)
+        groups = Groups.objects.all().filter(description__contains=suchbegriff)
+        tactics = Tactics.objects.all().filter(description__contains=suchbegriff)
 
+        # Results Campaigns
+
+        for c in campaigns:
+            ausgabe_campaigns.append(c)
+
+            # Relation with Techniques
+
+            if not c.techniques.exists():
+                continue
+            else:
+                temp = c.techniques.all()
+                for l in temp:
+                    ausgabe_techniques.append(l)
+
+            # Relations with Software
+
+            if not c.software.exists():
+                continue
+            else:
+                temp = c.software.all()
+                for l in temp:
+                    ausgabe_software.append(l)
+
+            # Relations with Groups
+
+            if not c.groups.exists():
+                continue
+            else:
+                temp = c.groups.all()
+                for l in temp:
+                    ausgabe_groups.append(l)
+
+        # Results Groups
+
+        for g in groups:
+            ausgabe_groups.append(g)
+
+            # Relations with Techniques
+
+            if not g.techniques.exists():
+                continue
+            else:
+                temp = g.techniques.all()
+                for l in temp:
+                    ausgabe_techniques.append(l)
+
+            # Relations with Software
+
+            if not g.software.exists():
+                continue
+            else:
+                temp = g.software.all()
+                for l in temp:
+                    ausgabe_software.append(l)
+
+            # Relation with Campaigns
+
+            if not g.campaigns_set.exists():
+                continue
+            else:
+                temp = g.campaigns_set.all()
+                for l in temp:
+                    ausgabe_campaigns.append(l)
+
+        # Results Techniques
+
+        for t in techniques:
+            ausgabe_techniques.append(t)
+
+            # Relations with Mitigations
+
+            if not t.mitigations_set.exists():
+                continue
+            else:
+                temp = t.mitigations_set.all()
+                for l in temp:
+                    ausgabe_mitigations.append(l)
+
+            # Relations with Software
+
+            if not t.software_set.exists():
+                continue
+            else:
+                temp = t.software_set.all()
+                for l in temp:
+                    ausgabe_software.append(l)
+
+            # Relations with Groups
+
+            if not t.groups_set.exists():
+                continue
+            else:
+                temp = t.groups_set.all()
+                for l in temp:
+                    ausgabe_groups.append(l)
+
+            # Relation with Campaigns
+
+            if not t.campaigns_set.exists():
+                continue
+            else:
+                temp = t.campaigns_set.all()
+                for l in temp:
+                    ausgabe_campaigns.append(l)
+
+            # Relation mit Tactics
+
+            if not t.tactics_set.exists():
+                continue
+            else:
+                temp = t.tactics_set.all()
+                for l in temp:
+                    ausgabe_tactics.append(l)
+
+        # Results Mitigation
+
+        for m in mitigations:
+
+            ausgabe_mitigations.append(m)
+
+            # Relations with Techniques
+
+            if not m.techniques.exists():
+                continue
+            else:
+                temp = m.techniques.all()
+                for l in temp:
+                    ausgabe_techniques.append(l)
+
+        # Results Tactics
+
+        for ta in tactics:
+            ausgabe_tactics.append(ta)
+
+            # Relations with Techniques
+            if not ta.techniques.exists():
+                continue
+            else:
+                temp = ta.techniques.all()
+                for l in temp:
+                    ausgabe_techniques.append(l)
+
+        # Delete Duplicates
+
+        ausgabe_campaigns = list(dict.fromkeys(ausgabe_campaigns))
+        ausgabe_groups = list(dict.fromkeys(ausgabe_groups))
+        ausgabe_techniques = list(dict.fromkeys(ausgabe_techniques))
+        ausgabe_software = list(dict.fromkeys(ausgabe_software))
+        ausgabe_mitigations = list(dict.fromkeys(ausgabe_mitigations))
+        ausgabe_tactics = list(dict.fromkeys(ausgabe_tactics))
+
+        # Collect Refs
+
+        # Get URLS for Campaigns
+
+        for ca in ausgabe_campaigns:
+            temp = ca.urlreferencescampaignsenterprise_set.all()
+            for l in temp:
+                if not l:
+                    continue
+                else:
+                    ausgabe_campaigns_refs.append(l.external_reference)
+
+        # Get URLS for Groups
+
+        for gr in ausgabe_groups:
+            temp = gr.urlreferencesgroupsenterprise_set.all()
+            for l in temp:
+                if not l:
+                    continue
+                else:
+                    ausgabe_groups_refs.append(l.external_reference)
+
+        # Get URLS for Techniques
+
+        for te in ausgabe_techniques:
+            temp = te.urlreferencestechniquesenterprise_set.all()
+            for l in temp:
+                if not l:
+                    continue
+                else:
+                    ausgabe_techniques_refs.append(l.external_reference)
+
+        # Get URLS for Mitigations:
+
+        for mi in ausgabe_mitigations:
+            temp = mi.urlreferencesmitigationsenterprise_set.all()
+            for l in temp:
+                if not l:
+                    continue
+                else:
+                    ausgabe_mitigations_refs.append(l.external_reference)
+
+        # Get URLS for Software
+
+        for so in ausgabe_software:
+            temp = so.urlreferencessoftwareenterprise_set.all()
+            for l in temp:
+                if not l:
+                    continue
+                else:
+                    ausgabe_software_refs.append(l.external_reference)
+
+        # Get URLS for Tactics
+
+        for ta in ausgabe_tactics:
+            temp = ta.urlreferencestacticenterprise_set.all()
+            for l in temp:
+                if not l:
+                    continue
+                else:
+                    ausgabe_tactics_refs.append(l.external_reference)
+
+        suchergebniss_anzahl = len(ausgabe_techniques) + len(ausgabe_mitigations) + len(ausgabe_software) + len(ausgabe_campaigns) + len(ausgabe_groups) + len(ausgabe_tactics)
+
+        return render(request, 'ausgabe.html', {"Suchergebnisanzahl": suchergebniss_anzahl, "Suchbegriff": suchbegriff, "Techniques": ausgabe_techniques,"Groups": ausgabe_groups, "Mitigations": ausgabe_mitigations, "Software": ausgabe_software,"Campaigns": ausgabe_campaigns,
+                                                "Tactics": ausgabe_tactics,
+                                                "Techniques_Urls": ausgabe_techniques_refs,
+                                                "Groups_Urls": ausgabe_groups_refs, "Mitigations_Urls": ausgabe_mitigations_refs, "Software_Urls": ausgabe_software_refs,"Campaigns_Urls": ausgabe_campaigns_refs, "Tactics_Urls": ausgabe_tactics_refs,})
     return render(request, 'suche.html')
 
 def index(request):
