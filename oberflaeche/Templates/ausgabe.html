@@ -86,101 +86,88 @@
           <a href="/">Home</a>
           <a href="/index">Index</a>
           <div class="dropdown">
-            <button class="dropbtn">Dropdown
+            <button class="dropbtn">Matrixen
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
-              <a href="#">Enterprise</a>
+              <a href="/ausgabe">Enterprise</a>
               <a href="#">ICS</a>
-              <a href="#">MOBILE</a>
+              <a href="#">Mobile</a>
             </div>
           </div>
         </div>
         <h1>Keyword: {{ Suchbegriff }}</h1>
         <h1>Results: {{ Suchergebnisanzahl }}</h1>
-        <h1>Techniques</h1>
-        <table>
-            <tr>
-                {% for i in Techniques %}
-                    <td> <a href="#"> {{i.mitre}} </a> </td>
-                {% endfor %}
-            </tr>
-        </table>
-        <h1>Groups</h1>
-        <table>
-            <tr>
-                {% for i in Groups %}
-                    <td> <a href="#"> {{i.mitre}} </a> </td>
-                {% endfor %}
-            </tr>
-        </table>
-        <h1>Mitigations</h1>
-        <table>
-            <tr>
-                {% for i in Mitigations %}
-                    <td> <a href="#"> {{i.mitre}} </a> </td>
-                {% endfor %}
-            </tr>
-        </table>
-        <h1>Software</h1>
-        <table>
-            <tr>
-                {% for i in Software %}
-                    <td> <a href="#"> {{i.mitre}} </a> </td>
-                {% endfor %}
-            </tr>
-        </table>
-        <h1>Campaigns</h1>
-        <table>
-            <tr>
-                {% for i in Campaigns %}
-                    <td> <a href="#"> {{i.mitre}} </a> </td>
-                {% endfor %}
-            </tr>
-        </table>
         <h1>Tactics</h1>
-        <table>
-            <tr>
-                {% for i in Tactics %}
-                    <td> <a href="#"> {{i.mitre}} </a> </td>
-                {% endfor %}
-            </tr>
-        </table>
-
-        <h1>URls Techniques</h1>
+        <div>
+            {% for i in Tactics %}
+                 <a href="/entry" > Tactic: {{i.mitre}}; </a>
+            {% endfor %}
+        </div>
+        <h1>Campaigns</h1>
+        <div>
+            {% for i in Campaigns %}
+                 <a href="/entry"> Campaigns: {{i.mitre}}; </a>
+            {% endfor %}
+        </div>
+        <h1>Groups</h1>
+        <div>
+            {% for i in Groups %}
+                <a href="/entry" methods="Post" id="{{i.mitre}}"> Group: {{i.mitre}}; </a>
+            {% endfor %}
+        </div>
+        <h1>Techniques</h1>
+        <div>
+            {% for i in Techniques %}
+                 <a href="/entry"> Technique: {{i.mitre}};</a>
+            {% endfor %}
+        </div>
+        <h1>Mitigations</h1>
+        <div>
+            {% for i in Mitigations %}
+                <a href="/entry"> Mitigation: {{i.mitre}}; </a>
+            {% endfor %}
+        </div>
+        <h1>Software</h1>
+        <div>
+            {% for i in Software %}
+                 <a href="/entry"> Software: {{i.mitre}}; </a>
+            {% endfor %}
+        </div>
+        <h1>References Techniques</h1>
         <div>
             {% for i in Techniques_Urls %}
-                <a href="{{ i }}"> {{ i }}</a>
+                <a href="{{ i }}"> URL: {{ i }};</a>
             {% endfor %}
         </div>
-        <h1>URls Groups</h1>
+        <h1>References Groups</h1>
         <div>
             {% for i in Groups_Urls %}
-                <a href="{{ i }}"> {{ i }}</a>
+                <a href="{{ i }}"> URL: {{ i }};</a>
             {% endfor %}
         </div>
-        <h1>URls Mitigations</h1>
+        <h1>References Mitigations</h1>
         <div>
             {% for i in Mitigations_Urls %}
-                <a href="{{ i }}"> {{ i }}</a>
+                <a href="{{ i }}"> URL: {{ i }};</a>
             {% endfor %}
         </div>
-        <h1>URls Software</h1>
+        <h1>References Software</h1>
         <div>
             {% for i in Software_Urls %}
-                <a href="{{ i }}"> {{ i }}</a>
+                <a href="{{ i }}"> URL: {{ i }};</a>
             {% endfor %}
         </div>
-        <h1>URls Campaigns</h1>
+        <h1>References Campaigns</h1>
         <div>
             {% for i in Campaigns_Urls %}
-                <a href="{{ i }}"> {{ i }}</a>
+                <a href="{{ i }}"> URL: {{ i }};</a>
             {% endfor %}
         </div>
-        <h1>URls Tactics</h1>
+        <h1>References Tactics</h1>
         <div>
             {% for i in Tactics_Urls %}
-                <a href="{{ i }}"> {{ i }}</a>
+                <a href="{{ i }}"> URL: {{ i }};</a>
             {% endfor %}
         </div>
     </body>

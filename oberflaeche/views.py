@@ -37,29 +37,30 @@ def home(request):
             ausgabe_campaigns.append(c)
 
             # Relation with Techniques
+        for cam in ausgabe_campaigns:
 
-            if not c.techniques.exists():
+            if not cam.techniques.exists():
                 continue
             else:
-                temp = c.techniques.all()
+                temp = cam.techniques.all()
                 for l in temp:
                     ausgabe_techniques.append(l)
 
             # Relations with Software
 
-            if not c.software.exists():
+            if not cam.software.exists():
                 continue
             else:
-                temp = c.software.all()
+                temp = cam.software.all()
                 for l in temp:
                     ausgabe_software.append(l)
 
             # Relations with Groups
 
-            if not c.groups.exists():
+            if not cam.groups.exists():
                 continue
             else:
-                temp = c.groups.all()
+                temp = cam.groups.all()
                 for l in temp:
                     ausgabe_groups.append(l)
 
@@ -70,28 +71,30 @@ def home(request):
 
             # Relations with Techniques
 
-            if not g.techniques.exists():
+        for gro in ausgabe_groups:
+
+            if not gro.techniques.exists():
                 continue
             else:
-                temp = g.techniques.all()
+                temp = gro.techniques.all()
                 for l in temp:
                     ausgabe_techniques.append(l)
 
             # Relations with Software
 
-            if not g.software.exists():
+            if not gro.software.exists():
                 continue
             else:
-                temp = g.software.all()
+                temp = gro.software.all()
                 for l in temp:
                     ausgabe_software.append(l)
 
             # Relation with Campaigns
 
-            if not g.campaigns_set.exists():
+            if not gro.campaigns_set.exists():
                 continue
             else:
-                temp = g.campaigns_set.all()
+                temp = gro.campaigns_set.all()
                 for l in temp:
                     ausgabe_campaigns.append(l)
 
@@ -102,48 +105,79 @@ def home(request):
 
             # Relations with Mitigations
 
-            if not t.mitigations_set.exists():
+        for tec in ausgabe_techniques:
+
+            if not tec.mitigations_set.exists():
                 continue
             else:
-                temp = t.mitigations_set.all()
+                temp = tec.mitigations_set.all()
                 for l in temp:
                     ausgabe_mitigations.append(l)
 
             # Relations with Software
 
-            if not t.software_set.exists():
+            if not tec.software_set.exists():
                 continue
             else:
-                temp = t.software_set.all()
+                temp = tec.software_set.all()
                 for l in temp:
                     ausgabe_software.append(l)
 
             # Relations with Groups
 
-            if not t.groups_set.exists():
+            if not tec.groups_set.exists():
                 continue
             else:
-                temp = t.groups_set.all()
+                temp = tec.groups_set.all()
                 for l in temp:
                     ausgabe_groups.append(l)
 
             # Relation with Campaigns
 
-            if not t.campaigns_set.exists():
+            if not tec.campaigns_set.exists():
                 continue
             else:
-                temp = t.campaigns_set.all()
+                temp = tec.campaigns_set.all()
                 for l in temp:
                     ausgabe_campaigns.append(l)
 
             # Relation mit Tactics
 
-            if not t.tactics_set.exists():
+            if not tec.tactics_set.exists():
                 continue
             else:
-                temp = t.tactics_set.all()
+                temp = tec.tactics_set.all()
                 for l in temp:
                     ausgabe_tactics.append(l)
+
+        # Results Software
+
+        for s in software:
+
+            ausgabe_software.append(s)
+
+        for sof in software:
+
+            if not sof.techniques.exists():
+                continue
+            else:
+                temp = sof.techniques.all()
+                for l in temp:
+                    ausgabe_techniques.append(l)
+
+            if not sof.groups_set.exists():
+                continue
+            else:
+                temp = sof.groups_set.all()
+                for l in temp:
+                    ausgabe_groups.append(l)
+
+            if not sof.campaigns_set.exists():
+                continue
+            else:
+                temp = sof.campaigns_set.all()
+                for l in temp:
+                    ausgabe_campaigns.append(l)
 
         # Results Mitigation
 
@@ -151,12 +185,14 @@ def home(request):
 
             ausgabe_mitigations.append(m)
 
+        for mit in mitigations:
+
             # Relations with Techniques
 
-            if not m.techniques.exists():
+            if not mit.techniques.exists():
                 continue
             else:
-                temp = m.techniques.all()
+                temp = mit.techniques.all()
                 for l in temp:
                     ausgabe_techniques.append(l)
 
@@ -165,11 +201,14 @@ def home(request):
         for ta in tactics:
             ausgabe_tactics.append(ta)
 
+        for tac in tactics:
+
             # Relations with Techniques
-            if not ta.techniques.exists():
+
+            if not tac.techniques.exists():
                 continue
             else:
-                temp = ta.techniques.all()
+                temp = tac.techniques.all()
                 for l in temp:
                     ausgabe_techniques.append(l)
 
@@ -255,8 +294,8 @@ def home(request):
 def index(request):
     return render(request, 'index.html')
 
-def test(request):
-    return render(request, 'ausgabe.html')
+def entry(request):
+    return render(request, 'entry.html')
 
 def import_data(request):
 
