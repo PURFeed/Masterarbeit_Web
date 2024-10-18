@@ -24,5 +24,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('index/', views.index, name='index'),
     path('test/', views.test, name='test'),
-    path('import/', views.import_data, name='import')
+    # path('import/', views.import_data, name='import')
 ]
