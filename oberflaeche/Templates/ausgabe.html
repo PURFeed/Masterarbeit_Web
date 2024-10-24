@@ -96,25 +96,33 @@
             </div>
           </div>
         </div>
-        <h1>Keyword: {{ Suchbegriff }}</h1>
-        <h1>Results: {{ Suchergebnisanzahl }}</h1>
+        <h1>Keyword: {{ Keyword }}</h1>
+        <h1>Results: {{ Result_Count }}</h1>
 
         <form style="margin:auto; max-width:500px" action="{% url 'success' %}" method="POST">
             {% csrf_token %}
 
-            <input type="hidden" name="tactics" value="{{ Tactics }}"/>
-            <input type="hidden" name="campaings" value="{{ Campaigns }}"/>
-            <input type="hidden" name="groups" value="{{ Groups }}"/>
-            <input type="hidden" name="techniques" value="{{ Techniques }}"/>
-            <input type="hidden" name="mitigation" value="{{ Mitigations }}"/>
-            <input type="hidden" name="software" value="{{ Software }}"/>
+            <input type="hidden" name="Tactics" value="{{ Tactics }}"/>
+            <input type="hidden" name="Campaigns" value="{{ Campaigns }}"/>
+            <input type="hidden" name="Groups" value="{{ Groups }}"/>
+            <input type="hidden" name="Techniques" value="{{ Techniques }}"/>
+            <input type="hidden" name="Mitigation" value="{{ Mitigations }}"/>
+            <input type="hidden" name="Software" value="{{ Software }}"/>
 
-            <input type="hidden" name="suchbegriff" value="{{ Suchbegriff }}"/>
-            <input type="hidden" name="result_count" value="{{ Suchergebnisanzahl }}"/>
+            <input type="hidden" name="Relation_Tactics" value="{{ Relation_Tactics }}"/>
+            <input type="hidden" name="Relation_Campaigns" value="{{ Relation_Campaigns }}"/>
+            <input type="hidden" name="Relation_Groups" value="{{ Relation_Groups }}"/>
+            <input type="hidden" name="Relation_Techniques" value="{{ Relation_Techniques }}"/>
+            <input type="hidden" name="Relation_Mitigation" value="{{ Relation_Mitigations }}"/>
+            <input type="hidden" name="Relation_Software" value="{{ Relation_Software }}"/>
+
+            <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
+            <input type="hidden" name="Result_Count" value="{{ Result_Count }}"/>
 
             <button type="submit"> Save Index</button>
         </form>
 
+        <h1> Entries where the Keyword is stated in:</h1>
         <h1>Tactics</h1>
         <div>
             {% for i in Tactics %}
