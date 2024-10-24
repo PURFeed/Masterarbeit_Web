@@ -1,13 +1,20 @@
+import datetime
+
 from django.shortcuts import render
+from requests.exceptions import SSLError, InvalidURL, MissingSchema
+
 from .models import *
 from mitreattack.stix20 import MitreAttackData
 from urlextract import URLExtract
 from bs4 import BeautifulSoup
+import requests
 
 # Create your views here.
 
 def home(request):
     if request.method == 'POST':
+
+        print(datetime.datetime.now())
 
         keyword = request.POST.get('keyword')
 
@@ -200,8 +207,12 @@ def home(request):
         # All Refs with Keyword in Refs_Technique
         for url in refs_techniques:
             # Webcrawler
-            soup = BeautifulSoup(url.external_reference, 'html.parser')
-            temp = soup.find(string=keyword)
+            try:
+                web = requests.get(url.external_reference)
+                soup = BeautifulSoup(web.content, 'html.parser')
+                temp = soup.find(string=keyword)
+            except (SSLError, MissingSchema, OSError):
+                continue
 
             # When keyword is found append result
             if not temp:
@@ -212,8 +223,12 @@ def home(request):
         # All Refs with Keyword in Refs_Tactics
         for url in refs_tactics:
             # Webcrawler
-            soup = BeautifulSoup(url.external_reference, 'html.parser')
-            temp = soup.find(string=keyword)
+            try:
+                web = requests.get(url.external_reference)
+                soup = BeautifulSoup(web.content, 'html.parser')
+                temp = soup.find(string=keyword)
+            except (SSLError, MissingSchema, OSError):
+                continue
 
             # When keyword is found append result
             if not temp:
@@ -224,8 +239,12 @@ def home(request):
         # All Refs with Keyword in Refs_Campaigns
         for url in refs_campaings:
             # Webcrawler
-            soup = BeautifulSoup(url.external_reference, 'html.parser')
-            temp = soup.find(string=keyword)
+            try:
+                web = requests.get(url.external_reference)
+                soup = BeautifulSoup(web.content, 'html.parser')
+                temp = soup.find(string=keyword)
+            except (SSLError, MissingSchema, OSError):
+                continue
 
             # When keyword is found append result
             if not temp:
@@ -236,8 +255,12 @@ def home(request):
         # All Refs with Keyword in Refs_Groups
         for url in refs_groups:
             # Webcrawler
-            soup = BeautifulSoup(url.external_reference, 'html.parser')
-            temp = soup.find(string=keyword)
+            try:
+                web = requests.get(url.external_reference)
+                soup = BeautifulSoup(web.content, 'html.parser')
+                temp = soup.find(string=keyword)
+            except (SSLError, MissingSchema, OSError):
+                continue
 
             # When keyword is found append result
             if not temp:
@@ -248,8 +271,12 @@ def home(request):
         # All Refs with Keyword in Refs_Mitigations
         for url in refs_mitigations:
             # Webcrawler
-            soup = BeautifulSoup(url.external_reference, 'html.parser')
-            temp = soup.find(string=keyword)
+            try:
+                web = requests.get(url.external_reference)
+                soup = BeautifulSoup(web.content, 'html.parser')
+                temp = soup.find(string=keyword)
+            except (SSLError, MissingSchema, OSError):
+                continue
 
             # When keyword is found append result
             if not temp:
@@ -260,8 +287,12 @@ def home(request):
         # All Refs with Keyword in Refs_Software
         for url in refs_software:
             # Webcrawler
-            soup = BeautifulSoup(url.external_reference, 'html.parser')
-            temp = soup.find(string=keyword)
+            try:
+                web = requests.get(url.external_reference)
+                soup = BeautifulSoup(web.content, 'html.parser')
+                temp = soup.find(string=keyword)
+            except (SSLError, MissingSchema, OSError):
+                continue
 
             # When keyword is found append result
             if not temp:
@@ -271,6 +302,8 @@ def home(request):
 
         result_count = len(techniques) + len(campaigns) + len(groups) + len(software) + len(mitigations) + len(tactics)
         result_count_all = len(relationship_techniques) + len(relationship_mitigations) + len(relationship_software) + len(relationship_campaigns) + len(relationship_groups) + len(relationship_tactics)
+
+        print(datetime.datetime.now())
 
         return render(request, 'ausgabe.html', {"Result_Count": result_count, "Result_Count_All" : result_count_all, "Keyword": keyword, "Techniques": techniques,"Groups": groups,
                                                 "Mitigations": mitigations, "Software": software,"Campaigns": campaigns,

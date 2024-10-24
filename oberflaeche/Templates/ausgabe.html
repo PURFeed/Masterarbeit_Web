@@ -159,6 +159,46 @@
                  <a href="/entry"> Software: {{i.mitre}}; </a>
             {% endfor %}
         </div>
+
+        <h1>Relationships to Entries</h1>
+
+        <h1>Tactics</h1>
+        <div>
+            {% for i in Relation_Tactics %}
+                 <a href="/entry" > Tactic: {{i.mitre}}; </a>
+            {% endfor %}
+        </div>
+        <h1>Campaigns</h1>
+        <div>
+            {% for i in Relation_Campaigns %}
+                 <a href="/entry"> Campaigns: {{i.mitre}}; </a>
+            {% endfor %}
+        </div>
+        <h1>Groups</h1>
+        <div>
+            {% for i in Relation_Groups %}
+                <a href="/entry" methods="Post" id="{{i.mitre}}"> Group: {{i.mitre}}; </a>
+            {% endfor %}
+        </div>
+        <h1>Techniques</h1>
+        <div>
+            {% for i in Relation_Techniques %}
+                 <a href="/entry"> Technique: {{i.mitre}};</a>
+            {% endfor %}
+        </div>
+        <h1>Mitigations</h1>
+        <div>
+            {% for i in Relation_Mitigations %}
+                <a href="/entry"> Mitigation: {{i.mitre}}; </a>
+            {% endfor %}
+        </div>
+        <h1>Software</h1>
+        <div>
+            {% for i in Relation_Software %}
+                 <a href="/entry"> Software: {{i.mitre}}; </a>
+            {% endfor %}
+        </div>
+
         <h1>References Techniques</h1>
         <div>
             {% for i in Techniques_Urls %}
