@@ -59,7 +59,7 @@ def home(request):
                 if not temp:
                     continue
                 else:
-                    result_techniques_refs.append(url.external_reference)
+                    result_techniques_refs.append(url)
 
             # All Refs with Keyword in Refs_Tactics
             for url in refs_tactics:
@@ -75,7 +75,7 @@ def home(request):
                 if not temp:
                     continue
                 else:
-                    result_tactics_refs.append(url.external_reference)
+                    result_tactics_refs.append(url)
 
             # All Refs with Keyword in Refs_Campaigns
             for url in refs_campaings:
@@ -91,7 +91,7 @@ def home(request):
                 if not temp:
                     continue
                 else:
-                    result_campaigns_refs.append(url.external_reference)
+                    result_campaigns_refs.append(url)
 
             # All Refs with Keyword in Refs_Groups
             for url in refs_groups:
@@ -107,7 +107,7 @@ def home(request):
                 if not temp:
                     continue
                 else:
-                    result_groups_refs.append(url.external_reference)
+                    result_groups_refs.append(url)
 
             # All Refs with Keyword in Refs_Mitigations
             for url in refs_mitigations:
@@ -123,7 +123,7 @@ def home(request):
                 if not temp:
                     continue
                 else:
-                    result_mitigations_refs.append(url.external_reference)
+                    result_mitigations_refs.append(url)
 
             # All Refs with Keyword in Refs_Software
             for url in refs_software:
@@ -139,7 +139,7 @@ def home(request):
                 if not temp:
                     continue
                 else:
-                    result_software_refs.append(url.external_reference)
+                    result_software_refs.append(url)
 
             print(datetime.datetime.now())
 
@@ -171,6 +171,13 @@ def index_saved(request):
     software = []
     mitigations = []
 
+    tactics_refs = []
+    campaigns_refs = []
+    groups_refs = []
+    techniques_refs = []
+    software_refs = []
+    mitigations_refs = []
+
     if request.method == 'POST':
 
         tactics = request.POST.get('tactics')
@@ -179,6 +186,17 @@ def index_saved(request):
         techniques = request.POST.get('techniques')
         software = request.POST.get('software')
         mitigations = request.POST.get('mitigations')
+
+        refs_bool = request.POST.get('refs_bool')
+
+        if refs_bool == "True":
+            tactics_refs = request.POST.get('tactics_refs')
+            campaigns_refs = request.POST.get('campaigns_refs')
+            groups_refs = request.POST.get('groups_refs')
+            techniques_refs = request.POST.get('techniques_refs')
+            software_refs = request.POST.get('software_refs')
+            mitigations_refs = request.POST.get('mitigations_refs')
+
 
         print("Hello World")
 

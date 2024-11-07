@@ -279,6 +279,12 @@ class IndexEnterprise(models.Model):
     mitigations = models.ManyToManyField(Mitigations)
     software = models.ManyToManyField(Software)
     campaigns = models.ManyToManyField(Campaigns)
+    techniques_refs = models.ManyToManyField(UrlReferencesTechniquesEnterprise)
+    tactics_refs = models.ManyToManyField(UrlReferencesTacticEnterprise)
+    groups_refs = models.ManyToManyField(UrlReferencesGroupsEnterprise)
+    mitigations_refs = models.ManyToManyField(UrlReferencesMitigationsEnterprise)
+    software_refs = models.ManyToManyField(UrlReferencesSoftwareEnterprise)
+    campaigns_refs = models.ManyToManyField(UrlReferencesCampaignsEnterprise)
 
 #############################################################################
 class IndexMobile(models.Model):
@@ -290,6 +296,12 @@ class IndexMobile(models.Model):
     mitigations = models.ManyToManyField(MitigationsMobile)
     software = models.ManyToManyField(SoftwareMobile)
     campaigns = models.ManyToManyField(CampaignsMobile)
+    techniques_refs = models.ManyToManyField(UrlReferencesTechniquesMobile)
+    tactics_refs = models.ManyToManyField(UrlRefsTacticMobile)
+    groups_refs = models.ManyToManyField(UrlReferencesGroupsMobile)
+    mitigations_refs = models.ManyToManyField(UrlReferencesMitigationsMobile)
+    software_refs = models.ManyToManyField(UrlReferencesSoftwareMobile)
+    campaigns_refs = models.ManyToManyField(UrlReferencesCampaignsMobile)
 
 #############################################################################
 class IndexIcs(models.Model):
@@ -301,3 +313,9 @@ class IndexIcs(models.Model):
     mitigations = models.ManyToManyField(MitigationsIcs)
     software = models.ManyToManyField(SoftwareIcs)
     campaigns = models.ManyToManyField(CampaignsIcs)
+    techniques_refs = models.ManyToManyField(UrlReferencesTechniquesIcs)
+    tactics_refs = models.ManyToManyField(UrlReferencesTacticIcs)
+    groups_refs = models.ManyToManyField(UrlReferencesGroupsIcs)
+    mitigations_refs = models.ManyToManyField(UrlReferencesMitigationsIcs)
+    software_refs = models.ManyToManyField(UrlReferencesSoftwareIcs)
+    campaigns_refs = models.ManyToManyField(UrlReferencesCampaignsIcs)
