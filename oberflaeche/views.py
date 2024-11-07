@@ -1,5 +1,6 @@
 import datetime
 
+import bs4
 from django.shortcuts import render
 from requests.exceptions import SSLError, InvalidURL, MissingSchema
 
@@ -18,7 +19,9 @@ def home(request):
 
         keyword = request.POST.get('keyword').lower()
 
-        refs_needed = request.POST.get('references')
+        refs_needed = request.POST.get('References')
+
+        print(refs_needed)
 
         result_techniques_refs = []
         result_groups_refs = []
@@ -35,7 +38,7 @@ def home(request):
         tactics = Tactics.objects.all().filter(description__contains=keyword)
 
         refs_techniques = UrlReferencesTechniquesEnterprise.objects.all()
-        refs_campaings = UrlReferencesCampaignsEnterprise.objects.all()
+        refs_campaigns = UrlReferencesCampaignsEnterprise.objects.all()
         refs_tactics = UrlReferencesTacticEnterprise.objects.all()
         refs_groups = UrlReferencesGroupsEnterprise.objects.all()
         refs_software = UrlReferencesSoftwareEnterprise.objects.all()
@@ -43,15 +46,31 @@ def home(request):
 
         result_count = len(techniques) + len(campaigns) + len(groups) + len(software) + len(mitigations) + len(tactics)
 
+        test = 0
+
         if refs_needed == "True":
             # Collect Refs
             # All Refs with Keyword in Refs_Technique
             for url in refs_techniques:
                 # Webcrawler
+                test = test + 1
+                print(test)
                 try:
-                    web = requests.get(url.external_reference)
-                    soup = BeautifulSoup(web.content, 'html.parser')
-                    temp = soup.find(string=keyword)
+                    try: 
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
                 except (SSLError, MissingSchema, OSError):
                     continue
 
@@ -60,14 +79,34 @@ def home(request):
                     continue
                 else:
                     result_techniques_refs.append(url)
+                    print(url.external_reference)
 
+            print ("Techniques found")
+
+            test = 0
             # All Refs with Keyword in Refs_Tactics
             for url in refs_tactics:
                 # Webcrawler
+
+                test = test + 1
+                print(test)
+
                 try:
-                    web = requests.get(url.external_reference)
-                    soup = BeautifulSoup(web.content, 'html.parser')
-                    temp = soup.find(string=keyword)
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
                 except (SSLError, MissingSchema, OSError):
                     continue
 
@@ -76,14 +115,33 @@ def home(request):
                     continue
                 else:
                     result_tactics_refs.append(url)
+                    print(url.external_reference)
 
+            print("Tactics found")
+
+            test = 0
             # All Refs with Keyword in Refs_Campaigns
-            for url in refs_campaings:
+            for url in refs_campaigns:
                 # Webcrawler
+
+                test = test + 1
+                print(test)
                 try:
-                    web = requests.get(url.external_reference)
-                    soup = BeautifulSoup(web.content, 'html.parser')
-                    temp = soup.find(string=keyword)
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
                 except (SSLError, MissingSchema, OSError):
                     continue
 
@@ -92,14 +150,34 @@ def home(request):
                     continue
                 else:
                     result_campaigns_refs.append(url)
+                    print(url.external_reference)
 
+            print("Campaings found")
+
+            test = 0
             # All Refs with Keyword in Refs_Groups
             for url in refs_groups:
                 # Webcrawler
+
+                test = test + 1
+                print(test)
+
                 try:
-                    web = requests.get(url.external_reference)
-                    soup = BeautifulSoup(web.content, 'html.parser')
-                    temp = soup.find(string=keyword)
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
                 except (SSLError, MissingSchema, OSError):
                     continue
 
@@ -108,14 +186,33 @@ def home(request):
                     continue
                 else:
                     result_groups_refs.append(url)
+                    print(url.external_reference)
 
+            print("Groups found")
+
+            test = 0
             # All Refs with Keyword in Refs_Mitigations
             for url in refs_mitigations:
                 # Webcrawler
+
+                test = test + 1
+                print(test)
                 try:
-                    web = requests.get(url.external_reference)
-                    soup = BeautifulSoup(web.content, 'html.parser')
-                    temp = soup.find(string=keyword)
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
                 except (SSLError, MissingSchema, OSError):
                     continue
 
@@ -124,14 +221,32 @@ def home(request):
                     continue
                 else:
                     result_mitigations_refs.append(url)
+                    print(url.external_reference)
 
+            print("Mitigations found")
+
+            test = 0
             # All Refs with Keyword in Refs_Software
             for url in refs_software:
                 # Webcrawler
+                test = test + 1
+                print(test)
                 try:
-                    web = requests.get(url.external_reference)
-                    soup = BeautifulSoup(web.content, 'html.parser')
-                    temp = soup.find(string=keyword)
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
                 except (SSLError, MissingSchema, OSError):
                     continue
 
@@ -140,6 +255,9 @@ def home(request):
                     continue
                 else:
                     result_software_refs.append(url)
+                    print (url.external_reference)
+
+                print("Software found")
 
             print(datetime.datetime.now())
 
@@ -160,10 +278,8 @@ def home(request):
 def index(request):
     return render(request, 'index.html')
 
-def entry(request):
-    return render(request, 'entry.html')
-
 def index_saved(request):
+
     tactics = []
     campaigns = []
     groups = []

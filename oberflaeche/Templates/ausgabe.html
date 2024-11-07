@@ -329,47 +329,101 @@
 
         {% if Refs_Bool == "True"%}
             <h1>Referencen</h1>
-            <button type="button" class="collapsible">References Techniques</button>
-            <div class = "content">
-                {% for i in Techniques_Urls %}
-                    <a href="{{ i }}"> URL: {{ i }};</a>
-                {% endfor %}
-            </div>
+            {% if Campaigns_Urls|length != 0  %}
+                <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls|length }} Findings</button>
+                <table style="width:100%">
+                    <tr>
+                        <th>Mitre ID</th>
+                        <th>URL</th>
+                    </tr>
+                    {% for i in Campaigns_Urls %}
+                        <tr>
+                            <td>{{ i.campaign.mitre }}</td>
+                            <td> <a href="{{i.external_references}}" > URL: {{i.external_references}}</a> </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
 
-            <button type="button" class="collapsible">References Groups</button>
-            <div class = "content">
-                {% for i in Groups_Urls %}
-                    <a href="{{ i }}"> URL: {{ i }};</a>
-                {% endfor %}
-            </div>
+            {% if Tactics_Urls|length != 0  %}
+                <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls|length }} Findings</button>
+                <table style="width:100%">
+                    <tr>
+                        <th>Mitre ID</th>
+                        <th>URL</th>
+                    </tr>
+                    {% for i in Tactics_Urls %}
+                        <tr>
+                            <td>{{ i.tactic.mitre }}</td>
+                            <td> <a href="{{i.external_references}}" > URL: {{i.external_references}}</a> </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
 
-            <button type="button" class="collapsible"> References Mitigations</button>
-            <div class = "content">
-                {% for i in Mitigations_Urls %}
-                    <a href="{{ i }}"> URL: {{ i }};</a>
-                {% endfor %}
-            </div>
+            {% if Groups_Urls|length != 0  %}
+                <button type="button" class="collapsible">References in Groups: {{ Groups_Urls|length }} Findings</button>
+                <table style="width:100%">
+                    <tr>
+                        <th>Mitre ID</th>
+                        <th>URL</th>
+                    </tr>
+                    {% for i in Groups_Urls %}
+                        <tr>
+                            <td>{{ i.group.mitre }}</td>
+                            <td> <a href="{{i.external_references}}" > URL: {{i.external_references}}</a> </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
 
-            <button type="button" class="collapsible">References Software</button>
-            <div class = "content">
-                {% for i in Software_Urls %}
-                    <a href="{{ i }}"> URL: {{ i }};</a>
-                {% endfor %}
-            </div>
+            {% if Techniques_Urls|length != 0  %}
+                <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls|length }} Findings</button>
+                <table style="width:100%">
+                    <tr>
+                        <th>Mitre ID</th>
+                        <th>URL</th>
+                    </tr>
+                    {% for i in Techniques_Urls %}
+                        <tr>
+                            <td>{{ i.technique.mitre }}</td>
+                            <td> <a href="{{i.external_references}}" > URL: {{i.external_references}}</a> </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
 
-            <button type="button" class="collapsible">References Campaigns</button>
-            <div class = "content">
-                {% for i in Campaigns_Urls %}
-                    <a href="{{ i }}"> URL: {{ i }};</a>
-                {% endfor %}
-            </div>
+            {% if Software_Urls|length != 0  %}
+                <button type="button" class="collapsible">References in Software: {{ Software_Urls|length }} Findings</button>
+                <table style="width:100%">
+                    <tr>
+                        <th>Mitre ID</th>
+                        <th>URL</th>
+                    </tr>
+                    {% for i in Software_Urls %}
+                        <tr>
+                            <td>{{ i.software.mitre }}</td>
+                            <td> <a href="{{i.external_references}}" > URL: {{i.external_references}}</a> </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
 
-            <button type="button" class="collapsible">References Tactics</button>
-            <div class = "content">
-                {% for i in Tactics_Urls %}
-                    <a href="{{ i }}"> URL: {{ i }};</a>
-                {% endfor %}
-            </div>
+            {% if Mitigations_Urls|length != 0  %}
+                <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls|length }} Findings</button>
+                <table style="width:100%">
+                    <tr>
+                        <th>Mitre ID</th>
+                        <th>URL</th>
+                    </tr>
+                    {% for i in Mitigations_Urls %}
+                        <tr>
+                            <td>{{ i.mitigation.mitre }}</td>
+                            <td> <a href="{{i.external_references}}" > URL: {{i.external_references}}</a> </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
         {% endif %}
 
         <script>
