@@ -16,14 +16,9 @@ def home(request):
 
         print(datetime.datetime.now())
 
-        keyword = request.POST.get('keyword')
+        keyword = request.POST.get('keyword').lower()
 
-        relationship_techniques = []
-        relationship_groups = []
-        relationship_mitigations = []
-        relationship_software = []
-        relationship_campaigns = []
-        relationship_tactics = []
+        refs_needed = request.POST.get('references')
 
         result_techniques_refs = []
         result_groups_refs = []
@@ -46,272 +41,120 @@ def home(request):
         refs_software = UrlReferencesSoftwareEnterprise.objects.all()
         refs_mitigations = UrlReferencesMitigationsEnterprise.objects.all()
 
-        # Results Campaigns
-        for c in campaigns:
-
-            # Relation with Techniques
-            if not c.techniques.exists():
-                continue
-            else:
-                temp = c.techniques.all()
-                for l in temp:
-                    relationship_techniques.append(l)
-
-            # Relations with Software
-            if not c.software.exists():
-                continue
-            else:
-                temp = c.software.all()
-                for l in temp:
-                    relationship_software.append(l)
-
-            # Relations with Groups
-            if not c.groups.exists():
-                continue
-            else:
-                temp = c.groups.all()
-                for l in temp:
-                    relationship_groups.append(l)
-
-        # Results Groups
-
-        for g in groups:
-
-          # Relations with Techniques
-             if not g.techniques.exists():
-                continue
-             else:
-                 temp = g.techniques.all()
-                 for l in temp:
-                    relationship_techniques.append(l)
-
-          # Relations with Software
-             if not g.software.exists():
-                continue
-             else:
-                temp = g.software.all()
-                for l in temp:
-                    relationship_software.append(l)
-
-            # Relation with Campaigns
-             if not g.campaigns_set.exists():
-                continue
-             else:
-                temp = g.campaigns_set.all()
-                for l in temp:
-                    relationship_campaigns.append(l)
-
-        # Results Techniques
-
-        for t in techniques:
-
-            # Relations with Mitigations
-            if not t.mitigations_set.exists():
-                continue
-            else:
-                temp = t.mitigations_set.all()
-                for l in temp:
-                    relationship_mitigations.append(l)
-
-            # Relations with Software
-            if not t.software_set.exists():
-                continue
-            else:
-                temp = t.software_set.all()
-                for l in temp:
-                   relationship_software.append(l)
-
-            # Relations with Groups
-            if not t.groups_set.exists():
-                continue
-            else:
-                temp = t.groups_set.all()
-                for l in temp:
-                    relationship_groups.append(l)
-
-            # Relation with Campaigns
-            if not t.campaigns_set.exists():
-                continue
-            else:
-                temp = t.campaigns_set.all()
-                for l in temp:
-                    relationship_campaigns.append(l)
-
-            # Relation mit Tactics
-            if not t.tactics_set.exists():
-                continue
-            else:
-                temp = t.tactics_set.all()
-                for l in temp:
-                    relationship_tactics.append(l)
-
-        # Results Software
-        for s in software:
-
-            # Relation with Technique
-            if not s.techniques.exists():
-                continue
-            else:
-                temp = s.techniques.all()
-                for l in temp:
-                    relationship_techniques.append(l)
-
-            # Relation with Groups
-            if not s.groups_set.exists():
-                continue
-            else:
-                temp = s.groups_set.all()
-                for l in temp:
-                    relationship_groups.append(l)
-
-            # Relation with Campaings
-            if not s.campaigns_set.exists():
-                continue
-            else:
-                temp = s.campaigns_set.all()
-                for l in temp:
-                    relationship_campaigns.append(l)
-
-        # Results Mitigation
-        for m in mitigations:
-
-            # Relations with Techniques
-            if not m.techniques.exists():
-                continue
-            else:
-                temp = m.techniques.all()
-                for l in temp:
-                    relationship_techniques.append(l)
-
-        # Results Tactics
-        for ta in tactics:
-
-            # Relations with Techniques
-            if not ta.techniques.exists():
-                continue
-            else:
-                temp = ta.techniques.all()
-                for l in temp:
-                    relationship_techniques.append(l)
-
-        # Delete Duplicates
-
-        relationship_campaigns = list(dict.fromkeys(relationship_campaigns))
-        relationship_groups = list(dict.fromkeys(relationship_groups))
-        relationship_techniques = list(dict.fromkeys(relationship_techniques))
-        relationship_software = list(dict.fromkeys(relationship_software))
-        relationship_mitigations = list(dict.fromkeys(relationship_mitigations))
-        relationship_tactics = list(dict.fromkeys(relationship_tactics))
-
-        # Collect Refs
-        # All Refs with Keyword in Refs_Technique
-        for url in refs_techniques:
-            # Webcrawler
-            try:
-                web = requests.get(url.external_reference)
-                soup = BeautifulSoup(web.content, 'html.parser')
-                temp = soup.find(string=keyword)
-            except (SSLError, MissingSchema, OSError):
-                continue
-
-            # When keyword is found append result
-            if not temp:
-                continue
-            else:
-                result_techniques_refs.append(url.external_reference)
-
-        # All Refs with Keyword in Refs_Tactics
-        for url in refs_tactics:
-            # Webcrawler
-            try:
-                web = requests.get(url.external_reference)
-                soup = BeautifulSoup(web.content, 'html.parser')
-                temp = soup.find(string=keyword)
-            except (SSLError, MissingSchema, OSError):
-                continue
-
-            # When keyword is found append result
-            if not temp:
-                continue
-            else:
-                result_tactics_refs.append(url.external_reference)
-
-        # All Refs with Keyword in Refs_Campaigns
-        for url in refs_campaings:
-            # Webcrawler
-            try:
-                web = requests.get(url.external_reference)
-                soup = BeautifulSoup(web.content, 'html.parser')
-                temp = soup.find(string=keyword)
-            except (SSLError, MissingSchema, OSError):
-                continue
-
-            # When keyword is found append result
-            if not temp:
-                continue
-            else:
-                result_campaigns_refs.append(url.external_reference)
-
-        # All Refs with Keyword in Refs_Groups
-        for url in refs_groups:
-            # Webcrawler
-            try:
-                web = requests.get(url.external_reference)
-                soup = BeautifulSoup(web.content, 'html.parser')
-                temp = soup.find(string=keyword)
-            except (SSLError, MissingSchema, OSError):
-                continue
-
-            # When keyword is found append result
-            if not temp:
-                continue
-            else:
-                result_groups_refs.append(url.external_reference)
-
-        # All Refs with Keyword in Refs_Mitigations
-        for url in refs_mitigations:
-            # Webcrawler
-            try:
-                web = requests.get(url.external_reference)
-                soup = BeautifulSoup(web.content, 'html.parser')
-                temp = soup.find(string=keyword)
-            except (SSLError, MissingSchema, OSError):
-                continue
-
-            # When keyword is found append result
-            if not temp:
-                continue
-            else:
-                result_mitigations_refs.append(url.external_reference)
-
-        # All Refs with Keyword in Refs_Software
-        for url in refs_software:
-            # Webcrawler
-            try:
-                web = requests.get(url.external_reference)
-                soup = BeautifulSoup(web.content, 'html.parser')
-                temp = soup.find(string=keyword)
-            except (SSLError, MissingSchema, OSError):
-                continue
-
-            # When keyword is found append result
-            if not temp:
-                continue
-            else:
-                result_software_refs.append(url.external_reference)
-
         result_count = len(techniques) + len(campaigns) + len(groups) + len(software) + len(mitigations) + len(tactics)
-        result_count_all = len(relationship_techniques) + len(relationship_mitigations) + len(relationship_software) + len(relationship_campaigns) + len(relationship_groups) + len(relationship_tactics)
 
-        print(datetime.datetime.now())
+        if refs_needed == "True":
+            # Collect Refs
+            # All Refs with Keyword in Refs_Technique
+            for url in refs_techniques:
+                # Webcrawler
+                try:
+                    web = requests.get(url.external_reference)
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup.find(string=keyword)
+                except (SSLError, MissingSchema, OSError):
+                    continue
 
-        return render(request, 'ausgabe.html', {"Result_Count": result_count, "Result_Count_All" : result_count_all, "Keyword": keyword, "Techniques": techniques,"Groups": groups,
-                                                "Mitigations": mitigations, "Software": software,"Campaigns": campaigns,
-                                                "Tactics": tactics, "Relation_Techniques": relationship_techniques, "Relation_Campaigns": relationship_campaigns,
-                                                "Relation_Software": relationship_software, "Relation_Mitigations": relationship_mitigations,
-                                                "Relation_Tactics": relationship_tactics, "Relation_Groups": relationship_groups, "Techniques_Urls": result_techniques_refs,
-                                                "Groups_Urls": result_groups_refs, "Mitigations_Urls": result_mitigations_refs, "Software_Urls": result_software_refs,
-                                                "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs,})
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_techniques_refs.append(url.external_reference)
+
+            # All Refs with Keyword in Refs_Tactics
+            for url in refs_tactics:
+                # Webcrawler
+                try:
+                    web = requests.get(url.external_reference)
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup.find(string=keyword)
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_tactics_refs.append(url.external_reference)
+
+            # All Refs with Keyword in Refs_Campaigns
+            for url in refs_campaings:
+                # Webcrawler
+                try:
+                    web = requests.get(url.external_reference)
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup.find(string=keyword)
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_campaigns_refs.append(url.external_reference)
+
+            # All Refs with Keyword in Refs_Groups
+            for url in refs_groups:
+                # Webcrawler
+                try:
+                    web = requests.get(url.external_reference)
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup.find(string=keyword)
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_groups_refs.append(url.external_reference)
+
+            # All Refs with Keyword in Refs_Mitigations
+            for url in refs_mitigations:
+                # Webcrawler
+                try:
+                    web = requests.get(url.external_reference)
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup.find(string=keyword)
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_mitigations_refs.append(url.external_reference)
+
+            # All Refs with Keyword in Refs_Software
+            for url in refs_software:
+                # Webcrawler
+                try:
+                    web = requests.get(url.external_reference)
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup.find(string=keyword)
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_software_refs.append(url.external_reference)
+
+            print(datetime.datetime.now())
+
+            return render(request, 'ausgabe.html', {"Result_Count": result_count, "Keyword": keyword, "Techniques": techniques,"Groups": groups,
+                                                    "Mitigations": mitigations, "Software": software,"Campaigns": campaigns,
+                                                    "Tactics": tactics, "Techniques_Urls": result_techniques_refs,
+                                                    "Groups_Urls": result_groups_refs, "Mitigations_Urls": result_mitigations_refs, "Software_Urls": result_software_refs,
+                                                    "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs, "Refs_Bool": refs_needed})
+
+        else:
+
+            return render(request, 'ausgabe.html', {"Result_Count": result_count, "Keyword": keyword, "Techniques": techniques,"Groups": groups,
+                                                    "Mitigations": mitigations, "Software": software,"Campaigns": campaigns,
+                                                    "Tactics": tactics, "Refs_Bool": refs_needed})
+
     return render(request, 'suche.html')
 
 def index(request):

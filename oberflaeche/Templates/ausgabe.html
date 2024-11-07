@@ -4,22 +4,29 @@
     <meta charset="UTF-8">
     <title>Result</title>
     <STYLE>
-        .fancy{
-            flex-grow: 1;
-            flex-shrink: 1;
-            flex-basis: auto;
-            font-size:150%;
-            padding: 1rem;
-            width: 15rem;
-            height: 8rem;
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f1f1f1;
         }
-        .fancy_text{
-            flex-grow: 1;
-            flex-shrink: 1;
-            flex-basis: auto;
-            font-size:150%;
-            padding: 1rem;
+
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
         }
+
+        .active, .collapsible:hover {
+            background-color: #555;
+        }
+
         .navbar {
             overflow: hidden;
             background-color: #333;
@@ -80,7 +87,11 @@
               display: block;
         }
 
+        table, th, td {
+             border: 1px solid black;
+        }
     </STYLE>
+
     <body>
         <div class="navbar">
           <a href="/">Home</a>
@@ -109,13 +120,6 @@
             <input type="hidden" name="Mitigation" value="{{ Mitigations }}"/>
             <input type="hidden" name="Software" value="{{ Software }}"/>
 
-            <input type="hidden" name="Relation_Tactics" value="{{ Relation_Tactics }}"/>
-            <input type="hidden" name="Relation_Campaigns" value="{{ Relation_Campaigns }}"/>
-            <input type="hidden" name="Relation_Groups" value="{{ Relation_Groups }}"/>
-            <input type="hidden" name="Relation_Techniques" value="{{ Relation_Techniques }}"/>
-            <input type="hidden" name="Relation_Mitigation" value="{{ Relation_Mitigations }}"/>
-            <input type="hidden" name="Relation_Software" value="{{ Relation_Software }}"/>
-
             <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
             <input type="hidden" name="Result_Count" value="{{ Result_Count }}"/>
 
@@ -123,117 +127,256 @@
         </form>
 
         <h1> Entries where the Keyword is stated in:</h1>
-        <h1>Tactics</h1>
-        <div>
+
+        {% if Tactics|length != 0 %}
+        <button type="button" class="collapsible">Tactics: {{ Tactics|length }} Findings</button>
+        <table style="width:100%">
+            <tr>
+                <th>Mitre ID</th>
+                <th>Name</th>
+                <th>Relations to Techniques</th>
+            </tr>
             {% for i in Tactics %}
-                 <a href="/entry" > Tactic: {{i.mitre}}; </a>
+                <tr>
+                    <td> <a href="https://attack.mitre.org/tactics/{{i.mitre}}/" >{{i.mitre}}</a> </td>
+                    <td>{{ i.name }} </td>
+                    <td>
+                        {% for element in i.techniques.all %}
+                            <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                </tr>
             {% endfor %}
-        </div>
-        <h1>Campaigns</h1>
-        <div>
+        </table>
+        {% endif %}
+
+        {% if Campaigns|length != 0  %}
+        <button type="button" class="collapsible">Campaigns: {{ Campaigns|length }} Findings</button>
+        <table style="width:100%">
+            <tr>
+                <th>Mitre ID</th>
+                <th>Name</th>
+                <th>Relations to Groups</th>
+                <th>Relations to Techniques</th>
+                <th>Relations to Software</th>
+            </tr>
             {% for i in Campaigns %}
-                 <a href="/entry"> Campaigns: {{i.mitre}}; </a>
+                <tr>
+                    <td> <a href="https://attack.mitre.org/campaigns/{{i.mitre}}/" >{{i.mitre}}</a> </td>
+                    <td>{{ i.name }} </td>
+                    <td>
+                        {% for element in i.groups.all %}
+                            <a href="https://attack.mitre.org/groups/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for element in i.techniques.all %}
+                            <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for element in i.software.all %}
+                            <a href="https://attack.mitre.org/software/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                </tr>
             {% endfor %}
-        </div>
-        <h1>Groups</h1>
-        <div>
+        </table>
+        {% endif %}
+
+        {% if Groups|length != 0  %}
+        <button type="button" class="collapsible">Groups: {{ Groups|length }} Findings</button>
+        <table style="width:100%">
+            <tr>
+                <th>Mitre ID</th>
+                <th>Name</th>
+                <th>Relations to Campaigns</th>
+                <th>Relations to Techniques</th>
+                <th>Relations to Software</th>
+            </tr>
             {% for i in Groups %}
-                <a href="/entry" methods="Post" id="{{i.mitre}}"> Group: {{i.mitre}}; </a>
+                <tr>
+                    <td> <a href="https://attack.mitre.org/groups/{{i.mitre}}/" >{{i.mitre}}</a> </td>
+                    <td>{{ i.name }} </td>
+                    <td>{% for element in i.campaigns_set.all %}
+                            <a href="https://attack.mitre.org/campaigns/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                    <td>{% for element in i.techniques.all %}
+                            <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                    <td>{% for element in i.software.all %}
+                            <a href="https://attack.mitre.org/software/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                </tr>
             {% endfor %}
-        </div>
-        <h1>Techniques</h1>
-        <div>
+        </table>
+        {% endif %}
+
+        {% if Techniques|length != 0  %}
+        <button type="button" class="collapsible">Techniques: {{ Techniques|length }} Findings</button>
+        <table style="width:100%">
+            <tr>
+                <th>Mitre ID</th>
+                <th>Name</th>
+                <th>Relations to Tactics</th>
+                <th>Relations to Campaigns</th>
+                <th>Relations to Groups</th>
+                <th>Relations to Software</th>
+                <th>Relations to Mitigations</th>
+            </tr>
             {% for i in Techniques %}
-                 <a href="/entry"> Technique: {{i.mitre}};</a>
+                <tr>
+                    <td> <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{i.mitre}}</a> </td>
+                    <td>{{ i.name }} </td>
+                    <td>
+                        {% for element in i.tactics_set.all %}
+                            <a href="https://attack.mitre.org/tactics/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for element in i.campaigns_set.all %}
+                            <a href="https://attack.mitre.org/campaigns/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for element in i.groups_set.all %}
+                            <a href="https://attack.mitre.org/groups/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for element in i.software_set.all %}
+                            <a href="https://attack.mitre.org/software/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for element in i.mitigations_set.all %}
+                            <a href="https://attack.mitre.org/mitigations/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                </tr>
             {% endfor %}
-        </div>
-        <h1>Mitigations</h1>
-        <div>
+        </table>
+        {% endif %}
+
+        {% if Mitigations|length != 0  %}
+        <button type="button" class="collapsible">Mitigations: {{ Mitigations|length }} Findings</button>
+        <table style="width:100%">
+            <tr>
+                <th>Mitre ID</th>
+                <th>Name</th>
+                <th>Relations to Techniques</th>
+            </tr>
             {% for i in Mitigations %}
-                <a href="/entry"> Mitigation: {{i.mitre}}; </a>
+                <tr>
+                    <td> <a href="https://attack.mitre.org/mitigations/{{i.mitre}}/" >{{i.mitre}}</a> </td>
+                    <td>{{ i.name }} </td>
+                    <td>
+                        {% for element in i.techniques.all %}
+                            <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                </tr>
             {% endfor %}
-        </div>
-        <h1>Software</h1>
-        <div>
+        </table>
+        {% endif %}
+
+        {% if Software|length != 0  %}
+        <button type="button" class="collapsible">Software: {{ Software|length }} Findings</button>
+        <table style="width:100%">
+            <tr>
+                <th>Mitre ID</th>
+                <th>Name</th>
+                <th>Relations to Campaigns</th>
+                <th>Relations to Groups</th>
+                <th>Relations to Techniques</th>
+            </tr>
             {% for i in Software %}
-                 <a href="/entry"> Software: {{i.mitre}}; </a>
+                <tr>
+                    <td> <a href="https://attack.mitre.org/software/{{i.mitre}}/" >{{i.mitre}}</a> </td>
+                    <td>{{ i.name }} </td>
+                    <td>
+                        {% for element in i.campaigns_set.all %}
+                            <a href="https://attack.mitre.org/campaigns/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for element in i.groups_set.all %}
+                            <a href="https://attack.mitre.org/groups/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for element in i.techniques.all %}
+                            <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{element.mitre}} ;</a>
+                        {% endfor %}
+                    </td>
+                </tr>
             {% endfor %}
-        </div>
+        </table>
+        {% endif %}
 
-        <h1>Relationships to Entries</h1>
+        {% if Refs_Bool == "True"%}
+            <h1>Referencen</h1>
+            <button type="button" class="collapsible">References Techniques</button>
+            <div class = "content">
+                {% for i in Techniques_Urls %}
+                    <a href="{{ i }}"> URL: {{ i }};</a>
+                {% endfor %}
+            </div>
 
-        <h1>Tactics</h1>
-        <div>
-            {% for i in Relation_Tactics %}
-                 <a href="/entry" > Tactic: {{i.mitre}}; </a>
-            {% endfor %}
-        </div>
-        <h1>Campaigns</h1>
-        <div>
-            {% for i in Relation_Campaigns %}
-                 <a href="/entry"> Campaigns: {{i.mitre}}; </a>
-            {% endfor %}
-        </div>
-        <h1>Groups</h1>
-        <div>
-            {% for i in Relation_Groups %}
-                <a href="/entry" methods="Post" id="{{i.mitre}}"> Group: {{i.mitre}}; </a>
-            {% endfor %}
-        </div>
-        <h1>Techniques</h1>
-        <div>
-            {% for i in Relation_Techniques %}
-                 <a href="/entry"> Technique: {{i.mitre}};</a>
-            {% endfor %}
-        </div>
-        <h1>Mitigations</h1>
-        <div>
-            {% for i in Relation_Mitigations %}
-                <a href="/entry"> Mitigation: {{i.mitre}}; </a>
-            {% endfor %}
-        </div>
-        <h1>Software</h1>
-        <div>
-            {% for i in Relation_Software %}
-                 <a href="/entry"> Software: {{i.mitre}}; </a>
-            {% endfor %}
-        </div>
+            <button type="button" class="collapsible">References Groups</button>
+            <div class = "content">
+                {% for i in Groups_Urls %}
+                    <a href="{{ i }}"> URL: {{ i }};</a>
+                {% endfor %}
+            </div>
 
-        <h1>References Techniques</h1>
-        <div>
-            {% for i in Techniques_Urls %}
-                <a href="{{ i }}"> URL: {{ i }};</a>
-            {% endfor %}
-        </div>
-        <h1>References Groups</h1>
-        <div>
-            {% for i in Groups_Urls %}
-                <a href="{{ i }}"> URL: {{ i }};</a>
-            {% endfor %}
-        </div>
-        <h1>References Mitigations</h1>
-        <div>
-            {% for i in Mitigations_Urls %}
-                <a href="{{ i }}"> URL: {{ i }};</a>
-            {% endfor %}
-        </div>
-        <h1>References Software</h1>
-        <div>
-            {% for i in Software_Urls %}
-                <a href="{{ i }}"> URL: {{ i }};</a>
-            {% endfor %}
-        </div>
-        <h1>References Campaigns</h1>
-        <div>
-            {% for i in Campaigns_Urls %}
-                <a href="{{ i }}"> URL: {{ i }};</a>
-            {% endfor %}
-        </div>
-        <h1>References Tactics</h1>
-        <div>
-            {% for i in Tactics_Urls %}
-                <a href="{{ i }}"> URL: {{ i }};</a>
-            {% endfor %}
-        </div>
+            <button type="button" class="collapsible"> References Mitigations</button>
+            <div class = "content">
+                {% for i in Mitigations_Urls %}
+                    <a href="{{ i }}"> URL: {{ i }};</a>
+                {% endfor %}
+            </div>
+
+            <button type="button" class="collapsible">References Software</button>
+            <div class = "content">
+                {% for i in Software_Urls %}
+                    <a href="{{ i }}"> URL: {{ i }};</a>
+                {% endfor %}
+            </div>
+
+            <button type="button" class="collapsible">References Campaigns</button>
+            <div class = "content">
+                {% for i in Campaigns_Urls %}
+                    <a href="{{ i }}"> URL: {{ i }};</a>
+                {% endfor %}
+            </div>
+
+            <button type="button" class="collapsible">References Tactics</button>
+            <div class = "content">
+                {% for i in Tactics_Urls %}
+                    <a href="{{ i }}"> URL: {{ i }};</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+              coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                  content.style.display = "none";
+                } else {
+                  content.style.display = "block";
+                }
+              });
+            }
+        </script>
     </body>
 </html>

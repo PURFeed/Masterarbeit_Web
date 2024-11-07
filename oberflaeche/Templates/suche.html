@@ -4,7 +4,6 @@
     <title>Home</title>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
             body {
               font-family: Arial, Helvetica, sans-serif;
@@ -30,39 +29,6 @@
               text-align: center;
               padding: 14px 16px;
               text-decoration: none;
-            }
-
-            .dropdown {
-              float: left;
-              overflow: hidden;
-            }
-
-            .dropdown .dropbtn {
-              font-size: 16px;
-              border: none;
-              outline: none;
-              color: white;
-              padding: 14px 16px;
-              background-color: inherit;
-              font-family: inherit;
-              margin: 0;
-            }
-
-            .navbar a:hover, .dropdown:hover .dropbtn {
-              background-color: red;
-            }
-
-            .dropdown-content a {
-              float: none;
-              color: black;
-              padding: 12px 16px;
-              text-decoration: none;
-              display: block;
-              text-align: left;
-            }
-
-            .dropdown-content a:hover {
-              background-color: #ddd;
             }
 
             .dropdown:hover .dropdown-content {
@@ -112,8 +78,11 @@
 
         <form class="example" style="margin:auto;max-width:500px" method="POST">
             {% csrf_token %}
+            <input type="checkbox" id="References" name="References" value="True">
+            <label for="References"> Check the References (Estd. Runtime >5 hours) </label>
             <input type="text" placeholder="Search..." name="keyword">
-            <button type="submit"><i class="fa fa-search"></i></button>
+            <button type="submit" id="Search"></button>
+            <label for="Search">Search</label>
         </form>
     </body>
 </html>
