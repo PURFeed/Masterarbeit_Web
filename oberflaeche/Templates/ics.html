@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<body>
     <meta charset="UTF-8">
     <title>Result</title>
     <STYLE>
@@ -21,10 +21,27 @@
             text-align: left;
             outline: none;
             font-size: 15px;
+            border-radius: 4px;
         }
 
         .active, .collapsible:hover {
             background-color: #555;
+        }
+
+        .block_button {
+            display: block;
+            width: 100%;
+            border: none;
+            background-color: #f9f9f9;
+            color: black;
+            padding: 14px 28px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .block_button:hover {
+            background-color: darkgrey;
         }
 
         .navbar {
@@ -66,7 +83,7 @@
               position: absolute;
               background-color: #f9f9f9;
               min-width: 160px;
-              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+              box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
               z-index: 1;
         }
 
@@ -92,7 +109,7 @@
         }
     </STYLE>
 
-    <body>
+    <br>
         <div class="navbar">
           <a href="/">Home</a>
           <a href="/index">Index</a>
@@ -101,42 +118,150 @@
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
-              <a href="/ausgabe">Enterprise</a>
-              <a href="#">ICS</a>
-              <a href="#">Mobile</a>
+                <form action="{% url 'mobile' %}" method="POST">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
+                    <input type="hidden" name="Refs_Bool" value="{{ Refs_Bool }}"/>
+
+                    <input type="hidden" name="Result_Count" value="{{ Result_Count }}"/>
+
+                    <input type="hidden" name="Tactics" value="{{ Tactics }}"/>
+                    <input type="hidden" name="Campaigns" value="{{ Campaigns }}"/>
+                    <input type="hidden" name="Groups" value="{{ Groups }}"/>
+                    <input type="hidden" name="Techniques" value="{{ Techniques }}"/>
+                    <input type="hidden" name="Mitigation" value="{{ Mitigations }}"/>
+                    <input type="hidden" name="Software" value="{{ Software }}"/>
+
+                    <input type="hidden" name="Result_Count_Mobile" value="{{ Result_Count }}"/>
+
+                    <input type="hidden" name="Tactics_Mobile" value="{{ Tactics }}"/>
+                    <input type="hidden" name="Campaigns_Mobile" value="{{ Campaigns }}"/>
+                    <input type="hidden" name="Groups_Mobile" value="{{ Groups }}"/>
+                    <input type="hidden" name="Techniques_Mobile" value="{{ Techniques }}"/>
+                    <input type="hidden" name="Mitigation_Mobile" value="{{ Mitigations }}"/>
+                    <input type="hidden" name="Software_Mobile" value="{{ Software }}"/>
+
+                    <input type="hidden" name="Tactics" value="{{ Tactics }}"/>
+                    <input type="hidden" name="Campaigns" value="{{ Campaigns }}"/>
+                    <input type="hidden" name="Groups" value="{{ Groups }}"/>
+                    <input type="hidden" name="Techniques" value="{{ Techniques }}"/>
+                    <input type="hidden" name="Mitigation" value="{{ Mitigations }}"/>
+                    <input type="hidden" name="Software" value="{{ Software }}"/>
+
+                    {% if Refs_Bool == "True" %}
+                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls }}"/>
+                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls }}"/>
+                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls }}"/>
+                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls }}"/>
+                        <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls }}"/>
+                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls }}"/>
+
+                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls }}"/>
+                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls }}"/>
+                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls }}"/>
+                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls }}"/>
+                        <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls }}"/>
+                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls }}"/>
+
+                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls }}"/>
+                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls }}"/>
+                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls }}"/>
+                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls }}"/>
+                        <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls }}"/>
+                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls }}"/>
+                    {% endif %}
+
+                    <button class="block_button" type="submit">Mobile</button>
+                </form>
+
+                <form action="{% url 'ics' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
+                    <input type="hidden" name="Refs_Bool" value="{{ Refs_Bool }}"/>
+
+                    <input type="hidden" name="Result_Count" value="{{ Result_Count }}"/>
+
+                    <input type="hidden" name="Tactics" value="{{ Tactics }}"/>
+                    <input type="hidden" name="Campaigns" value="{{ Campaigns }}"/>
+                    <input type="hidden" name="Groups" value="{{ Groups }}"/>
+                    <input type="hidden" name="Techniques" value="{{ Techniques }}"/>
+                    <input type="hidden" name="Mitigation" value="{{ Mitigations }}"/>
+                    <input type="hidden" name="Software" value="{{ Software }}"/>
+
+                    <input type="hidden" name="Result_Count_Mobile" value="{{ Result_Count_Mobile }}"/>
+
+                    <input type="hidden" name="Tactics_Mobile" value="{{ Tactics_Mobile }}"/>
+                    <input type="hidden" name="Campaigns_Mobile" value="{{ Campaigns_Mobile }}"/>
+                    <input type="hidden" name="Groups_Mobile" value="{{ Groups_Mobile }}"/>
+                    <input type="hidden" name="Techniques_Mobile" value="{{ Techniques_Mobile }}"/>
+                    <input type="hidden" name="Mitigation_Mobile" value="{{ Mitigations_Mobile }}"/>
+                    <input type="hidden" name="Software_Mobile" value="{{ Software_Mobile }}"/>
+
+                    <input type="hidden" name="Result_Count_ICS" value="{{ Result_Count_ICS }}"/>
+
+                    <input type="hidden" name="Tactics_ICS" value="{{ Tactics_ICS }}"/>
+                    <input type="hidden" name="Campaigns_ICS" value="{{ Campaigns_ICS }}"/>
+                    <input type="hidden" name="Groups_ICS" value="{{ Groups_ICS }}"/>
+                    <input type="hidden" name="Techniques_ICS" value="{{ Techniques_ICS }}"/>
+                    <input type="hidden" name="Mitigation_ICS" value="{{ Mitigations_ICS }}"/>
+                    <input type="hidden" name="Software_ICS" value="{{ Software_ICS }}"/>
+
+                    {% if Refs_Bool == "True" %}
+                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls }}"/>
+                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls }}"/>
+                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls }}"/>
+                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls }}"/>
+                        <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls }}"/>
+                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls }}"/>
+
+                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls_Mobile }}"/>
+                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls_Mobile }}"/>
+                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls_Mobile }}"/>
+                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls_Mobile }}"/>
+                        <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls_Mobile }}"/>
+                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls_Mobile }}"/>
+
+                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls_ICS }}"/>
+                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls_ICS }}"/>
+                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls_ICS }}"/>
+                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls_ICS }}"/>
+                        <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls_ICS }}"/>
+                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls_ICS }}"/>
+                    {% endif %}
+                    <button class="block_button" type="submit">ICS</button>
+                </form>
             </div>
           </div>
         </div>
-        <h1>Keyword: {{ Keyword }}</h1>
-        <h1>Results: {{ Result_Count }}</h1>
+        <h1>Chosen Keyword: {{ Keyword }}</h1>
+        <h1>Matches found: {{ Result_Count }}</h1>
+        <h1>Matrix: ICS</h1>
+        {% if Refs_Bool == "True" %}
+            <form style="margin:auto; max-width:500px" action="{% url 'success' %}" method="POST">
+                {% csrf_token %}
 
-        <form style="margin:auto; max-width:500px" action="{% url 'success' %}" method="POST">
-            {% csrf_token %}
+                <input type="hidden" name="Tactics" value="{{ Tactics }}"/>
+                <input type="hidden" name="Campaigns" value="{{ Campaigns }}"/>
+                <input type="hidden" name="Groups" value="{{ Groups }}"/>
+                <input type="hidden" name="Techniques" value="{{ Techniques }}"/>
+                <input type="hidden" name="Mitigation" value="{{ Mitigations }}"/>
+                <input type="hidden" name="Software" value="{{ Software }}"/>
 
-            <input type="hidden" name="Tactics" value="{{ Tactics }}"/>
-            <input type="hidden" name="Campaigns" value="{{ Campaigns }}"/>
-            <input type="hidden" name="Groups" value="{{ Groups }}"/>
-            <input type="hidden" name="Techniques" value="{{ Techniques }}"/>
-            <input type="hidden" name="Mitigation" value="{{ Mitigations }}"/>
-            <input type="hidden" name="Software" value="{{ Software }}"/>
-
-            {% if Refs_Bool == "True"%}
                 <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls }}"/>
                 <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls }}"/>
                 <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls }}"/>
                 <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls }}"/>
                 <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls }}"/>
                 <input type="hidden" name="Software_Refs" value="{{ Software_Urls }}"/>
-            {% endif %}
 
-            <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
-            <input type="hidden" name="Result_Count" value="{{ Result_Count }}"/>
-            <input type="hidden" name="Refs_Bool" value="{{ Refs_Bool }}"/>
+                <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
+                <input type="hidden" name="Result_Count" value="{{ Result_Count }}"/>
+                <input type="hidden" name="Refs_Bool" value="{{ Refs_Bool }}"/>
 
-            <button type="submit"> Save Index</button>
-        </form>
-
-        <h1> Entries where the Keyword is stated in:</h1>
+                <button type="submit"> Save Index</button>
+            </form>
+        {% endif %}
 
         {% if Tactics|length != 0 %}
         <button type="button" class="collapsible">Tactics: {{ Tactics|length }} Findings</button>
@@ -159,7 +284,7 @@
             {% endfor %}
         </table>
         {% endif %}
-
+        <p></p>
         {% if Campaigns|length != 0  %}
         <button type="button" class="collapsible">Campaigns: {{ Campaigns|length }} Findings</button>
         <table style="width:100%">
@@ -193,7 +318,7 @@
             {% endfor %}
         </table>
         {% endif %}
-
+        <p></p>
         {% if Groups|length != 0  %}
         <button type="button" class="collapsible">Groups: {{ Groups|length }} Findings</button>
         <table style="width:100%">
@@ -224,7 +349,7 @@
             {% endfor %}
         </table>
         {% endif %}
-
+        <p></p>
         {% if Techniques|length != 0  %}
         <button type="button" class="collapsible">Techniques: {{ Techniques|length }} Findings</button>
         <table style="width:100%">
@@ -270,7 +395,7 @@
             {% endfor %}
         </table>
         {% endif %}
-
+        <p></p>
         {% if Mitigations|length != 0  %}
         <button type="button" class="collapsible">Mitigations: {{ Mitigations|length }} Findings</button>
         <table style="width:100%">
@@ -292,7 +417,7 @@
             {% endfor %}
         </table>
         {% endif %}
-
+        <p></p>
         {% if Software|length != 0  %}
         <button type="button" class="collapsible">Software: {{ Software|length }} Findings</button>
         <table style="width:100%">
@@ -427,13 +552,13 @@
         {% endif %}
 
         <script>
-            var coll = document.getElementsByClassName("collapsible");
-            var i;
+            let coll = document.getElementsByClassName("collapsible");
+            let i;
 
             for (i = 0; i < coll.length; i++) {
               coll[i].addEventListener("click", function() {
                 this.classList.toggle("active");
-                var content = this.nextElementSibling;
+                let content = this.nextElementSibling;
                 if (content.style.display === "block") {
                   content.style.display = "none";
                 } else {

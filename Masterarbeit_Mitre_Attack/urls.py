@@ -23,9 +23,15 @@ urlpatterns = [
 
     path('', views.home, name='home'),
 
+    # path('import/', views.import_data, name='import'),
+
     path('index/', views.index, name='index'),
 
-    path('index_save_successfull/', views.index_saved, name='success')
+    path('index_save_successfull/', views.index_saved, name='success'),
 
-    # path('import/', views.import_data, name='import')
+    path('enterprise/', views.enterprise, name='enterprise'),
+
+    path('mobile/', views.mobile, name='mobile'),
+
+    path('ics/', views.ics, name='ics')
 ]

@@ -1,6 +1,7 @@
 import datetime
 
 import bs4
+from django.db.models.expressions import result
 from django.shortcuts import render
 from requests.exceptions import SSLError, InvalidURL, MissingSchema
 
@@ -13,15 +14,18 @@ import requests
 # Create your views here.
 
 def home(request):
-    if request.method == 'POST':
+    return render(request, 'suche.html')
+
+def enterprise(request):
+    if request.method == 'POST' and request.META["HTTP_REFERER"] == "/models":
+        print("test")
+
+    elif request.method == 'POST':
 
         print(datetime.datetime.now())
 
         keyword = request.POST.get('keyword').lower()
-
         refs_needed = request.POST.get('References')
-
-        print(refs_needed)
 
         result_techniques_refs = []
         result_groups_refs = []
@@ -30,12 +34,54 @@ def home(request):
         result_campaigns_refs = []
         result_tactics_refs = []
 
+        #########################################################################################
+
+        result_techniques_refs_mobile = []
+        result_groups_refs_mobile = []
+        result_mitigations_refs_mobile = []
+        result_software_refs_mobile = []
+        result_campaigns_refs_mobile = []
+        result_tactics_refs_mobile = []
+
+        #########################################################################################
+
+        result_techniques_refs_ics = []
+        result_groups_refs_ics = []
+        result_mitigations_refs_ics = []
+        result_software_refs_ics = []
+        result_campaigns_refs_ics = []
+        result_tactics_refs_ics = []
+
+        #########################################################################################
+        #########################################################################################
+
         techniques = Techniques.objects.all().filter(description__contains=keyword)
         mitigations = Mitigations.objects.all().filter(description__contains=keyword)
         software = Software.objects.all().filter(description__contains=keyword)
         campaigns = Campaigns.objects.all().filter(description__contains=keyword)
         groups = Groups.objects.all().filter(description__contains=keyword)
         tactics = Tactics.objects.all().filter(description__contains=keyword)
+
+        #########################################################################################
+
+        techniques_mobile = TechniquesMobile.objects.all().filter(description__contains=keyword)
+        mitigations_mobile = MitigationsMobile.objects.all().filter(description__contains=keyword)
+        software_mobile = SoftwareMobile.objects.all().filter(description__contains=keyword)
+        campaigns_mobile = CampaignsMobile.objects.all().filter(description__contains=keyword)
+        groups_mobile= GroupsMobile.objects.all().filter(description__contains=keyword)
+        tactics_mobile = TacticsMobile.objects.all().filter(description__contains=keyword)
+
+        #########################################################################################
+
+        techniques_ics = TechniquesIcs.objects.all().filter(description__contains=keyword)
+        mitigations_ics = MitigationsIcs.objects.all().filter(description__contains=keyword)
+        software_ics = SoftwareIcs.objects.all().filter(description__contains=keyword)
+        campaigns_ics = CampaignsIcs.objects.all().filter(description__contains=keyword)
+        groups_ics= GroupsIcs.objects.all().filter(description__contains=keyword)
+        tactics_ics = TacticsIcs.objects.all().filter(description__contains=keyword)
+
+        #########################################################################################
+        #########################################################################################
 
         refs_techniques = UrlReferencesTechniquesEnterprise.objects.all()
         refs_campaigns = UrlReferencesCampaignsEnterprise.objects.all()
@@ -44,11 +90,35 @@ def home(request):
         refs_software = UrlReferencesSoftwareEnterprise.objects.all()
         refs_mitigations = UrlReferencesMitigationsEnterprise.objects.all()
 
-        result_count = len(techniques) + len(campaigns) + len(groups) + len(software) + len(mitigations) + len(tactics)
+        #########################################################################################
 
-        test = 0
+        refs_techniques_mobile = UrlReferencesTechniquesMobile.objects.all()
+        refs_campaigns_mobile = UrlReferencesCampaignsMobile.objects.all()
+        refs_tactics_mobile = UrlRefsTacticMobile.objects.all()
+        refs_groups_mobile = UrlReferencesGroupsMobile.objects.all()
+        refs_software_mobile = UrlReferencesSoftwareMobile.objects.all()
+        refs_mitigations_mobile = UrlReferencesMitigationsMobile.objects.all()
+
+        #########################################################################################
+
+        refs_techniques_ics = UrlReferencesTechniquesIcs.objects.all()
+        refs_campaigns_ics = UrlReferencesCampaignsIcs.objects.all()
+        refs_tactics_ics = UrlReferencesTacticIcs.objects.all()
+        refs_groups_ics = UrlReferencesGroupsIcs.objects.all()
+        refs_software_ics = UrlReferencesSoftwareIcs.objects.all()
+        refs_mitigations_ics = UrlReferencesMitigationsIcs.objects.all()
+
+        #########################################################################################
+        #########################################################################################
+
+        result_count_enterprise = len(techniques) + len(campaigns) + len(groups) + len(software) + len(mitigations) + len(tactics)
+        result_count_mobile = len(techniques_mobile) + len(campaigns_mobile) + len(groups_mobile) + len(software_mobile) + len(mitigations_mobile) + len(tactics_mobile)
+        result_count_ics = len(techniques_ics) + len(campaigns_ics) + len(groups_ics) + len(software_ics) + len(mitigations_ics) + len(tactics_ics)
 
         if refs_needed == "True":
+
+            test = 0
+
             # Collect Refs
             # All Refs with Keyword in Refs_Technique
             for url in refs_techniques:
@@ -56,7 +126,7 @@ def home(request):
                 test = test + 1
                 print(test)
                 try:
-                    try: 
+                    try:
                         web = requests.get(url.external_reference, timeout=5)
                     except requests.exceptions.Timeout:
                         print("Timeout")
@@ -257,11 +327,11 @@ def home(request):
                     result_software_refs.append(url)
                     print (url.external_reference)
 
-                print("Software found")
+            print("Software found")
 
             print(datetime.datetime.now())
 
-            return render(request, 'ausgabe.html', {"Result_Count": result_count, "Keyword": keyword, "Techniques": techniques,"Groups": groups,
+            return render(request, 'enterprise.html', {"Result_Count": result_count_enterprise, "Keyword": request.POST.get('keyword'), "Techniques": techniques, "Groups": groups,
                                                     "Mitigations": mitigations, "Software": software,"Campaigns": campaigns,
                                                     "Tactics": tactics, "Techniques_Urls": result_techniques_refs,
                                                     "Groups_Urls": result_groups_refs, "Mitigations_Urls": result_mitigations_refs, "Software_Urls": result_software_refs,
@@ -269,30 +339,71 @@ def home(request):
 
         else:
 
-            return render(request, 'ausgabe.html', {"Result_Count": result_count, "Keyword": keyword, "Techniques": techniques,"Groups": groups,
-                                                    "Mitigations": mitigations, "Software": software,"Campaigns": campaigns,
-                                                    "Tactics": tactics, "Refs_Bool": refs_needed})
+            return render(request, 'enterprise.html', {"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
+                                            "Techniques_Enterprise": techniques,"Groups_Enterprise": groups,
+                                            "Mitigations_Enterprise": mitigations, "Software_Enterprise": software,"Campaigns_Enterprise": campaigns,
+                                            "Tactics_Enterprise": tactics, "Result_Count_Mobile": result_count_mobile, "Techniques_Mobile": techniques_mobile,"Groups_Mobile": groups_mobile,
+                                            "Mitigations_Mobile": mitigations_mobile, "Software_Mobile": software_mobile,"Campaigns_Mobile": campaigns_mobile,
+                                            "Tactics_Mobile": tactics_mobile, "Result_Count_ICS": result_count_ics, "Techniques_ICS": techniques_ics,"Groups_ICS": groups_ics,
+                                            "Mitigations_ICS": mitigations_ics, "Software_ICS": software_ics,"Campaigns_ICS": campaigns_ics,
+                                            "Tactics_ICS": tactics_ics})
 
-    return render(request, 'suche.html')
+def mobile(request):
+    if request.method == "POST":
+
+        print ("TEST")
+        refs_needed = request.POST.get('refs_bool')
+
+        # Enterprise Results
+        result_count_enterprise = request.POST.get('result_count')
+
+        techniques_enterprise = request.POST.get('techniques')
+        groups_enterprise = request.POST.get('groups')
+        tactics_enterprise = request.POST.get('tactics')
+        campaigns_enterprise = request.POST.get('campaigns')
+        software_enterprise = request.POST.get('software')
+        mitigations_enterprise = request.POST.get('mitigations')
+
+        # Mobile Results
+        result_count_mobile = request.POST.get('result_count_mobile')
+
+        techniques_mobile = request.POST.get('techniques_mobile')
+        groups_mobile = request.POST.get('groups_mobile')
+        tactics_mobile = request.POST.get('tactics_mobile')
+        campaigns_mobile = request.POST.get('campaigns_mobile')
+        software_mobile = request.POST.get('software_mobile')
+        mitigations_mobile = request.POST.get('mitigations_mobile')
+
+        #ICS Results
+        result_count_ics = request.POST.get('result_count_ics')
+
+        techniques_ics = request.POST.get('techniques_ics')
+        groups_ics = request.POST.get('groups_ics')
+        tactics_ics = request.POST.get('tactics_ics')
+        campaigns_ics = request.POST.get('campaigns_ics')
+        software_ics = request.POST.get('software_ics')
+        mitigations_ics = request.POST.get('mitigations_ics')
+
+        if refs_needed == "True":
+            render(request, "mobile.html")
+        else:
+            print("TEST")
+            render(request, 'mobile.html',{"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
+                                            "Techniques_Enterprise": techniques_enterprise,"Groups_Enterprise": groups_enterprise,
+                                            "Mitigations_Enterprise": mitigations_enterprise, "Software_Enterprise": software_enterprise,"Campaigns_Enterprise": campaigns_enterprise,
+                                            "Tactics_Enterprise": tactics_enterprise, "Result_Count_Mobile": result_count_mobile, "Techniques_Mobile": techniques_mobile,"Groups_Mobile": groups_mobile,
+                                            "Mitigations_Mobile": mitigations_mobile, "Software_Mobile": software_mobile,"Campaigns_Mobile": campaigns_mobile,
+                                            "Tactics_Mobile": tactics_mobile, "Result_Count_ICS": result_count_ics, "Techniques_ICS": techniques_ics,"Groups_ICS": groups_ics,
+                                            "Mitigations_ICS": mitigations_ics, "Software_ICS": software_ics,"Campaigns_ICS": campaigns_ics,
+                                            "Tactics_ICS": tactics_ics})
+
+def ics (request):
+    render(request, "ics.html")
 
 def index(request):
     return render(request, 'index.html')
 
 def index_saved(request):
-
-    tactics = []
-    campaigns = []
-    groups = []
-    techniques = []
-    software = []
-    mitigations = []
-
-    tactics_refs = []
-    campaigns_refs = []
-    groups_refs = []
-    techniques_refs = []
-    software_refs = []
-    mitigations_refs = []
 
     if request.method == 'POST':
 
@@ -438,7 +549,7 @@ def index_saved(request):
 
 def import_data(request):
 
-    extract = URLExtract()
+    # extract = URLExtract()
 
     # Import Data from Enterprise-Matrix
 

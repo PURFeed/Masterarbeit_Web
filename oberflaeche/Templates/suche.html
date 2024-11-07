@@ -76,7 +76,7 @@
         
         <img class="banner" src="https://www.manss.com/files/media-image/fachhochschule-brandenburg/fachhochschule-brandenburg-identity-1-1992.jpg" alt="Logo Webanwendung">
 
-        <form class="example" style="margin:auto;max-width:500px" method="POST">
+        <form class="example" style="margin:auto;max-width:500px" action="{% url 'enterprise' %}" method="POST">
             {% csrf_token %}
             <input type="checkbox" id="References" name="References" value="True">
             <label for="References"> Check the References (Estd. Runtime >5 hours) </label>
