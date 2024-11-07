@@ -119,7 +119,6 @@
             <input type="hidden" name="Techniques" value="{{ Techniques }}"/>
             <input type="hidden" name="Mitigation" value="{{ Mitigations }}"/>
             <input type="hidden" name="Software" value="{{ Software }}"/>
-            <input type="hidden" name="Refs_Bool" value="{{ Refs_Bool }}"/>
 
             {% if Refs_Bool == "True"%}
                 <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls }}"/>
@@ -132,6 +131,7 @@
 
             <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
             <input type="hidden" name="Result_Count" value="{{ Result_Count }}"/>
+            <input type="hidden" name="Refs_Bool" value="{{ Refs_Bool }}"/>
 
             <button type="submit"> Save Index</button>
         </form>

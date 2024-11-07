@@ -189,6 +189,70 @@ def index_saved(request):
 
         refs_bool = request.POST.get('refs_bool')
 
+        # create new Index entry
+
+        index = IndexEnterprise(
+            name=request.POST.get('keyword'),
+            answer_count=request.POST.get('result_count')
+        )
+        index.save()
+
+        # Add Relationships
+
+        for i in tactics:
+            if not i:
+                continue
+            else:
+                temp1 = index.objects.get(name=request.POST.get('keyword'))
+                temp1.tactics.add(i)
+
+###############################################################################
+
+        for i in campaigns:
+            if not i:
+                continue
+            else:
+                temp1 = index.objects.get(name=request.POST.get('keyword'))
+                temp1.campaigns.add(i)
+
+###############################################################################
+
+        for i in groups:
+            if not i:
+                continue
+            else:
+                temp1 = index.objects.get(name=request.POST.get('keyword'))
+                temp1.groups.add(i)
+
+###############################################################################
+
+        for i in techniques:
+            if not i:
+                continue
+            else:
+                temp1 = index.objects.get(name=request.POST.get('keyword'))
+                temp1.techniques.add(i)
+
+###############################################################################
+
+        for i in software:
+            if not i:
+                continue
+            else:
+                temp1 = index.objects.get(name=request.POST.get('keyword'))
+                temp1.software.add(i)
+
+###############################################################################
+
+        for i in mitigations:
+            if not i:
+                continue
+            else:
+                temp1 = index.objects.get(name=request.POST.get('keyword'))
+                temp1.mitigations.add(i)
+
+        # Add Refs
+
         if refs_bool == "True":
             tactics_refs = request.POST.get('tactics_refs')
             campaigns_refs = request.POST.get('campaigns_refs')
@@ -197,10 +261,64 @@ def index_saved(request):
             software_refs = request.POST.get('software_refs')
             mitigations_refs = request.POST.get('mitigations_refs')
 
+            # Add Relationships
+
+            for i in tactics_refs:
+                if not i:
+                    continue
+                else:
+                    temp1 = index.objects.get(name=request.POST.get('keyword'))
+                    temp1.tactics_refs.add(i)
+
+            ###############################################################################
+
+            for i in campaigns_refs:
+                if not i:
+                    continue
+                else:
+                    temp1 = index.objects.get(name=request.POST.get('keyword'))
+                    temp1.campaigns_refs.add(i)
+
+            ###############################################################################
+
+            for i in groups_refs:
+                if not i:
+                    continue
+                else:
+                    temp1 = index.objects.get(name=request.POST.get('keyword'))
+                    temp1.groups_refs.add(i)
+
+            ###############################################################################
+
+            for i in techniques_refs:
+                if not i:
+                    continue
+                else:
+                    temp1 = index.objects.get(name=request.POST.get('keyword'))
+                    temp1.techniques_refs.add(i)
+
+            ###############################################################################
+
+            for i in software_refs:
+                if not i:
+                    continue
+                else:
+                    temp1 = index.objects.get(name=request.POST.get('keyword'))
+                    temp1.software.add(i)
+
+            ###############################################################################
+
+            for i in mitigations_refs:
+                if not i:
+                    continue
+                else:
+                    temp1 = index.objects.get(name=request.POST.get('keyword'))
+                    temp1.mitigations_refs.add(i)
+
 
         print("Hello World")
 
-    return render(request, 'index_save_successfull.html', {"Tactics": tactics})
+    return render(request, 'index_save_successfull.html')
 
 def import_data(request):
 
