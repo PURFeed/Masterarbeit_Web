@@ -118,37 +118,33 @@
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
-                <form action="{% url 'enterprise' %}" method="POST">
+                <form action="{% url 'mobile' %}" method="post">
                     {% csrf_token %}
-
                     <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
                     <input type="hidden" name="Refs_Bool" value="{{ Refs_Bool }}"/>
 
                     <input type="hidden" name="Result_Count" value="{{ Result_Count_Enterprise }}"/>
-
                     <input type="hidden" name="Tactics" value="{{ Tactics_Enterprise }}"/>
                     <input type="hidden" name="Campaigns" value="{{ Campaigns_Enterprise }}"/>
                     <input type="hidden" name="Groups" value="{{ Groups_Enterprise }}"/>
                     <input type="hidden" name="Techniques" value="{{ Techniques_Enterprise }}"/>
-                    <input type="hidden" name="Mitigation" value="{{ Mitigations_Enterprise }}"/>
+                    <input type="hidden" name="Mitigations" value="{{ Mitigations_Enterprise }}"/>
                     <input type="hidden" name="Software" value="{{ Software_Enterprise }}"/>
 
                     <input type="hidden" name="Result_Count_Mobile" value="{{ Result_Count_Mobile }}"/>
-
                     <input type="hidden" name="Tactics_Mobile" value="{{ Tactics_Mobile }}"/>
                     <input type="hidden" name="Campaigns_Mobile" value="{{ Campaigns_Mobile }}"/>
                     <input type="hidden" name="Groups_Mobile" value="{{ Groups_Mobile }}"/>
                     <input type="hidden" name="Techniques_Mobile" value="{{ Techniques_Mobile }}"/>
-                    <input type="hidden" name="Mitigation_Mobile" value="{{ Mitigations_Mobile }}"/>
+                    <input type="hidden" name="Mitigations_Mobile" value="{{ Mitigations_Mobile }}"/>
                     <input type="hidden" name="Software_Mobile" value="{{ Software_Mobile }}"/>
 
                     <input type="hidden" name="Result_Count_Ics" value="{{ Result_Count_ICS }}"/>
-
                     <input type="hidden" name="Tactics_Ics" value="{{ Tactics_ICS }}"/>
                     <input type="hidden" name="Campaigns_Ics" value="{{ Campaigns_ICS }}"/>
                     <input type="hidden" name="Groups_Ics" value="{{ Groups_ICS }}"/>
                     <input type="hidden" name="Techniques_Ics" value="{{ Techniques_ICS }}"/>
-                    <input type="hidden" name="Mitigation_Ics" value="{{ Mitigations_ICS }}"/>
+                    <input type="hidden" name="Mitigations_Ics" value="{{ Mitigations_ICS }}"/>
                     <input type="hidden" name="Software_Ics" value="{{ Software_ICS }}"/>
 
                     {% if Refs_Bool == "True" %}
@@ -173,14 +169,76 @@
                         <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls }}"/>
                         <input type="hidden" name="Software_Refs" value="{{ Software_Urls }}"/>
                     {% endif %}
-
-                    <button class="block_button" type="submit">Enterprise</button>
+                    <button class="block_button" type="submit">Mobile</button>
                 </form>
 
                 <form action="{% url 'ics' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
                     <input type="hidden" name="Refs_Bool" value="{{ Refs_Bool }}"/>
+
+                    <input type="hidden" name="Result_Count" value="{{ Result_Count_Enterprise }}"/>
+
+                    <input type="hidden" name="Tactics" value="{{ Tactics_Enterprise }}"/>
+                    <input type="hidden" name="Campaigns" value="{{ Campaigns_Enterprise }}"/>
+                    <input type="hidden" name="Groups" value="{{ Groups_Enterprise }}"/>
+                    <input type="hidden" name="Techniques" value="{{ Techniques_Enterprise }}"/>
+                    <input type="hidden" name="Mitigations" value="{{ Mitigations_Enterprise }}"/>
+                    <input type="hidden" name="Software" value="{{ Software_Enterprise }}"/>
+
+                    <input type="hidden" name="Result_Count_Mobile" value="{{ Result_Count_Mobile }}"/>
+
+                    <input type="hidden" name="Tactics_Mobile" value="{{ Tactics_Mobile }}"/>
+                    <input type="hidden" name="Campaigns_Mobile" value="{{ Campaigns_Mobile }}"/>
+                    <input type="hidden" name="Groups_Mobile" value="{{ Groups_Mobile }}"/>
+                    <input type="hidden" name="Techniques_Mobile" value="{{ Techniques_Mobile }}"/>
+                    <input type="hidden" name="Mitigations_Mobile" value="{{ Mitigations_Mobile }}"/>
+                    <input type="hidden" name="Software_Mobile" value="{{ Software_Mobile }}"/>
+
+                    <input type="hidden" name="Result_Count_ICS" value="{{ Result_Count_ICS }}"/>
+
+                    <input type="hidden" name="Tactics_ICS" value="{{ Tactics_ICS }}"/>
+                    <input type="hidden" name="Campaigns_ICS" value="{{ Campaigns_ICS }}"/>
+                    <input type="hidden" name="Groups_ICS" value="{{ Groups_ICS }}"/>
+                    <input type="hidden" name="Techniques_ICS" value="{{ Techniques_ICS }}"/>
+                    <input type="hidden" name="Mitigations_ICS" value="{{ Mitigations_ICS }}"/>
+                    <input type="hidden" name="Software_ICS" value="{{ Software_ICS }}"/>
+
+                    {% if Refs_Bool == "True" %}
+                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls }}"/>
+                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls }}"/>
+                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls }}"/>
+                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls }}"/>
+                        <input type="hidden" name="Mitigations_Refs" value="{{ Mitigations_Urls }}"/>
+                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls }}"/>
+
+                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls_Mobile }}"/>
+                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls_Mobile }}"/>
+                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls_Mobile }}"/>
+                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls_Mobile }}"/>
+                        <input type="hidden" name="Mitigations_Refs" value="{{ Mitigations_Urls_Mobile }}"/>
+                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls_Mobile }}"/>
+
+                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls_ICS }}"/>
+                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls_ICS }}"/>
+                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls_ICS }}"/>
+                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls_ICS }}"/>
+                        <input type="hidden" name="Mitigations_Refs" value="{{ Mitigations_Urls_ICS }}"/>
+                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls_ICS }}"/>
+                    {% endif %}
+                    <button class="block_button" type="submit">ICS</button>
+                </form>
+            </div>
+          </div>
+        </div>
+        <h1>Chosen Keyword: {{ Keyword }}</h1>
+        <h1>Matches found: {{ Result_Count_Enterprise}}</h1>
+        <h1>Matrix: Enterprise</h1>
+        {% if Refs_Bool == "True" %}
+            <form style="margin:auto; max-width:500px" action="{% url 'success' %}" method="POST">
+                {% csrf_token %}
+
+                    <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
 
                     <input type="hidden" name="Result_Count" value="{{ Result_Count_Enterprise }}"/>
 
@@ -231,87 +289,25 @@
                         <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls_ICS }}"/>
                         <input type="hidden" name="Software_Refs" value="{{ Software_Urls_ICS }}"/>
                     {% endif %}
-                    <button class="block_button" type="submit">ICS</button>
-                </form>
-            </div>
-          </div>
-        </div>
-        <h1>Chosen Keyword: {{ Keyword }}</h1>
-        <h1>Matches found: {{ Result_Count_Mobile}}</h1>
-        <h1>Matrix: Mobile</h1>
-        {% if Refs_Bool == "True" %}
-            <form style="margin:auto; max-width:500px" action="{% url 'success' %}" method="POST">
-                {% csrf_token %}
-
-                    <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
-
-                    <input type="hidden" name="Result_Count" value="{{ Result_Count_Enterprise }}"/>
-
-                    <input type="hidden" name="Tactics" value="{{ Tactics_Enterprise }}"/>
-                    <input type="hidden" name="Campaigns" value="{{ Campaigns_Enterprise }}"/>
-                    <input type="hidden" name="Groups" value="{{ Groups_Enterprise }}"/>
-                    <input type="hidden" name="Techniques" value="{{ Techniques_Enterprise }}"/>
-                    <input type="hidden" name="Mitigation" value="{{ Mitigations_Enterprise }}"/>
-                    <input type="hidden" name="Software" value="{{ Software_Enterprise }}"/>
-
-                    <input type="hidden" name="Result_Count_Mobile" value="{{ Result_Count_Mobile }}"/>
-
-                    <input type="hidden" name="Tactics_Mobile" value="{{ Tactics_Mobile }}"/>
-                    <input type="hidden" name="Campaigns_Mobile" value="{{ Campaigns_Mobile }}"/>
-                    <input type="hidden" name="Groups_Mobile" value="{{ Groups_Mobile }}"/>
-                    <input type="hidden" name="Techniques_Mobile" value="{{ Techniques_Mobile }}"/>
-                    <input type="hidden" name="Mitigation_Mobile" value="{{ Mitigations_Mobile }}"/>
-                    <input type="hidden" name="Software_Mobile" value="{{ Software_Mobile }}"/>
-
-                    <input type="hidden" name="Result_Count_ICS" value="{{ Result_Count_ICS }}"/>
-
-                    <input type="hidden" name="Tactics_ICS" value="{{ Tactics_ICS }}"/>
-                    <input type="hidden" name="Campaigns_ICS" value="{{ Campaigns_ICS }}"/>
-                    <input type="hidden" name="Groups_ICS" value="{{ Groups_ICS }}"/>
-                    <input type="hidden" name="Techniques_ICS" value="{{ Techniques_ICS }}"/>
-                    <input type="hidden" name="Mitigation_ICS" value="{{ Mitigations_ICS }}"/>
-                    <input type="hidden" name="Software_ICS" value="{{ Software_ICS }}"/>
-
-
-                    <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls }}"/>
-                    <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls }}"/>
-                    <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls }}"/>
-                    <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls }}"/>
-                    <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls }}"/>
-                    <input type="hidden" name="Software_Refs" value="{{ Software_Urls }}"/>
-
-                    <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls_Mobile }}"/>
-                    <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls_Mobile }}"/>
-                    <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls_Mobile }}"/>
-                    <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls_Mobile }}"/>
-                    <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls_Mobile }}"/>
-                    <input type="hidden" name="Software_Refs" value="{{ Software_Urls_Mobile }}"/>
-
-                    <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls_ICS }}"/>
-                    <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls_ICS }}"/>
-                    <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls_ICS }}"/>
-                    <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls_ICS }}"/>
-                    <input type="hidden" name="Mitigation_Refs" value="{{ Mitigations_Urls_ICS }}"/>
-                    <input type="hidden" name="Software_Refs" value="{{ Software_Urls_ICS }}"/>
 
                 <button class="block_button" type="submit"> Save Index</button>
             </form>
         {% endif %}
 
-        {% if Tactics_Mobile|length != 0 %}
-        <button type="button" class="collapsible">Tactics: {{ Tactics_Mobile|length }} Findings</button>
+        {% if Tactics_Enterprise|length != 0 %}
+        <button type="button" class="collapsible">Tactics: {{ Tactics_Enterprise|length }} Findings</button>
         <table style="width:100%">
             <tr>
                 <th>Mitre ID</th>
                 <th>Name</th>
                 <th>Relations to Techniques</th>
             </tr>
-            {% for i in Tactics_Mobile %}
+            {% for i in Tactics_Enterprise %}
                 <tr>
                     <td> <a href="https://attack.mitre.org/tactics/{{i.mitre}}/" >{{i.mitre}}</a> </td>
                     <td>{{ i.name }} </td>
                     <td>
-                        {% for element in i.techniquesmobile.all %}
+                        {% for element in i.techniques.all %}
                             <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
@@ -320,8 +316,8 @@
         </table>
         {% endif %}
         <p></p>
-        {% if Campaigns_Mobile|length != 0  %}
-        <button type="button" class="collapsible">Campaigns: {{ Campaigns_Mobile|length }} Findings</button>
+        {% if Campaigns_Enterprise|length != 0  %}
+        <button type="button" class="collapsible">Campaigns: {{ Campaigns_Enterprise|length }} Findings</button>
         <table style="width:100%">
             <tr>
                 <th>Mitre ID</th>
@@ -330,22 +326,22 @@
                 <th>Relations to Techniques</th>
                 <th>Relations to Software</th>
             </tr>
-            {% for i in Campaigns_Mobile %}
+            {% for i in Campaigns_Enterprise %}
                 <tr>
                     <td> <a href="https://attack.mitre.org/campaigns/{{i.mitre}}/" >{{i.mitre}}</a> </td>
                     <td>{{ i.name }} </td>
                     <td>
-                        {% for element in i.groupsmobile.all %}
+                        {% for element in i.groups.all %}
                             <a href="https://attack.mitre.org/groups/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
                     <td>
-                        {% for element in i.techniquesmobile.all %}
+                        {% for element in i.techniques.all %}
                             <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
                     <td>
-                        {% for element in i.softwaremobile.all %}
+                        {% for element in i.software.all %}
                             <a href="https://attack.mitre.org/software/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
@@ -354,8 +350,8 @@
         </table>
         {% endif %}
         <p></p>
-        {% if Groups_Mobile|length != 0  %}
-        <button type="button" class="collapsible">Groups: {{ Groups_Mobile|length }} Findings</button>
+        {% if Groups_Enterprise|length != 0  %}
+        <button type="button" class="collapsible">Groups: {{ Groups_Enterprise|length }} Findings</button>
         <table style="width:100%">
             <tr>
                 <th>Mitre ID</th>
@@ -364,19 +360,19 @@
                 <th>Relations to Techniques</th>
                 <th>Relations to Software</th>
             </tr>
-            {% for i in Groups_Mobile %}
+            {% for i in Groups_Enterprise %}
                 <tr>
                     <td> <a href="https://attack.mitre.org/groups/{{i.mitre}}/" >{{i.mitre}}</a> </td>
                     <td>{{ i.name }} </td>
-                    <td>{% for element in i.campaignsmobile_set.all %}
+                    <td>{% for element in i.campaigns_set.all %}
                             <a href="https://attack.mitre.org/campaigns/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
-                    <td>{% for element in i.techniquesmobile.all %}
+                    <td>{% for element in i.techniques.all %}
                             <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
-                    <td>{% for element in i.softwaremobile.all %}
+                    <td>{% for element in i.software.all %}
                             <a href="https://attack.mitre.org/software/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
@@ -385,8 +381,8 @@
         </table>
         {% endif %}
         <p></p>
-        {% if Techniques_Mobile|length != 0  %}
-        <button type="button" class="collapsible">Techniques: {{ Techniques_Mobile|length }} Findings</button>
+        {% if Techniques_Enterprise|length != 0  %}
+        <button type="button" class="collapsible">Techniques: {{ Techniques_Enterprise|length }} Findings</button>
         <table style="width:100%">
             <tr>
                 <th>Mitre ID</th>
@@ -397,32 +393,32 @@
                 <th>Relations to Software</th>
                 <th>Relations to Mitigations</th>
             </tr>
-            {% for i in Techniques_Mobile %}
+            {% for i in Techniques_Enterprise %}
                 <tr>
                     <td> <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{i.mitre}}</a> </td>
                     <td>{{ i.name }} </td>
                     <td>
-                        {% for element in i.tacticsmobile_set.all %}
+                        {% for element in i.tactics_set.all %}
                             <a href="https://attack.mitre.org/tactics/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
                     <td>
-                        {% for element in i.campaignsmobile_set.all %}
+                        {% for element in i.campaigns_set.all %}
                             <a href="https://attack.mitre.org/campaigns/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
                     <td>
-                        {% for element in i.groupsmobile_set.all %}
+                        {% for element in i.groups_set.all %}
                             <a href="https://attack.mitre.org/groups/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
                     <td>
-                        {% for element in i.softwaremobile_set.all %}
+                        {% for element in i.software_set.all %}
                             <a href="https://attack.mitre.org/software/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
                     <td>
-                        {% for element in i.mitigationsmobile_set.all %}
+                        {% for element in i.mitigations_set.all %}
                             <a href="https://attack.mitre.org/mitigations/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
@@ -431,20 +427,20 @@
         </table>
         {% endif %}
         <p></p>
-        {% if Mitigations_Mobile|length != 0  %}
-        <button type="button" class="collapsible">Mitigations: {{ Mitigations_Mobile|length }} Findings</button>
+        {% if Mitigations_Enterprise|length != 0  %}
+        <button type="button" class="collapsible">Mitigations: {{ Mitigations_Enterprise|length }} Findings</button>
         <table style="width:100%">
             <tr>
                 <th>Mitre ID</th>
                 <th>Name</th>
                 <th>Relations to Techniques</th>
             </tr>
-            {% for i in Mitigations_Mobile %}
+            {% for i in Mitigations_Enterprise %}
                 <tr>
                     <td> <a href="https://attack.mitre.org/mitigations/{{i.mitre}}/" >{{i.mitre}}</a> </td>
                     <td>{{ i.name }} </td>
                     <td>
-                        {% for element in i.techniquesmobile.all %}
+                        {% for element in i.techniques.all %}
                             <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
@@ -453,8 +449,8 @@
         </table>
         {% endif %}
         <p></p>
-        {% if Software_Mobile|length != 0  %}
-        <button type="button" class="collapsible">Software: {{ Software_Mobile|length }} Findings</button>
+        {% if Software_Enterprise|length != 0  %}
+        <button type="button" class="collapsible">Software: {{ Software_Enterprise|length }} Findings</button>
         <table style="width:100%">
             <tr>
                 <th>Mitre ID</th>
@@ -463,22 +459,22 @@
                 <th>Relations to Groups</th>
                 <th>Relations to Techniques</th>
             </tr>
-            {% for i in Software_Mobile %}
+            {% for i in Software_Enterprise %}
                 <tr>
                     <td> <a href="https://attack.mitre.org/software/{{i.mitre}}/" >{{i.mitre}}</a> </td>
                     <td>{{ i.name }} </td>
                     <td>
-                        {% for element in i.campaignsmobile_set.all %}
+                        {% for element in i.campaigns_set.all %}
                             <a href="https://attack.mitre.org/campaigns/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
                     <td>
-                        {% for element in i.groupsmobile_set.all %}
+                        {% for element in i.groups_set.all %}
                             <a href="https://attack.mitre.org/groups/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>
                     <td>
-                        {% for element in i.techniquesmobile.all %}
+                        {% for element in i.techniques.all %}
                             <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" >{{element.mitre}} ;</a>
                         {% endfor %}
                     </td>

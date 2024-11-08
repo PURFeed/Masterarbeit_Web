@@ -3,9 +3,11 @@ import datetime
 import bs4
 from django.db.models.expressions import result
 from django.shortcuts import render
+from django.forms import formset_factory
 from requests.exceptions import SSLError, InvalidURL, MissingSchema
 
 from .models import *
+from .forms import *
 from mitreattack.stix20 import MitreAttackData
 from urlextract import URLExtract
 from bs4 import BeautifulSoup
@@ -151,7 +153,73 @@ def enterprise(request):
                     result_techniques_refs.append(url)
                     print(url.external_reference)
 
+            #############################################################
+            test = 0
+            for url in refs_techniques_mobile:
+                # Webcrawler
+                test = test + 1
+                print(test)
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_techniques_refs_mobile.append(url)
+                    print(url.external_reference)
+
+            #############################################################
+            test = 0
+            for url in refs_techniques_ics:
+                # Webcrawler
+                test = test + 1
+                print(test)
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_techniques_refs_ics.append(url)
+                    print(url.external_reference)
             print ("Techniques found")
+
+            #############################################################
+            #############################################################
 
             test = 0
             # All Refs with Keyword in Refs_Tactics
@@ -187,7 +255,81 @@ def enterprise(request):
                     result_tactics_refs.append(url)
                     print(url.external_reference)
 
+            #############################################################
+
+            test = 0
+            # All Refs with Keyword in Refs_Tactics_Mobile
+            for url in refs_tactics_mobile:
+                # Webcrawler
+
+                test = test + 1
+                print(test)
+
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_tactics_refs_mobile.append(url)
+                    print(url.external_reference)
+
+            #############################################################
+
+            test = 0
+            # All Refs with Keyword in Refs_Tactics
+            for url in refs_tactics_ics:
+                # Webcrawler
+
+                test = test + 1
+                print(test)
+
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_tactics_refs_ics.append(url)
+                    print(url.external_reference)
             print("Tactics found")
+
+            #############################################################
+            #############################################################
 
             test = 0
             # All Refs with Keyword in Refs_Campaigns
@@ -222,6 +364,75 @@ def enterprise(request):
                     result_campaigns_refs.append(url)
                     print(url.external_reference)
 
+            #############################################################
+
+            test = 0
+            # All Refs with Keyword in Refs_Campaigns
+            for url in refs_campaigns_mobile:
+                # Webcrawler
+
+                test = test + 1
+                print(test)
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_campaigns_refs_mobile.append(url)
+                    print(url.external_reference)
+
+            #############################################################
+
+            test = 0
+            # All Refs with Keyword in Refs_Campaigns
+            for url in refs_campaigns_ics:
+                # Webcrawler
+
+                test = test + 1
+                print(test)
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_campaigns_refs_ics.append(url)
+                    print(url.external_reference)
             print("Campaings found")
 
             test = 0
@@ -354,6 +565,8 @@ def mobile(request):
         print ("TEST")
         refs_needed = request.POST.get('refs_bool')
 
+        print(request.POST.get('result_count'))
+
         # Enterprise Results
         result_count_enterprise = request.POST.get('result_count')
 
@@ -386,9 +599,8 @@ def mobile(request):
 
         if refs_needed == "True":
             render(request, "mobile.html")
-        else:
-            print("TEST")
-            render(request, 'mobile.html',{"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
+
+        render(request,'mobile.html',{"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
                                             "Techniques_Enterprise": techniques_enterprise,"Groups_Enterprise": groups_enterprise,
                                             "Mitigations_Enterprise": mitigations_enterprise, "Software_Enterprise": software_enterprise,"Campaigns_Enterprise": campaigns_enterprise,
                                             "Tactics_Enterprise": tactics_enterprise, "Result_Count_Mobile": result_count_mobile, "Techniques_Mobile": techniques_mobile,"Groups_Mobile": groups_mobile,
