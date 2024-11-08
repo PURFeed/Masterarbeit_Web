@@ -771,10 +771,10 @@ def enterprise(request):
                                             "Tactics_ICS": tactics_ics, "Techniques_Urls": result_techniques_refs,
                                             "Groups_Urls": result_groups_refs, "Mitigations_Urls": result_mitigations_refs, "Software_Urls": result_software_refs,
                                             "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs, "Techniques_Urls_Mobile": result_techniques_refs_mobile,
-                                            "Groups_Urls_Mobile": result_groups_refs_mobile, "Mitigations_Urls_Mobile": result_mitigations_refs, "Software_Urls": result_software_refs,
-                                            "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs, "Techniques_Urls": result_techniques_refs,
-                                            "Groups_Urls": result_groups_refs, "Mitigations_Urls": result_mitigations_refs, "Software_Urls": result_software_refs,
-                                            "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs})
+                                            "Groups_Urls_Mobile": result_groups_refs_mobile, "Mitigations_Urls_Mobile": result_mitigations_refs_mobile, "Software_Urls_Mobile": result_software_refs_mobile,
+                                            "Campaigns_Urls_Mobile": result_campaigns_refs_mobile, "Tactics_Urls_Mobile": result_tactics_refs_mobile, "Techniques_Urls_Ics": result_techniques_refs_ics,
+                                            "Groups_Urls_Ics": result_groups_refs_ics, "Mitigations_Urls_Ics": result_mitigations_refs_ics, "Software_Urls_Ics": result_software_refs_ics,
+                                            "Campaigns_Urls_Ics": result_campaigns_refs_ics, "Tactics_Urls_Ics": result_tactics_refs_ics})
 
         else:
 
