@@ -435,6 +435,9 @@ def enterprise(request):
                     print(url.external_reference)
             print("Campaings found")
 
+            #############################################################
+            #############################################################
+
             test = 0
             # All Refs with Keyword in Refs_Groups
             for url in refs_groups:
@@ -469,7 +472,81 @@ def enterprise(request):
                     result_groups_refs.append(url)
                     print(url.external_reference)
 
+            #############################################################
+
+            test = 0
+            # All Refs with Keyword in Refs_Groups
+            for url in refs_groups_mobile:
+                # Webcrawler
+
+                test = test + 1
+                print(test)
+
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try:
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_groups_refs_mobile.append(url)
+                    print(url.external_reference)
+
+            #############################################################
+
+            test = 0
+            # All Refs with Keyword in Refs_Groups
+            for url in refs_groups_ics:
+                # Webcrawler
+
+                test = test + 1
+                print(test)
+
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try:
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_groups_refs_ics.append(url)
+                    print(url.external_reference)
+
             print("Groups found")
+            #############################################################
+            #############################################################
 
             test = 0
             # All Refs with Keyword in Refs_Mitigations
@@ -504,7 +581,79 @@ def enterprise(request):
                     result_mitigations_refs.append(url)
                     print(url.external_reference)
 
+            #############################################################
+
+            test = 0
+            # All Refs with Keyword in Refs_Mitigations
+            for url in refs_mitigations_mobile:
+                # Webcrawler
+
+                test = test + 1
+                print(test)
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_mitigations_refs_mobile.append(url)
+                    print(url.external_reference)
+
+            #############################################################
+
+            test = 0
+            # All Refs with Keyword in Refs_Mitigations
+            for url in refs_mitigations_ics:
+                # Webcrawler
+
+                test = test + 1
+                print(test)
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_mitigations_refs_ics.append(url)
+                    print(url.external_reference)
             print("Mitigations found")
+
+            #############################################################
+            #############################################################
 
             test = 0
             # All Refs with Keyword in Refs_Software
@@ -538,15 +687,94 @@ def enterprise(request):
                     result_software_refs.append(url)
                     print (url.external_reference)
 
+            #############################################################
+
+            test = 0
+            # All Refs with Keyword in Refs_Software
+            for url in refs_software_mobile:
+                # Webcrawler
+                test = test + 1
+                print(test)
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_software_refs_mobile.append(url)
+                    print (url.external_reference)
+
+            #############################################################
+
+            test = 0
+            # All Refs with Keyword in Refs_Software
+            for url in refs_software:
+                # Webcrawler
+                test = test + 1
+                print(test)
+                try:
+                    try:
+                        web = requests.get(url.external_reference, timeout=5)
+                    except requests.exceptions.Timeout:
+                        print("Timeout")
+                        continue
+
+                    if web.status_code == 200:
+                        try :
+                            soup = BeautifulSoup(web.content, 'html.parser')
+                            temp = soup(text=lambda t: keyword in t.text)
+                        except bs4.exceptions.ParserRejectedMarkup:
+                            print("PDF")
+                            continue
+                    else:
+                        continue
+                except (SSLError, MissingSchema, OSError):
+                    continue
+
+                # When keyword is found append result
+                if not temp:
+                    continue
+                else:
+                    result_software_refs_mobile.append(url)
+                    print (url.external_reference)
             print("Software found")
 
             print(datetime.datetime.now())
+            #############################################################
+            #############################################################
 
-            return render(request, 'enterprise.html', {"Result_Count": result_count_enterprise, "Keyword": request.POST.get('keyword'), "Techniques": techniques, "Groups": groups,
-                                                    "Mitigations": mitigations, "Software": software,"Campaigns": campaigns,
-                                                    "Tactics": tactics, "Techniques_Urls": result_techniques_refs,
-                                                    "Groups_Urls": result_groups_refs, "Mitigations_Urls": result_mitigations_refs, "Software_Urls": result_software_refs,
-                                                    "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs, "Refs_Bool": refs_needed})
+
+            return render(request, 'enterprise.html', {"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
+                                            "Techniques_Enterprise": techniques,"Groups_Enterprise": groups,
+                                            "Mitigations_Enterprise": mitigations, "Software_Enterprise": software,"Campaigns_Enterprise": campaigns,
+                                            "Tactics_Enterprise": tactics, "Result_Count_Mobile": result_count_mobile, "Techniques_Mobile": techniques_mobile,"Groups_Mobile": groups_mobile,
+                                            "Mitigations_Mobile": mitigations_mobile, "Software_Mobile": software_mobile,"Campaigns_Mobile": campaigns_mobile,
+                                            "Tactics_Mobile": tactics_mobile, "Result_Count_ICS": result_count_ics, "Techniques_ICS": techniques_ics,"Groups_ICS": groups_ics,
+                                            "Mitigations_ICS": mitigations_ics, "Software_ICS": software_ics,"Campaigns_ICS": campaigns_ics,
+                                            "Tactics_ICS": tactics_ics, "Techniques_Urls": result_techniques_refs,
+                                            "Groups_Urls": result_groups_refs, "Mitigations_Urls": result_mitigations_refs, "Software_Urls": result_software_refs,
+                                            "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs, "Techniques_Urls_Mobile": result_techniques_refs_mobile,
+                                            "Groups_Urls_Mobile": result_groups_refs_mobile, "Mitigations_Urls_Mobile": result_mitigations_refs, "Software_Urls": result_software_refs,
+                                            "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs, "Techniques_Urls": result_techniques_refs,
+                                            "Groups_Urls": result_groups_refs, "Mitigations_Urls": result_mitigations_refs, "Software_Urls": result_software_refs,
+                                            "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs})
 
         else:
 
