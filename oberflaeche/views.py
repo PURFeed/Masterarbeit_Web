@@ -514,10 +514,8 @@ def enterprise(request):
             # All Refs with Keyword in Refs_Groups
             for url in refs_groups_ics:
                 # Webcrawler
-
                 test = test + 1
                 print(test)
-
                 try:
                     try:
                         web = requests.get(url.external_reference, timeout=5)
@@ -536,7 +534,6 @@ def enterprise(request):
                         continue
                 except (SSLError, MissingSchema, OSError):
                     continue
-
                 # When keyword is found append result
                 if not temp:
                     continue
