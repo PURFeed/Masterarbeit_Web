@@ -117,6 +117,33 @@ def enterprise(request):
         result_count_mobile = len(techniques_mobile) + len(campaigns_mobile) + len(groups_mobile) + len(software_mobile) + len(mitigations_mobile) + len(tactics_mobile)
         result_count_ics = len(techniques_ics) + len(campaigns_ics) + len(groups_ics) + len(software_ics) + len(mitigations_ics) + len(tactics_ics)
 
+        # KewordFormSet = formset_factory(ResultForm, max_num=1)
+        #
+        # CountEnterpriseFormSet = formset_factory(ResultCountFormEnterprise, max_num=1)
+        # CountMobileFormSet = formset_factory(ResultCountFormMobile, max_num=1)
+        # CountIcsFormSet = formset_factory(ResultCountFormICS, max_num=1)
+        #
+        # TechniquesEnterpriseFormSet = formset_factory(TechniquesEnterpriseForm, extra=len(techniques), max_num=len(techniques))
+        # TacticsEnterpriseFormSet = formset_factory(TacticsEnterpriseForm, extra=len(tactics), max_num=len(tactics))
+        # CampaignsEnterpriseFormSet = formset_factory(CampaignsEnterpriseForm, extra=len(campaigns), max_num=len(campaigns))
+        # GroupsEnterpriseFormSet = formset_factory(GroupsEnterpriseForm, extra=len(groups), max_num=len(groups))
+        # SoftwareEnterpriseFormSet = formset_factory(SoftwareEnterpriseForm, extra=len(software), max_num=len(software))
+        # MitigationsEnterpriseFormSet = formset_factory(MitigationsEnterpriseForm, extra=len(mitigations), max_num=len(mitigations))
+        #
+        # TechniquesMobileFormSet = formset_factory(TechniquesMobileForm, extra=len(techniques_mobile), max_num=len(techniques_mobile))
+        # TacticsMobileFormSet = formset_factory(TacticsMobileForm, extra=len(tactics_mobile), max_num=len(tactics_mobile))
+        # CampaignsMobileFormSet = formset_factory(CampaignsMobileForm, extra=len(campaigns_mobile), max_num=len(campaigns_mobile))
+        # GroupsMobileFormSet = formset_factory(GroupsMobileForm, extra=len(groups_mobile), max_num=len(groups_mobile))
+        # SoftwareMobileFormSet = formset_factory(SoftwareMobileForm, extra=len(software_mobile), max_num=len(software_mobile))
+        # MitigationsMobileFormSet = formset_factory(MitigationsMobileForm, extra=len(mitigations_mobile), max_num=len(mitigations_mobile))
+        #
+        # TechniquesIcsFormSet = formset_factory(TechniquesIcsForm, extra=len(techniques_ics), max_num=len(techniques_ics))
+        # TacticsIcsFormSet = formset_factory(TacticsIcsForm, extra=len(tactics_ics), max_num=len(tactics_ics))
+        # CampaignsIcsFormSet = formset_factory(CampaignsIcsForm, extra=len(campaigns_ics), max_num=len(campaigns_ics))
+        # GroupsIcsFormSet = formset_factory(GroupsIcsForm, extra=len(groups_ics), max_num=len(groups_ics))
+        # SoftwareIcsFormSet = formset_factory(SoftwareIcsForm, extra=len(techniques_ics), max_num=len(techniques_ics))
+        # MitigationsIcsFormSet = formset_factory(MitigationsIcsForm, extra=len(mitigations_ics), max_num=len(mitigations_ics))
+
         if refs_needed == "True":
 
             test = 0
@@ -756,7 +783,6 @@ def enterprise(request):
             print(datetime.datetime.now())
             #############################################################
             #############################################################
-
 
             return render(request, 'enterprise.html', {"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
                                             "Techniques_Enterprise": techniques,"Groups_Enterprise": groups,
