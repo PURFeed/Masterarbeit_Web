@@ -121,6 +121,27 @@ def enterprise(request):
                                                                                                                                                                                                           result_campaigns_refs_ics, result_groups_refs_ics,
                                                                                                                                                                                                           result_techniques_refs_ics, result_software_refs_ics, result_mitigations_refs_ics)
 
+            result_tactics_refs_form = create_forms_url_result_tactics_enterprise(result_tactics_refs)
+            result_campaigns_refs_form = create_forms_url_result_campaigns_enterprise(result_campaigns_refs)
+            result_groups_refs_form = create_forms_url_result_groups_enterprise(result_groups_refs)
+            result_techniques_refs_form = create_forms_url_result_techniques_enterprise(result_techniques_refs)
+            result_software_refs_form = create_forms_url_result_software_enterprise(result_software_refs)
+            result_mitigations_refs_form = create_forms_url_result_mitigations_enterprise(result_mitigations_refs)
+
+            result_tactics_mobile_refs_form = create_forms_url_result_tactics_mobile(result_tactics_refs_mobile)
+            result_campaigns_mobile_refs_form = create_forms_url_result_campaigns_mobile(result_campaigns_refs_mobile)
+            result_groups_mobile_refs_form = create_forms_url_result_groups_mobile(result_groups_refs_mobile)
+            result_techniques_mobile_refs_form = create_forms_url_result_techniques_mobile(result_techniques_refs_mobile)
+            result_software_mobile_refs_form = create_forms_url_result_software_mobile(result_software_refs_mobile)
+            result_mitigations_mobile_refs_form = create_forms_url_result_mitigations_mobile(result_mitigations_refs_mobile)
+
+            result_tactics_ics_refs_form = create_forms_url_result_tactics_ics(result_tactics_refs_ics)
+            result_campaigns_ics_refs_form = create_forms_url_result_campaigns_ics(result_campaigns_refs_ics)
+            result_groups_ics_refs_form = create_forms_url_result_groups_ics(result_groups_refs_ics)
+            result_techniques_ics_refs_form = create_forms_url_result_techniques_ics(result_techniques_refs_ics)
+            result_software_ics_refs_form = create_forms_url_result_software_ics(result_software_refs_ics)
+            result_mitigations_ics_refs_form = create_forms_url_result_mitigations_ics(result_mitigations_refs_ics)
+
             print(datetime.datetime.now())
 
             return render(request, 'enterprise.html', {"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
@@ -145,13 +166,13 @@ def enterprise(request):
                                             "Tactics_Mobile_Form": tactics_mobile_form,
                                             "Result_Count_ICS_Form": result_count_ics_form, "Techniques_ICS_Form": techniques_ics_form,"Groups_ICS_Form": groups_ics_form,
                                             "Mitigations_ICS_Form": mitigations_ics_form, "Software_ICS_Form": software_ics_form,"Campaigns_ICS_Form": campaigns_ics_form,
-                                            "Tactics_ICS_Form": tactics_ics_form, "Techniques_Urls_Form": result_techniques_refs,
-                                            "Groups_Urls_Form": result_groups_refs, "Mitigations_Urls_Form": result_mitigations_refs, "Software_Urls_Form": result_software_refs,
-                                            "Campaigns_Urls_Form": result_campaigns_refs, "Tactics_Urls_Form": result_tactics_refs, "Techniques_Urls_Mobile_Form": result_techniques_refs_mobile,
-                                            "Groups_Urls_Mobile_Form": result_groups_refs_mobile, "Mitigations_Urls_Mobile_Form": result_mitigations_refs_mobile, "Software_Urls_Mobile_Form": result_software_refs_mobile,
-                                            "Campaigns_Urls_Mobile_Form": result_campaigns_refs_mobile, "Tactics_Urls_Mobile_Form": result_tactics_refs_mobile, "Techniques_Urls_Ics_Form": result_techniques_refs_ics,
-                                            "Groups_Urls_Ics_Form": result_groups_refs_ics, "Mitigations_Urls_Ics_Form": result_mitigations_refs_ics, "Software_Urls_Ics_Form": result_software_refs_ics,
-                                            "Campaigns_Urls_Ics_Form": result_campaigns_refs_ics, "Tactics_Urls_Ics_Form": result_tactics_refs_ics})
+                                            "Tactics_ICS_Form": tactics_ics_form,
+                                            "Techniques_Urls_Form": result_techniques_refs_form, "Groups_Urls_Form": result_groups_refs_form, "Mitigations_Urls_Form": result_mitigations_refs_form, "Software_Urls_Form": result_software_refs_form,
+                                            "Campaigns_Urls_Form": result_campaigns_refs_form, "Tactics_Urls_Form": result_tactics_refs_form, "Techniques_Urls_Mobile_Form": result_techniques_mobile_refs_form,
+                                            "Groups_Urls_Mobile_Form": result_groups_mobile_refs_form, "Mitigations_Urls_Mobile_Form": result_mitigations_mobile_refs_form, "Software_Urls_Mobile_Form": result_software_mobile_refs_form,
+                                            "Campaigns_Urls_Mobile_Form": result_campaigns_mobile_refs_form, "Tactics_Urls_Mobile_Form": result_tactics_mobile_refs_form, "Techniques_Urls_Ics_Form": result_techniques_ics_refs_form,
+                                            "Groups_Urls_Ics_Form": result_groups_ics_refs_form, "Mitigations_Urls_Ics_Form": result_mitigations_ics_refs_form, "Software_Urls_Ics_Form": result_software_ics_refs_form,
+                                            "Campaigns_Urls_Ics_Form": result_campaigns_ics_refs_form, "Tactics_Urls_Ics_Form": result_tactics_ics_refs_form})
 
         else:
 
