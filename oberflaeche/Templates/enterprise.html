@@ -117,117 +117,9 @@
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
-                <form action="{% url 'mobile' %}" method="post" enctype="multipart/form-data">
+                <button class="block_button" type="submit">Mobile</button>
 
-                    {% csrf_token %}
-
-                    {{ Keyword_Form }}
-
-                    {{Count_Enterprise_Form}}
-                    {{Count_Mobile_Form}}
-                    {{Count_Ics_Form}}
-
-                    {{Tactics_Enterprise_Form}}
-                    {{Campaigns_Enterprise_Form}}
-                    {{Groups_Enterprise_Form}}
-                    {{Techniques_Enterprise_Form}}
-                    {{Software_Enterprise_Form}}
-                    {{Mitigations_Enterprise_Form}}
-
-                    {{Tactics_Mobile_Form}}
-                    {{Campaigns_Mobile_Form}}
-                    {{Groups_Mobile_Form}}
-                    {{Techniques_Mobile_Form}}
-                    {{Software_Mobile_Form}}
-                    {{Mitigations_Mobile_Form}}
-
-                    {{Tactics_ICS_Form}}
-                    {{Campaigns_ICS_Form}}
-                    {{Groups_ICS_Form}}
-                    {{Techniques_ICS_Form}}
-                    {{Software_ICS_Form}}
-                    {{Mitigations_ICS_Form}}
-
-                    {{ Tactics_Urls_Form }}
-                    {{ Campaigns_Urls_Form }}
-                    {{ Groups_Urls_Form }}
-                    {{ Techniques_Urls_Form }}
-                    {{ Software_Urls_Form }}
-                    {{ Mitigations_Urls_Form }}
-
-                    {{ Tactics_Urls_Mobile_Form }}
-                    {{ Campaigns_Urls_Mobile_Form }}
-                    {{ Groups_Urls_Mobile_Form }}
-                    {{ Techniques_Urls_Mobile_Form }}
-                    {{ Software_Urls_Mobile_Form }}
-                    {{ Mitigations_Urls_Mobile_Form }}
-
-                    {{ Tactics_Urls_Ics_Form }}
-                    {{ Campaigns_Urls_Ics_Form }}
-                    {{ Groups_Urls_Ics_Form }}
-                    {{ Techniques_Urls_Ics_Form }}
-                    {{ Software_Urls_Ics_Form }}
-                    {{ Mitigations_Urls_Ics_Form }}
-
-                    <button class="block_button" type="submit">Mobile</button>
-                </form>
-
-                <form action="{% url 'ics' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="Keyword" value="{{ Keyword }}"/>
-                    <input type="hidden" name="Refs_Bool" value="{{ Refs_Bool }}"/>
-
-                    <input type="hidden" name="Result_Count" value="{{ Result_Count_Enterprise }}"/>
-
-                    <input type="hidden" name="Tactics" value="{{ Tactics_Enterprise }}"/>
-                    <input type="hidden" name="Campaigns" value="{{ Campaigns_Enterprise }}"/>
-                    <input type="hidden" name="Groups" value="{{ Groups_Enterprise }}"/>
-                    <input type="hidden" name="Techniques" value="{{ Techniques_Enterprise }}"/>
-                    <input type="hidden" name="Mitigations" value="{{ Mitigations_Enterprise }}"/>
-                    <input type="hidden" name="Software" value="{{ Software_Enterprise }}"/>
-
-                    <input type="hidden" name="Result_Count_Mobile" value="{{ Result_Count_Mobile }}"/>
-
-                    <input type="hidden" name="Tactics_Mobile" value="{{ Tactics_Mobile }}"/>
-                    <input type="hidden" name="Campaigns_Mobile" value="{{ Campaigns_Mobile }}"/>
-                    <input type="hidden" name="Groups_Mobile" value="{{ Groups_Mobile }}"/>
-                    <input type="hidden" name="Techniques_Mobile" value="{{ Techniques_Mobile }}"/>
-                    <input type="hidden" name="Mitigations_Mobile" value="{{ Mitigations_Mobile }}"/>
-                    <input type="hidden" name="Software_Mobile" value="{{ Software_Mobile }}"/>
-
-                    <input type="hidden" name="Result_Count_ICS" value="{{ Result_Count_ICS }}"/>
-
-                    <input type="hidden" name="Tactics_ICS" value="{{ Tactics_ICS }}"/>
-                    <input type="hidden" name="Campaigns_ICS" value="{{ Campaigns_ICS }}"/>
-                    <input type="hidden" name="Groups_ICS" value="{{ Groups_ICS }}"/>
-                    <input type="hidden" name="Techniques_ICS" value="{{ Techniques_ICS }}"/>
-                    <input type="hidden" name="Mitigations_ICS" value="{{ Mitigations_ICS }}"/>
-                    <input type="hidden" name="Software_ICS" value="{{ Software_ICS }}"/>
-
-                    {% if Refs_Bool == "True" %}
-                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls }}"/>
-                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls }}"/>
-                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls }}"/>
-                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls }}"/>
-                        <input type="hidden" name="Mitigations_Refs" value="{{ Mitigations_Urls }}"/>
-                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls }}"/>
-
-                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls_Mobile }}"/>
-                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls_Mobile }}"/>
-                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls_Mobile }}"/>
-                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls_Mobile }}"/>
-                        <input type="hidden" name="Mitigations_Refs" value="{{ Mitigations_Urls_Mobile }}"/>
-                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls_Mobile }}"/>
-
-                        <input type="hidden" name="Tactics_Refs" value="{{ Tactics_Urls_ICS }}"/>
-                        <input type="hidden" name="Campaigns_Refs" value="{{ Campaigns_Urls_ICS }}"/>
-                        <input type="hidden" name="Groups_Refs" value="{{ Groups_Urls_ICS }}"/>
-                        <input type="hidden" name="Techniques_Refs" value="{{ Techniques_Urls_ICS }}"/>
-                        <input type="hidden" name="Mitigations_Refs" value="{{ Mitigations_Urls_ICS }}"/>
-                        <input type="hidden" name="Software_Refs" value="{{ Software_Urls_ICS }}"/>
-                    {% endif %}
-                    <button class="block_button" type="submit">ICS</button>
-                </form>
+                <button class="block_button" type="submit">ICS</button>
             </div>
           </div>
         </div>
@@ -237,36 +129,58 @@
         <h1>Matches found in Ics: {{ Result_Count_ICS}}</h1>
 
         {% if Refs_Bool == "True" %}
-            <form style="margin:auto; max-width:500px" action="{% url 'success' %}" method="POST">
+            <form style="margin:auto; max-width:500px" action="{% url 'success' %}" method="POST" enctype="multipart/form-data">
+
                 {% csrf_token %}
-                 {{ Keyword_Form }}
 
-                 {{Count_Enterprise_Form}}
-                 {{Count_Mobile_Form}}
-                 {{Count_Ics_Form}}
+                {{ Keyword_Form }}
 
-                 {{Tactics_Enterprise_Form}}
-                 {{Campaigns_Enterprise_Form}}
-                 {{Groups_Enterprise_Form}}
-                 {{Techniques_Enterprise_Form}}
-                 {{Software_Enterprise_Form}}
-                 {{Mitigations_Enterprise_Form}}
+                {{Count_Enterprise_Form}}
+                {{Count_Mobile_Form}}
+                {{Count_Ics_Form}}
 
-                 {{Tactics_Mobile_Form}}
-                 {{Campaigns_Mobile_Form}}
-                 {{Groups_Mobile_Form}}
-                 {{Techniques_Mobile_Form}}
-                 {{Software_Mobile_Form}}
-                 {{Mitigations_Mobile_Form}}
+                {{Tactics_Enterprise_Form}}
+                {{Campaigns_Enterprise_Form}}
+                {{Groups_Enterprise_Form}}
+                {{Techniques_Enterprise_Form}}
+                {{Software_Enterprise_Form}}
+                {{Mitigations_Enterprise_Form}}
 
-                 {{Tactics_ICS_Form}}
-                 {{Campaigns_ICS_Form}}
-                 {{Groups_ICS_Form}}
-                 {{Techniques_ICS_Form}}
-                 {{Software_ICS_Form}}
-                 {{Mitigations_ICS_Form}}
+                {{Tactics_Mobile_Form}}
+                {{Campaigns_Mobile_Form}}
+                {{Groups_Mobile_Form}}
+                {{Techniques_Mobile_Form}}
+                {{Software_Mobile_Form}}
+                {{Mitigations_Mobile_Form}}
 
-                 {{ }}
+                {{Tactics_ICS_Form}}
+                {{Campaigns_ICS_Form}}
+                {{Groups_ICS_Form}}
+                {{Techniques_ICS_Form}}
+                {{Software_ICS_Form}}
+                {{Mitigations_ICS_Form}}
+
+                {{ Tactics_Urls_Form }}
+                {{ Campaigns_Urls_Form }}
+                {{ Groups_Urls_Form }}
+                {{ Techniques_Urls_Form }}
+                {{ Software_Urls_Form }}
+                {{ Mitigations_Urls_Form }}
+
+                {{ Tactics_Urls_Mobile_Form }}
+                {{ Campaigns_Urls_Mobile_Form }}
+                {{ Groups_Urls_Mobile_Form }}
+                {{ Techniques_Urls_Mobile_Form }}
+                {{ Software_Urls_Mobile_Form }}
+                {{ Mitigations_Urls_Mobile_Form }}
+
+                {{ Tactics_Urls_Ics_Form }}
+                {{ Campaigns_Urls_Ics_Form }}
+                {{ Groups_Urls_Ics_Form }}
+                {{ Techniques_Urls_Ics_Form }}
+                {{ Software_Urls_Ics_Form }}
+                {{ Mitigations_Urls_Ics_Form }}
+
                 <button class="block_button" type="submit"> Save Index</button>
             </form>
         {% endif %}
