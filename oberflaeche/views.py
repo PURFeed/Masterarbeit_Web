@@ -225,16 +225,37 @@ def mobile(request):
     else:
         return render(request, 'mobile.html')
 
-def ics (request):
-    render(request, "ics.html")
-
 def index(request):
     return render(request, 'index.html')
 
 def index_saved(request):
 
     if request.method == 'POST':
-        print("Hello World")
+
+        keyword_form = KeywordForm(request.POST, request.FILES, prefix="keyword")
+        count_enterprise_form = ResultCountEnterpriseForm(request.POST, request.FILES, prefix="count_enterprise")
+        count_mobile_form = ResultCountMobileForm(request.POST, request.FILES, prefix="count_mobile")
+        count_ics_form = ResultCountIcsForm(request.POST, request.FILES, prefix="count_ics")
+
+        keyword, count_enterprise, count_mobile, count_ics = get_index_parameters(keyword_form, count_enterprise_form, count_mobile_form, count_ics_form)
+
+        index_enterprise = IndexEnterprise(
+            keyword = keyword,
+            answer_count = count_enterprise
+        )
+        index_enterprise.save()
+
+        index_mobile = IndexMobile(
+            keyword = keyword,
+            answer_count = count_enterprise
+        )
+        index_mobile.save()
+
+        index_ics = IndexIcs(
+            keyword = keyword,
+            answer_count = count_enterprise
+        )
+        index_ics.save()
 
     return render(request, 'index_save_successfull.html')
 
@@ -1230,9 +1251,36 @@ def search_urls(keyword, urls_tactics, urls_campaigns, urls_groups, urls_techniq
 #######################################################################
 #######################################################################
 
+def get_index_parameters(keyword_form, count_enterprise_form, count_mobile_form, count_ics_form ):
+
+    if keyword_form.is_valid():
+        keyword = keyword_form.cleaned_data['keyword']
+    else:
+        keyword = 'error Key'
+
+    if  count_enterprise_form.is_valid():
+        count_enterprise = count_enterprise_form.cleaned_data['count']
+    else:
+        count_enterprise = 'error c_enterprise'
+
+    if count_mobile_form.is_valid():
+        count_mobile = count_mobile_form.cleaned_data['count']
+    else:
+        count_mobile = 'error c_mobile'
+
+    if count_ics_form.is_valid():
+        count_ics = count_ics_form.cleaned_data['count']
+    else:
+        count_ics = 'error c_ics'
+
+    return keyword, count_enterprise, count_mobile, count_ics
+
+#######################################################################
+#######################################################################
+
 def create_forms_result_keyword (keyword):
 
-    keyword_form = KeywordForm({"keyword": keyword})
+    keyword_form = KeywordForm({"keyword-keyword": keyword}, prefix="keyword")
     if keyword_form.is_valid():
         return keyword_form
     else:

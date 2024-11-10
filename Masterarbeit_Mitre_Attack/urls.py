@@ -33,5 +33,4 @@ urlpatterns = [
 
     path('mobile/', views.mobile, name='mobile'),
 
-    path('ics/', views.ics, name='ics')
 ]

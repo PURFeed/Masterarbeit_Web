@@ -271,7 +271,7 @@ class UrlReferencesCampaignsIcs(models.Model):
 #############################################################################
 #Index Model
 class IndexEnterprise(models.Model):
-    name = models.CharField(max_length=100, primary_key=True)
+    keyword = models.CharField(max_length=100, primary_key=True)
     answer_count = models.IntegerField()
     techniques = models.ManyToManyField(Techniques)
     tactics = models.ManyToManyField(Tactics)
@@ -288,7 +288,7 @@ class IndexEnterprise(models.Model):
 
 #############################################################################
 class IndexMobile(models.Model):
-    name = models.CharField(max_length=100, primary_key=True)
+    keyword = models.CharField(max_length=100, primary_key=True)
     answer_count = models.IntegerField()
     techniques = models.ManyToManyField(TechniquesMobile)
     tactics = models.ManyToManyField(TacticsMobile)
@@ -305,7 +305,7 @@ class IndexMobile(models.Model):
 
 #############################################################################
 class IndexIcs(models.Model):
-    name = models.CharField(max_length=100, primary_key=True)
+    keyword = models.CharField(max_length=100, primary_key=True)
     answer_count = models.IntegerField()
     techniques = models.ManyToManyField(TechniquesIcs)
     tactics = models.ManyToManyField(TacticsIcs)
