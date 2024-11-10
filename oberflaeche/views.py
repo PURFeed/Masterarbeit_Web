@@ -1,7 +1,6 @@
 import datetime
 
 import bs4
-from django.db.models.expressions import result
 from django.shortcuts import render
 from django.forms import formset_factory
 from requests.exceptions import SSLError, InvalidURL, MissingSchema
@@ -29,86 +28,9 @@ def enterprise(request):
         keyword = request.POST.get('keyword').lower()
         refs_needed = request.POST.get('References')
 
-        result_techniques_refs = []
-        result_groups_refs = []
-        result_mitigations_refs = []
-        result_software_refs = []
-        result_campaigns_refs = []
-        result_tactics_refs = []
-
-        #########################################################################################
-
-        result_techniques_refs_mobile = []
-        result_groups_refs_mobile = []
-        result_mitigations_refs_mobile = []
-        result_software_refs_mobile = []
-        result_campaigns_refs_mobile = []
-        result_tactics_refs_mobile = []
-
-        #########################################################################################
-
-        result_techniques_refs_ics = []
-        result_groups_refs_ics = []
-        result_mitigations_refs_ics = []
-        result_software_refs_ics = []
-        result_campaigns_refs_ics = []
-        result_tactics_refs_ics = []
-
-        #########################################################################################
-        #########################################################################################
-
-        techniques = Techniques.objects.all().filter(description__contains=keyword)
-        mitigations = Mitigations.objects.all().filter(description__contains=keyword)
-        software = Software.objects.all().filter(description__contains=keyword)
-        campaigns = Campaigns.objects.all().filter(description__contains=keyword)
-        groups = Groups.objects.all().filter(description__contains=keyword)
-        tactics = Tactics.objects.all().filter(description__contains=keyword)
-
-        #########################################################################################
-
-        techniques_mobile = TechniquesMobile.objects.all().filter(description__contains=keyword)
-        mitigations_mobile = MitigationsMobile.objects.all().filter(description__contains=keyword)
-        software_mobile = SoftwareMobile.objects.all().filter(description__contains=keyword)
-        campaigns_mobile = CampaignsMobile.objects.all().filter(description__contains=keyword)
-        groups_mobile= GroupsMobile.objects.all().filter(description__contains=keyword)
-        tactics_mobile = TacticsMobile.objects.all().filter(description__contains=keyword)
-
-        #########################################################################################
-
-        techniques_ics = TechniquesIcs.objects.all().filter(description__contains=keyword)
-        mitigations_ics = MitigationsIcs.objects.all().filter(description__contains=keyword)
-        software_ics = SoftwareIcs.objects.all().filter(description__contains=keyword)
-        campaigns_ics = CampaignsIcs.objects.all().filter(description__contains=keyword)
-        groups_ics= GroupsIcs.objects.all().filter(description__contains=keyword)
-        tactics_ics = TacticsIcs.objects.all().filter(description__contains=keyword)
-
-        #########################################################################################
-        #########################################################################################
-
-        refs_techniques = UrlReferencesTechniquesEnterprise.objects.all()
-        refs_campaigns = UrlReferencesCampaignsEnterprise.objects.all()
-        refs_tactics = UrlReferencesTacticEnterprise.objects.all()
-        refs_groups = UrlReferencesGroupsEnterprise.objects.all()
-        refs_software = UrlReferencesSoftwareEnterprise.objects.all()
-        refs_mitigations = UrlReferencesMitigationsEnterprise.objects.all()
-
-        #########################################################################################
-
-        refs_techniques_mobile = UrlReferencesTechniquesMobile.objects.all()
-        refs_campaigns_mobile = UrlReferencesCampaignsMobile.objects.all()
-        refs_tactics_mobile = UrlRefsTacticMobile.objects.all()
-        refs_groups_mobile = UrlReferencesGroupsMobile.objects.all()
-        refs_software_mobile = UrlReferencesSoftwareMobile.objects.all()
-        refs_mitigations_mobile = UrlReferencesMitigationsMobile.objects.all()
-
-        #########################################################################################
-
-        refs_techniques_ics = UrlReferencesTechniquesIcs.objects.all()
-        refs_campaigns_ics = UrlReferencesCampaignsIcs.objects.all()
-        refs_tactics_ics = UrlReferencesTacticIcs.objects.all()
-        refs_groups_ics = UrlReferencesGroupsIcs.objects.all()
-        refs_software_ics = UrlReferencesSoftwareIcs.objects.all()
-        refs_mitigations_ics = UrlReferencesMitigationsIcs.objects.all()
+        tactics, campaigns, groups, techniques, software, mitigations = results_enterprise(keyword)
+        tactics_mobile, campaigns_mobile, groups_mobile, techniques_mobile, software_mobile, mitigations_mobile = results_mobile(keyword)
+        tactics_ics, campaigns_ics, groups_ics, techniques_ics, software_ics, mitigations_ics = results_ics(keyword)
 
         #########################################################################################
         #########################################################################################
@@ -117,672 +39,89 @@ def enterprise(request):
         result_count_mobile = len(techniques_mobile) + len(campaigns_mobile) + len(groups_mobile) + len(software_mobile) + len(mitigations_mobile) + len(tactics_mobile)
         result_count_ics = len(techniques_ics) + len(campaigns_ics) + len(groups_ics) + len(software_ics) + len(mitigations_ics) + len(tactics_ics)
 
-        # KewordFormSet = formset_factory(ResultForm, max_num=1)
-        #
-        # CountEnterpriseFormSet = formset_factory(ResultCountFormEnterprise, max_num=1)
-        # CountMobileFormSet = formset_factory(ResultCountFormMobile, max_num=1)
-        # CountIcsFormSet = formset_factory(ResultCountFormICS, max_num=1)
-        #
-        # TechniquesEnterpriseFormSet = formset_factory(TechniquesEnterpriseForm, extra=len(techniques), max_num=len(techniques))
-        # TacticsEnterpriseFormSet = formset_factory(TacticsEnterpriseForm, extra=len(tactics), max_num=len(tactics))
-        # CampaignsEnterpriseFormSet = formset_factory(CampaignsEnterpriseForm, extra=len(campaigns), max_num=len(campaigns))
-        # GroupsEnterpriseFormSet = formset_factory(GroupsEnterpriseForm, extra=len(groups), max_num=len(groups))
-        # SoftwareEnterpriseFormSet = formset_factory(SoftwareEnterpriseForm, extra=len(software), max_num=len(software))
-        # MitigationsEnterpriseFormSet = formset_factory(MitigationsEnterpriseForm, extra=len(mitigations), max_num=len(mitigations))
-        #
-        # TechniquesMobileFormSet = formset_factory(TechniquesMobileForm, extra=len(techniques_mobile), max_num=len(techniques_mobile))
-        # TacticsMobileFormSet = formset_factory(TacticsMobileForm, extra=len(tactics_mobile), max_num=len(tactics_mobile))
-        # CampaignsMobileFormSet = formset_factory(CampaignsMobileForm, extra=len(campaigns_mobile), max_num=len(campaigns_mobile))
-        # GroupsMobileFormSet = formset_factory(GroupsMobileForm, extra=len(groups_mobile), max_num=len(groups_mobile))
-        # SoftwareMobileFormSet = formset_factory(SoftwareMobileForm, extra=len(software_mobile), max_num=len(software_mobile))
-        # MitigationsMobileFormSet = formset_factory(MitigationsMobileForm, extra=len(mitigations_mobile), max_num=len(mitigations_mobile))
-        #
-        # TechniquesIcsFormSet = formset_factory(TechniquesIcsForm, extra=len(techniques_ics), max_num=len(techniques_ics))
-        # TacticsIcsFormSet = formset_factory(TacticsIcsForm, extra=len(tactics_ics), max_num=len(tactics_ics))
-        # CampaignsIcsFormSet = formset_factory(CampaignsIcsForm, extra=len(campaigns_ics), max_num=len(campaigns_ics))
-        # GroupsIcsFormSet = formset_factory(GroupsIcsForm, extra=len(groups_ics), max_num=len(groups_ics))
-        # SoftwareIcsFormSet = formset_factory(SoftwareIcsForm, extra=len(techniques_ics), max_num=len(techniques_ics))
-        # MitigationsIcsFormSet = formset_factory(MitigationsIcsForm, extra=len(mitigations_ics), max_num=len(mitigations_ics))
+        keyword_form = create_forms_result_keyword(keyword)
+
+        print(keyword_form.cleaned_data)
+
+        result_count_enterprise_form = create_forms_result_count_enterprise(result_count_enterprise)
+        print(result_count_enterprise_form.cleaned_data)
+        result_count_mobile_form = create_forms_result_count_mobile(result_count_mobile)
+        print(result_count_mobile_form.cleaned_data)
+        result_count_ics_form = create_forms_result_count_ics(result_count_ics)
+        print(result_count_ics_form.cleaned_data)
+
+        tactics_enterprise_form = create_forms_result_tactics_enterprise(tactics)
+        campaigns_enterprise_form = create_forms_result_campaigns_enterprise(campaigns)
+        groups_enterprise_form = create_forms_result_groups_enterprise(groups)
+        techniques_enterprise_form = create_forms_result_techniques_enterprise(techniques)
+        software_enterprise_form = create_forms_result_software_enterprise(software)
+        mitigations_enterprise_form = create_forms_result_mitigations_enterprise(mitigations)
+
+        tactics_mobile_form = create_forms_result_tactics_mobile(tactics_mobile)
+        campaigns_mobile_form = create_forms_result_campaigns_mobile(campaigns_mobile)
+        groups_mobile_form = create_forms_result_groups_mobile(groups_mobile)
+        techniques_mobile_form = create_forms_result_techniques_mobile(techniques_mobile)
+        software_mobile_form = create_forms_result_software_mobile(software_mobile)
+        mitigations_mobile_form = create_forms_result_mitigations_mobile(mitigations_mobile)
+
+        tactics_ics_form = create_forms_result_tactics_ics(tactics_ics)
+        campaigns_ics_form = create_forms_result_campaigns_ics(campaigns_ics)
+        groups_ics_form = create_forms_result_groups_ics(groups_ics)
+        techniques_ics_form = create_forms_result_techniques_ics(techniques_ics)
+        software_ics_form = create_forms_result_software_ics(software_ics)
+        mitigations_ics_form = create_forms_result_mitigations_ics(mitigations_ics)
 
         if refs_needed == "True":
 
-            test = 0
-
-            # Collect Refs
-            # All Refs with Keyword in Refs_Technique
-            for url in refs_techniques:
-                # Webcrawler
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_techniques_refs.append(url)
-                    print(url.external_reference)
-
-            #############################################################
-            test = 0
-            for url in refs_techniques_mobile:
-                # Webcrawler
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_techniques_refs_mobile.append(url)
-                    print(url.external_reference)
-
-            #############################################################
-            test = 0
-            for url in refs_techniques_ics:
-                # Webcrawler
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_techniques_refs_ics.append(url)
-                    print(url.external_reference)
-            print ("Techniques found")
-
-            #############################################################
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Tactics
-            for url in refs_tactics:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_tactics_refs.append(url)
-                    print(url.external_reference)
-
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Tactics_Mobile
-            for url in refs_tactics_mobile:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_tactics_refs_mobile.append(url)
-                    print(url.external_reference)
-
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Tactics
-            for url in refs_tactics_ics:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_tactics_refs_ics.append(url)
-                    print(url.external_reference)
-            print("Tactics found")
-
-            #############################################################
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Campaigns
-            for url in refs_campaigns:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_campaigns_refs.append(url)
-                    print(url.external_reference)
-
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Campaigns
-            for url in refs_campaigns_mobile:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_campaigns_refs_mobile.append(url)
-                    print(url.external_reference)
-
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Campaigns
-            for url in refs_campaigns_ics:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_campaigns_refs_ics.append(url)
-                    print(url.external_reference)
-            print("Campaings found")
-
-            #############################################################
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Groups
-            for url in refs_groups:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_groups_refs.append(url)
-                    print(url.external_reference)
-
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Groups
-            for url in refs_groups_mobile:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try:
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_groups_refs_mobile.append(url)
-                    print(url.external_reference)
-
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Groups
-            for url in refs_groups_ics:
-                # Webcrawler
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try:
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_groups_refs_ics.append(url)
-                    print(url.external_reference)
-
-            print("Groups found")
-            #############################################################
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Mitigations
-            for url in refs_mitigations:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_mitigations_refs.append(url)
-                    print(url.external_reference)
-
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Mitigations
-            for url in refs_mitigations_mobile:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_mitigations_refs_mobile.append(url)
-                    print(url.external_reference)
-
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Mitigations
-            for url in refs_mitigations_ics:
-                # Webcrawler
-
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_mitigations_refs_ics.append(url)
-                    print(url.external_reference)
-            print("Mitigations found")
-
-            #############################################################
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Software
-            for url in refs_software:
-                # Webcrawler
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_software_refs.append(url)
-                    print (url.external_reference)
-
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Software
-            for url in refs_software_mobile:
-                # Webcrawler
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_software_refs_mobile.append(url)
-                    print (url.external_reference)
-
-            #############################################################
-
-            test = 0
-            # All Refs with Keyword in Refs_Software
-            for url in refs_software:
-                # Webcrawler
-                test = test + 1
-                print(test)
-                try:
-                    try:
-                        web = requests.get(url.external_reference, timeout=5)
-                    except requests.exceptions.Timeout:
-                        print("Timeout")
-                        continue
-
-                    if web.status_code == 200:
-                        try :
-                            soup = BeautifulSoup(web.content, 'html.parser')
-                            temp = soup(text=lambda t: keyword in t.text)
-                        except bs4.exceptions.ParserRejectedMarkup:
-                            print("PDF")
-                            continue
-                    else:
-                        continue
-                except (SSLError, MissingSchema, OSError):
-                    continue
-
-                # When keyword is found append result
-                if not temp:
-                    continue
-                else:
-                    result_software_refs_mobile.append(url)
-                    print (url.external_reference)
-            print("Software found")
+            result_tactics_refs = []
+            result_campaigns_refs = []
+            result_groups_refs = []
+            result_techniques_refs = []
+            result_software_refs = []
+            result_mitigations_refs = []
+
+            #########################################################################################
+
+            result_tactics_refs_mobile = []
+            result_campaigns_refs_mobile = []
+            result_groups_refs_mobile = []
+            result_techniques_refs_mobile = []
+            result_software_refs_mobile = []
+            result_mitigations_refs_mobile = []
+
+            #########################################################################################
+
+            result_tactics_refs_ics = []
+            result_campaigns_refs_ics = []
+            result_groups_refs_ics = []
+            result_techniques_refs_ics = []
+            result_software_refs_ics = []
+            result_mitigations_refs_ics = []
+
+            #########################################################################################
+            #########################################################################################
+
+            refs_tactics, refs_campaigns, refs_groups, refs_techniques, refs_software, refs_mitigations = urls_enterprise()
+            refs_tactics_mobile, refs_campaigns_mobile, refs_groups_mobile, refs_techniques_mobile, refs_software_mobile, refs_mitigations_mobile = urls_mobile()
+            refs_tactics_ics, refs_campaigns_ics, refs_groups_ics, refs_techniques_ics, refs_software_ics, refs_mitigations_ics = urls_ics()
+
+            #########################################################################################
+            #########################################################################################
+
+            result_tactics_refs, result_campaigns_refs, result_groups_refs, result_techniques_refs, result_software_refs, result_mitigations_refs = search_urls(keyword, refs_tactics, refs_campaigns, refs_groups, refs_techniques, refs_software, refs_mitigations,
+                                                                                                                                                                result_tactics_refs, result_campaigns_refs, result_groups_refs, result_techniques_refs, result_software_refs, result_mitigations_refs)
+
+            result_tactics_refs_mobile, result_campaigns_refs_mobile, result_groups_refs_mobile, result_techniques_refs_mobile, result_software_refs_mobile, result_mitigations_refs_mobile = search_urls(keyword, refs_tactics_mobile, refs_campaigns_mobile, refs_groups_mobile, refs_techniques_mobile,
+                                                                                                                                                                                                          refs_software_mobile, refs_mitigations_mobile, result_tactics_refs_mobile,
+                                                                                                                                                                                                          result_campaigns_refs_mobile, result_groups_refs_mobile,
+                                                                                                                                                                                                          result_techniques_refs_mobile, result_software_refs_mobile, result_mitigations_refs_mobile)
+
+            result_tactics_refs_ics, result_campaigns_refs_ics, result_groups_refs_ics, result_techniques_refs_ics, result_software_refs_ics, result_mitigations_refs_ics = search_urls(keyword, refs_tactics_ics, refs_campaigns_ics, refs_groups_ics, refs_techniques_ics,
+                                                                                                                                                                                                          refs_software_ics, refs_mitigations_ics, result_tactics_refs_ics,
+                                                                                                                                                                                                          result_campaigns_refs_ics, result_groups_refs_ics,
+                                                                                                                                                                                                          result_techniques_refs_ics, result_software_refs_ics, result_mitigations_refs_ics)
 
             print(datetime.datetime.now())
-            #############################################################
-            #############################################################
 
             return render(request, 'enterprise.html', {"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
                                             "Techniques_Enterprise": techniques,"Groups_Enterprise": groups,
@@ -797,68 +136,73 @@ def enterprise(request):
                                             "Groups_Urls_Mobile": result_groups_refs_mobile, "Mitigations_Urls_Mobile": result_mitigations_refs_mobile, "Software_Urls_Mobile": result_software_refs_mobile,
                                             "Campaigns_Urls_Mobile": result_campaigns_refs_mobile, "Tactics_Urls_Mobile": result_tactics_refs_mobile, "Techniques_Urls_Ics": result_techniques_refs_ics,
                                             "Groups_Urls_Ics": result_groups_refs_ics, "Mitigations_Urls_Ics": result_mitigations_refs_ics, "Software_Urls_Ics": result_software_refs_ics,
-                                            "Campaigns_Urls_Ics": result_campaigns_refs_ics, "Tactics_Urls_Ics": result_tactics_refs_ics})
+                                            "Campaigns_Urls_Ics": result_campaigns_refs_ics, "Tactics_Urls_Ics": result_tactics_refs_ics, "Keyword_Form":keyword_form, "Count_Enterprise_Form": result_count_enterprise_form,"Count_Mobile_Form": result_count_mobile_form,
+                                            "Count_Ics_Form": result_count_ics_form, "Techniques_Enterprise_Form": techniques_enterprise_form,"Groups_Enterprise_Form": groups_enterprise_form,
+                                            "Mitigations_Enterprise_Form": mitigations_enterprise_form, "Software_Enterprise_Form": software_enterprise_form,"Campaigns_Enterprise_Form": campaigns_enterprise_form,
+                                            "Tactics_Enterprise_Form": tactics_enterprise_form,
+                                            "Result_Count_Mobile_Form": result_count_mobile_form, "Techniques_Mobile_Form": techniques_mobile_form,"Groups_Mobile_Form": groups_mobile_form,
+                                            "Mitigations_Mobile_Form": mitigations_mobile_form, "Software_Mobile_Form": software_mobile_form,"Campaigns_Mobile_Form": campaigns_mobile_form,
+                                            "Tactics_Mobile_Form": tactics_mobile_form,
+                                            "Result_Count_ICS_Form": result_count_ics_form, "Techniques_ICS_Form": techniques_ics_form,"Groups_ICS_Form": groups_ics_form,
+                                            "Mitigations_ICS_Form": mitigations_ics_form, "Software_ICS_Form": software_ics_form,"Campaigns_ICS_Form": campaigns_ics_form,
+                                            "Tactics_ICS_Form": tactics_ics_form, "Techniques_Urls_Form": result_techniques_refs,
+                                            "Groups_Urls_Form": result_groups_refs, "Mitigations_Urls_Form": result_mitigations_refs, "Software_Urls_Form": result_software_refs,
+                                            "Campaigns_Urls_Form": result_campaigns_refs, "Tactics_Urls_Form": result_tactics_refs, "Techniques_Urls_Mobile_Form": result_techniques_refs_mobile,
+                                            "Groups_Urls_Mobile_Form": result_groups_refs_mobile, "Mitigations_Urls_Mobile_Form": result_mitigations_refs_mobile, "Software_Urls_Mobile_Form": result_software_refs_mobile,
+                                            "Campaigns_Urls_Mobile_Form": result_campaigns_refs_mobile, "Tactics_Urls_Mobile_Form": result_tactics_refs_mobile, "Techniques_Urls_Ics_Form": result_techniques_refs_ics,
+                                            "Groups_Urls_Ics_Form": result_groups_refs_ics, "Mitigations_Urls_Ics_Form": result_mitigations_refs_ics, "Software_Urls_Ics_Form": result_software_refs_ics,
+                                            "Campaigns_Urls_Ics_Form": result_campaigns_refs_ics, "Tactics_Urls_Ics_Form": result_tactics_refs_ics})
 
         else:
 
             return render(request, 'enterprise.html', {"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
                                             "Techniques_Enterprise": techniques,"Groups_Enterprise": groups,
                                             "Mitigations_Enterprise": mitigations, "Software_Enterprise": software,"Campaigns_Enterprise": campaigns,
-                                            "Tactics_Enterprise": tactics, "Result_Count_Mobile": result_count_mobile, "Techniques_Mobile": techniques_mobile,"Groups_Mobile": groups_mobile,
+                                            "Tactics_Enterprise": tactics,
+                                            "Result_Count_Mobile": result_count_mobile, "Techniques_Mobile": techniques_mobile,"Groups_Mobile": groups_mobile,
                                             "Mitigations_Mobile": mitigations_mobile, "Software_Mobile": software_mobile,"Campaigns_Mobile": campaigns_mobile,
-                                            "Tactics_Mobile": tactics_mobile, "Result_Count_ICS": result_count_ics, "Techniques_ICS": techniques_ics,"Groups_ICS": groups_ics,
+                                            "Tactics_Mobile": tactics_mobile,
+                                            "Result_Count_ICS": result_count_ics, "Techniques_ICS": techniques_ics,"Groups_ICS": groups_ics,
                                             "Mitigations_ICS": mitigations_ics, "Software_ICS": software_ics,"Campaigns_ICS": campaigns_ics,
-                                            "Tactics_ICS": tactics_ics})
+                                            "Tactics_ICS": tactics_ics,
+                                            "Keyword_Form":keyword_form, "Count_Enterprise_Form": result_count_enterprise_form,"Count_Mobile_Form": result_count_mobile_form,
+                                            "Count_Ics_Form": result_count_ics_form, "Techniques_Enterprise_Form": techniques_enterprise_form,"Groups_Enterprise_Form": groups_enterprise_form,
+                                            "Mitigations_Enterprise_Form": mitigations_enterprise_form, "Software_Enterprise_Form": software_enterprise_form,"Campaigns_Enterprise_Form": campaigns_enterprise_form,
+                                            "Tactics_Enterprise_Form": tactics_enterprise_form,
+                                            "Result_Count_Mobile_Form": result_count_mobile_form, "Techniques_Mobile_Form": techniques_mobile_form,"Groups_Mobile_Form": groups_mobile_form,
+                                            "Mitigations_Mobile_Form": mitigations_mobile_form, "Software_Mobile_Form": software_mobile_form,"Campaigns_Mobile_Form": campaigns_mobile_form,
+                                            "Tactics_Mobile_Form": tactics_mobile_form,
+                                            "Result_Count_ICS_Form": result_count_ics_form, "Techniques_ICS_Form": techniques_ics_form,"Groups_ICS_Form": groups_ics_form,
+                                            "Mitigations_ICS_Form": mitigations_ics_form, "Software_ICS_Form": software_ics_form,"Campaigns_ICS_Form": campaigns_ics_form,
+                                            "Tactics_ICS_Form": tactics_ics_form})
 
 def mobile(request):
     if request.method == "POST":
 
-        print ("TEST")
-        refs_needed = request.POST.get('refs_bool')
+        testformset = ResultCountEnterpriseForm(request.POST, request.FILES, prefix="count_enterprise")
+        print(testformset)
+        if testformset.is_valid():
+            test = testformset.cleaned_data
+            zahl = test ['count']
+            print(zahl)
 
-        print(request.POST.get('result_count'))
+        testformset2 = ResultCountMobileForm(request.POST, request.FILES, prefix="count_mobile")
+        print(testformset2)
+        if testformset2.is_valid():
+            test = testformset2.cleaned_data
+            zahl = test ['count']
+            print(zahl)
 
-        # Enterprise Results
-        result_count_enterprise = request.POST.get('result_count')
+        testformset3 = ResultCountIcsForm(request.POST, request.FILES, prefix="count_ics")
+        print(testformset3)
+        if testformset3.is_valid():
+            test = testformset3.cleaned_data
+            zahl = test ['count']
+            print(zahl)
 
-        techniques_enterprise = request.POST.get('techniques')
-        groups_enterprise = request.POST.get('groups')
-        tactics_enterprise = request.POST.get('tactics')
-        campaigns_enterprise = request.POST.get('campaigns')
-        software_enterprise = request.POST.get('software')
-        mitigations_enterprise = request.POST.get('mitigations')
-
-        # Mobile Results
-        result_count_mobile = request.POST.get('result_count_mobile')
-
-        techniques_mobile = request.POST.get('techniques_mobile')
-        groups_mobile = request.POST.get('groups_mobile')
-        tactics_mobile = request.POST.get('tactics_mobile')
-        campaigns_mobile = request.POST.get('campaigns_mobile')
-        software_mobile = request.POST.get('software_mobile')
-        mitigations_mobile = request.POST.get('mitigations_mobile')
-
-        #ICS Results
-        result_count_ics = request.POST.get('result_count_ics')
-
-        techniques_ics = request.POST.get('techniques_ics')
-        groups_ics = request.POST.get('groups_ics')
-        tactics_ics = request.POST.get('tactics_ics')
-        campaigns_ics = request.POST.get('campaigns_ics')
-        software_ics = request.POST.get('software_ics')
-        mitigations_ics = request.POST.get('mitigations_ics')
-
-        if refs_needed == "True":
-            render(request, "mobile.html")
-
-        render(request,'mobile.html',{"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
-                                            "Techniques_Enterprise": techniques_enterprise,"Groups_Enterprise": groups_enterprise,
-                                            "Mitigations_Enterprise": mitigations_enterprise, "Software_Enterprise": software_enterprise,"Campaigns_Enterprise": campaigns_enterprise,
-                                            "Tactics_Enterprise": tactics_enterprise, "Result_Count_Mobile": result_count_mobile, "Techniques_Mobile": techniques_mobile,"Groups_Mobile": groups_mobile,
-                                            "Mitigations_Mobile": mitigations_mobile, "Software_Mobile": software_mobile,"Campaigns_Mobile": campaigns_mobile,
-                                            "Tactics_Mobile": tactics_mobile, "Result_Count_ICS": result_count_ics, "Techniques_ICS": techniques_ics,"Groups_ICS": groups_ics,
-                                            "Mitigations_ICS": mitigations_ics, "Software_ICS": software_ics,"Campaigns_ICS": campaigns_ics,
-                                            "Tactics_ICS": tactics_ics})
+        return render(request, 'mobile.html')
+    else:
+        return render(request, 'mobile.html')
 
 def ics (request):
     render(request, "ics.html")
@@ -869,143 +213,6 @@ def index(request):
 def index_saved(request):
 
     if request.method == 'POST':
-
-        tactics = request.POST.get('tactics')
-        campaigns = request.POST.get('campaigns')
-        groups = request.POST.get('groups')
-        techniques = request.POST.get('techniques')
-        software = request.POST.get('software')
-        mitigations = request.POST.get('mitigations')
-
-        refs_bool = request.POST.get('refs_bool')
-
-        # create new Index entry
-
-        index = IndexEnterprise(
-            name=request.POST.get('keyword'),
-            answer_count=request.POST.get('result_count')
-        )
-        index.save()
-
-        # Add Relationships
-
-        for i in tactics:
-            if not i:
-                continue
-            else:
-                temp1 = index.objects.get(name=request.POST.get('keyword'))
-                temp1.tactics.add(i)
-
-###############################################################################
-
-        for i in campaigns:
-            if not i:
-                continue
-            else:
-                temp1 = index.objects.get(name=request.POST.get('keyword'))
-                temp1.campaigns.add(i)
-
-###############################################################################
-
-        for i in groups:
-            if not i:
-                continue
-            else:
-                temp1 = index.objects.get(name=request.POST.get('keyword'))
-                temp1.groups.add(i)
-
-###############################################################################
-
-        for i in techniques:
-            if not i:
-                continue
-            else:
-                temp1 = index.objects.get(name=request.POST.get('keyword'))
-                temp1.techniques.add(i)
-
-###############################################################################
-
-        for i in software:
-            if not i:
-                continue
-            else:
-                temp1 = index.objects.get(name=request.POST.get('keyword'))
-                temp1.software.add(i)
-
-###############################################################################
-
-        for i in mitigations:
-            if not i:
-                continue
-            else:
-                temp1 = index.objects.get(name=request.POST.get('keyword'))
-                temp1.mitigations.add(i)
-
-        # Add Refs
-
-        if refs_bool == "True":
-            tactics_refs = request.POST.get('tactics_refs')
-            campaigns_refs = request.POST.get('campaigns_refs')
-            groups_refs = request.POST.get('groups_refs')
-            techniques_refs = request.POST.get('techniques_refs')
-            software_refs = request.POST.get('software_refs')
-            mitigations_refs = request.POST.get('mitigations_refs')
-
-            # Add Relationships
-
-            for i in tactics_refs:
-                if not i:
-                    continue
-                else:
-                    temp1 = index.objects.get(name=request.POST.get('keyword'))
-                    temp1.tactics_refs.add(i)
-
-            ###############################################################################
-
-            for i in campaigns_refs:
-                if not i:
-                    continue
-                else:
-                    temp1 = index.objects.get(name=request.POST.get('keyword'))
-                    temp1.campaigns_refs.add(i)
-
-            ###############################################################################
-
-            for i in groups_refs:
-                if not i:
-                    continue
-                else:
-                    temp1 = index.objects.get(name=request.POST.get('keyword'))
-                    temp1.groups_refs.add(i)
-
-            ###############################################################################
-
-            for i in techniques_refs:
-                if not i:
-                    continue
-                else:
-                    temp1 = index.objects.get(name=request.POST.get('keyword'))
-                    temp1.techniques_refs.add(i)
-
-            ###############################################################################
-
-            for i in software_refs:
-                if not i:
-                    continue
-                else:
-                    temp1 = index.objects.get(name=request.POST.get('keyword'))
-                    temp1.software.add(i)
-
-            ###############################################################################
-
-            for i in mitigations_refs:
-                if not i:
-                    continue
-                else:
-                    temp1 = index.objects.get(name=request.POST.get('keyword'))
-                    temp1.mitigations_refs.add(i)
-
-
         print("Hello World")
 
     return render(request, 'index_save_successfull.html')
@@ -1747,3 +954,1234 @@ def import_data(request):
     #             temp2.groups.add(group)
 
     return render(request, 'import.html')
+
+#######################################################################
+#######################################################################
+
+def results_enterprise(keyword):
+
+    techniques = Techniques.objects.all().filter(description__contains=keyword)
+    mitigations = Mitigations.objects.all().filter(description__contains=keyword)
+    software = Software.objects.all().filter(description__contains=keyword)
+    campaigns = Campaigns.objects.all().filter(description__contains=keyword)
+    groups = Groups.objects.all().filter(description__contains=keyword)
+    tactics = Tactics.objects.all().filter(description__contains=keyword)
+
+    return tactics, campaigns, groups, techniques, software, mitigations
+
+def results_mobile(keyword):
+
+    techniques = TechniquesMobile.objects.all().filter(description__contains=keyword)
+    mitigations = MitigationsMobile.objects.all().filter(description__contains=keyword)
+    software = SoftwareMobile.objects.all().filter(description__contains=keyword)
+    campaigns = CampaignsMobile.objects.all().filter(description__contains=keyword)
+    groups = GroupsMobile.objects.all().filter(description__contains=keyword)
+    tactics = TacticsMobile.objects.all().filter(description__contains=keyword)
+
+    return tactics, campaigns, groups, techniques, software, mitigations
+
+def results_ics(keyword):
+
+    techniques = TechniquesIcs.objects.all().filter(description__contains=keyword)
+    mitigations = MitigationsIcs.objects.all().filter(description__contains=keyword)
+    software = SoftwareIcs.objects.all().filter(description__contains=keyword)
+    campaigns = CampaignsIcs.objects.all().filter(description__contains=keyword)
+    groups = GroupsIcs.objects.all().filter(description__contains=keyword)
+    tactics = TacticsIcs.objects.all().filter(description__contains=keyword)
+
+    return tactics, campaigns, groups, techniques, software, mitigations
+
+#######################################################################
+#######################################################################
+
+def urls_enterprise ():
+
+    refs_techniques = UrlReferencesTechniquesEnterprise.objects.all()
+    refs_campaigns = UrlReferencesCampaignsEnterprise.objects.all()
+    refs_tactics = UrlReferencesTacticEnterprise.objects.all()
+    refs_groups = UrlReferencesGroupsEnterprise.objects.all()
+    refs_software = UrlReferencesSoftwareEnterprise.objects.all()
+    refs_mitigations = UrlReferencesMitigationsEnterprise.objects.all()
+
+    return refs_tactics, refs_campaigns, refs_groups, refs_techniques, refs_software, refs_mitigations
+
+def urls_mobile():
+
+    refs_techniques = UrlReferencesTechniquesMobile.objects.all()
+    refs_campaigns = UrlReferencesCampaignsMobile.objects.all()
+    refs_tactics = UrlRefsTacticMobile.objects.all()
+    refs_groups = UrlReferencesGroupsMobile.objects.all()
+    refs_software = UrlReferencesSoftwareMobile.objects.all()
+    refs_mitigations = UrlReferencesMitigationsMobile.objects.all()
+
+    return refs_tactics, refs_campaigns, refs_groups, refs_techniques, refs_software, refs_mitigations
+
+def urls_ics():
+
+    refs_techniques = UrlReferencesTechniquesIcs.objects.all()
+    refs_campaigns = UrlReferencesCampaignsIcs.objects.all()
+    refs_tactics = UrlReferencesTacticIcs.objects.all()
+    refs_groups = UrlReferencesGroupsIcs.objects.all()
+    refs_software = UrlReferencesSoftwareIcs.objects.all()
+    refs_mitigations = UrlReferencesMitigationsIcs.objects.all()
+
+    return refs_tactics, refs_campaigns, refs_groups, refs_techniques, refs_software, refs_mitigations
+
+def search_urls(keyword, urls_tactics, urls_campaigns, urls_groups, urls_techniques, urls_software, urls_mitigations, result_tactics, result_campaigns, result_groups, result_techniques, result_software, result_mitigations):
+
+    # Collect Refs
+    # All Refs with Keyword in Refs_Tactic
+    for url in urls_tactics:
+        # Webcrawler
+        try:
+            try:
+                web = requests.get(url.external_reference, timeout=5)
+            except requests.exceptions.Timeout:
+                print("Timeout")
+                continue
+
+            if web.status_code == 200:
+                try:
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup(text=lambda t: keyword in t.text)
+                except bs4.exceptions.ParserRejectedMarkup:
+                    print("PDF")
+                    continue
+            else:
+                continue
+        except (SSLError, MissingSchema, OSError):
+            continue
+
+        # When keyword is found append result
+        if not temp:
+            continue
+        else:
+            result_tactics.append(url)
+            print(url.external_reference)
+
+    # All Refs with Keyword in Refs_Campaigns
+    for url in urls_campaigns:
+        # Webcrawler
+         try:
+            try:
+                web = requests.get(url.external_reference, timeout=5)
+            except requests.exceptions.Timeout:
+                print("Timeout")
+                continue
+
+            if web.status_code == 200:
+                try:
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup(text=lambda t: keyword in t.text)
+                except bs4.exceptions.ParserRejectedMarkup:
+                    print("PDF")
+                    continue
+            else:
+                 continue
+         except (SSLError, MissingSchema, OSError):
+                continue
+
+         # When keyword is found append result
+         if not temp:
+             continue
+         else:
+            result_campaigns.append(url)
+            print(url.external_reference)
+
+    # All Refs with Keyword in Refs_Groups
+    for url in urls_groups:
+        # Webcrawler
+         try:
+            try:
+                web = requests.get(url.external_reference, timeout=5)
+            except requests.exceptions.Timeout:
+                print("Timeout")
+                continue
+
+            if web.status_code == 200:
+                try:
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup(text=lambda t: keyword in t.text)
+                except bs4.exceptions.ParserRejectedMarkup:
+                    print("PDF")
+                    continue
+            else:
+                 continue
+         except (SSLError, MissingSchema, OSError):
+                continue
+
+         # When keyword is found append result
+         if not temp:
+             continue
+         else:
+            result_groups.append(url)
+            print(url.external_reference)
+
+    # All Refs with Keyword in Refs_Techniques
+    for url in urls_techniques:
+        # Webcrawler
+         try:
+            try:
+                web = requests.get(url.external_reference, timeout=5)
+            except requests.exceptions.Timeout:
+                print("Timeout")
+                continue
+
+            if web.status_code == 200:
+                try:
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup(text=lambda t: keyword in t.text)
+                except bs4.exceptions.ParserRejectedMarkup:
+                    print("PDF")
+                    continue
+            else:
+                 continue
+         except (SSLError, MissingSchema, OSError):
+                continue
+
+         # When keyword is found append result
+         if not temp:
+             continue
+         else:
+            result_techniques.append(url)
+            print(url.external_reference)
+
+    # All Refs with Keyword in Refs_Software
+    for url in urls_software:
+        # Webcrawler
+         try:
+            try:
+                web = requests.get(url.external_reference, timeout=5)
+            except requests.exceptions.Timeout:
+                print("Timeout")
+                continue
+
+            if web.status_code == 200:
+                try:
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup(text=lambda t: keyword in t.text)
+                except bs4.exceptions.ParserRejectedMarkup:
+                    print("PDF")
+                    continue
+            else:
+                 continue
+         except (SSLError, MissingSchema, OSError):
+                continue
+
+         # When keyword is found append result
+         if not temp:
+             continue
+         else:
+            result_software.append(url)
+            print(url.external_reference)
+
+    # All Refs with Keyword in Refs_Mitigations
+    for url in urls_mitigations:
+        # Webcrawler
+         try:
+            try:
+                web = requests.get(url.external_reference, timeout=5)
+            except requests.exceptions.Timeout:
+                print("Timeout")
+                continue
+
+            if web.status_code == 200:
+                try:
+                    soup = BeautifulSoup(web.content, 'html.parser')
+                    temp = soup(text=lambda t: keyword in t.text)
+                except bs4.exceptions.ParserRejectedMarkup:
+                    print("PDF")
+                    continue
+            else:
+                 continue
+         except (SSLError, MissingSchema, OSError):
+                continue
+
+         # When keyword is found append result
+         if not temp:
+             continue
+         else:
+            result_mitigations.append(url)
+            print(url.external_reference)
+
+    return result_tactics, result_campaigns, result_groups, result_techniques, result_software, result_mitigations
+
+#######################################################################
+#######################################################################
+
+def create_forms_result_keyword (keyword):
+
+    keyword_form = KeywordForm({"keyword": keyword})
+    if keyword_form.is_valid():
+        return keyword_form
+    else:
+        print ("Form not valid")
+        return None
+
+#######################################################################
+#######################################################################
+
+def create_forms_result_count_enterprise(result_count):
+
+    result_count_form = ResultCountEnterpriseForm({"count_enterprise-count": result_count}, prefix="count_enterprise")
+    print (result_count_form)
+
+    if result_count_form.is_valid():
+        return result_count_form
+    else:
+        print ("Form not valid")
+        return None
+
+def create_forms_result_count_mobile(result_count):
+
+    result_count_form = ResultCountMobileForm({"count_mobile-count": result_count}, prefix="count_mobile")
+    if result_count_form.is_valid():
+        return result_count_form
+    else:
+        print ("Form not valid")
+        return None
+
+def create_forms_result_count_ics(result_count):
+
+    result_count_form = ResultCountIcsForm({"count_ics-count": result_count}, prefix="count_ics")
+    if result_count_form.is_valid():
+        return result_count_form
+    else:
+        print ("Form not valid")
+        return None
+
+#######################################################################
+#######################################################################
+
+# Creating Forms for all Results in Tactics Enterprise
+def create_forms_result_tactics_enterprise (result):
+
+    form_sets_result = formset_factory(TacticsEnterpriseForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "tactics_enterprise-TOTAL_FORMS": len(result),
+        "tactics_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data [f"tactics_enterprise-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="tactics_enterprise")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print ("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Campaigns Enterprise
+def create_forms_result_campaigns_enterprise (result):
+
+    form_sets_result = formset_factory(CampaignsEnterpriseForm,extra=len(result), max_num=len(result))
+
+    data = {
+        "campaigns_enterprise-TOTAL_FORMS": len(result),
+        "campaigns_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data [f"campaigns_enterprise-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="campaigns_enterprise")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print ("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Groups Enterprise
+def create_forms_result_groups_enterprise (result):
+
+    form_sets_result = formset_factory(GroupsEnterpriseForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "groups_enterprise-TOTAL_FORMS": len(result),
+        "groups_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data [f"groups_enterprise-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="groups_enterprise")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print ("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Techniques Enterprise
+def create_forms_result_techniques_enterprise (result):
+
+    form_sets_result = formset_factory(TechniquesEnterpriseForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "techniques_enterprise-TOTAL_FORMS": len(result),
+        "techniques_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data [f"techniques_enterprise-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="techniques_enterprise")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print ("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Software Enterprise
+def create_forms_result_software_enterprise (result):
+
+    form_sets_result = formset_factory(SoftwareEnterpriseForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "software_enterprise-TOTAL_FORMS": len(result),
+        "software_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data [f"software_enterprise-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="software_enterprise")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print ("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Mitigations Enterprise
+def create_forms_result_mitigations_enterprise (result):
+
+    form_sets_result = formset_factory(MitigationsEnterpriseForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "mitigations_enterprise-TOTAL_FORMS": len(result),
+        "mitigations_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data [f"mitigations_enterprise-{i}-id"] = element.mitre
+        i = i + 1
+
+    print(data)
+    result_forms = form_sets_result(data, prefix="mitigations_enterprise")
+    print(result_forms.cleaned_data)
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print ("Form not valid")
+        return "error"
+
+#######################################################################
+#######################################################################
+
+# Creating Forms for all Results in Tactics Mobile
+def create_forms_result_tactics_mobile(result):
+    form_sets_result = formset_factory(TacticsMobileForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "tactics_mobile-TOTAL_FORMS": len(result),
+        "tactics_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"tactics_mobile-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="tactics_mobile")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Campaigns Mobile
+def create_forms_result_campaigns_mobile(result):
+    form_sets_result = formset_factory(CampaignsMobileForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "campaigns_mobile-TOTAL_FORMS": len(result),
+        "campaigns_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"campaigns_mobile-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="campaigns_mobile")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Groups Mobile
+def create_forms_result_groups_mobile(result):
+    form_sets_result = formset_factory(GroupsMobileForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "groups_mobile-TOTAL_FORMS": len(result),
+        "groups_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"groups_mobile-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="groups_mobile")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Techniques Mobile
+def create_forms_result_techniques_mobile(result):
+    form_sets_result = formset_factory(TechniquesMobileForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "techniques_mobile-TOTAL_FORMS": len(result),
+        "techniques_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"techniques_mobile-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="techniques_mobile")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Software Mobile
+def create_forms_result_software_mobile(result):
+    form_sets_result = formset_factory(SoftwareMobileForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "software_mobile-TOTAL_FORMS": len(result),
+        "software_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"software_mobile-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="software_mobile")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Mitigations Mobile
+def create_forms_result_mitigations_mobile(result):
+    form_sets_result = formset_factory(MitigationsMobileForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "mitigations_mobile-TOTAL_FORMS": len(result),
+        "mitigations_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"mitigations_mobile-{i}-id"] = element.mitre
+        i = i + 1
+
+    print(data)
+    result_forms = form_sets_result(data, prefix="mitigations_mobile")
+    print(result_forms.cleaned_data)
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+#######################################################################
+#######################################################################
+
+# Creating Forms for all Results in Tactics Ics
+def create_forms_result_tactics_ics(result):
+    form_sets_result = formset_factory(TacticsIcsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "tactics_ics-TOTAL_FORMS": len(result),
+        "tactics_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"tactics_ics-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="tactics_ics")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Campaigns Ics
+def create_forms_result_campaigns_ics(result):
+    form_sets_result = formset_factory(CampaignsIcsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "campaigns_ics-TOTAL_FORMS": len(result),
+        "campaigns_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"campaigns_ics-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="campaigns_ics")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Groups Ics
+def create_forms_result_groups_ics(result):
+    form_sets_result = formset_factory(GroupsIcsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "groups_ics-TOTAL_FORMS": len(result),
+        "groups_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"groups_ics-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="groups_ics")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Techniques Ics
+def create_forms_result_techniques_ics(result):
+    form_sets_result = formset_factory(TechniquesIcsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "techniques_ics-TOTAL_FORMS": len(result),
+        "techniques_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"techniques_ics-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="techniques_ics")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Software Ics
+def create_forms_result_software_ics(result):
+    form_sets_result = formset_factory(SoftwareIcsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "software_ics-TOTAL_FORMS": len(result),
+        "software_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"software_ics-{i}-id"] = element.mitre
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="software_ics")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all Results in Mitigations Ics
+def create_forms_result_mitigations_ics(result):
+    form_sets_result = formset_factory(MitigationsIcsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "mitigations_ics-TOTAL_FORMS": len(result),
+        "mitigations_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"mitigations_ics-{i}-id"] = element.mitre
+        i = i + 1
+
+    print(data)
+    result_forms = form_sets_result(data, prefix="mitigations_ics")
+    print(result_forms.cleaned_data)
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+#######################################################################
+#######################################################################
+
+# Creating Forms for all URL Results in Tactics Enterprise
+def create_forms_url_result_tactics_enterprise(result):
+    form_sets_result = formset_factory(TacticsEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_tactics_enterprise-TOTAL_FORMS": len(result),
+        "url_tactics_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_tactics_enterprise-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_tactics_enterprise")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Campaigns Enterprise
+def create_forms_url_result_campaigns_enterprise(result):
+    form_sets_result = formset_factory(CampaignsEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_campaigns_enterprise-TOTAL_FORMS": len(result),
+        "url_campaigns_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_campaigns_enterprise-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_campaigns_enterprise")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Groups Enterprise
+def create_forms_url_result_groups_enterprise(result):
+    form_sets_result = formset_factory(GroupsEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_groups_enterprise-TOTAL_FORMS": len(result),
+        "url_groups_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_groups_enterprise-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_groups_enterprise")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Techniques Enterprise
+def create_forms_url_result_techniques_enterprise(result):
+    form_sets_result = formset_factory(TechniquesEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_techniques_enterprise-TOTAL_FORMS": len(result),
+        "url_techniques_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_techniques_enterprise-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_techniques_enterprise")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Software Enterprise
+def create_forms_url_result_software_enterprise(result):
+    form_sets_result = formset_factory(SoftwareEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_software_enterprise-TOTAL_FORMS": len(result),
+        "url_software_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_software_enterprise-{i}-id"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_software_enterprise")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Mitigations Enterprise
+def create_forms_url_result_mitigations_enterprise(result):
+    form_sets_result = formset_factory(MitigationsEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_mitigations_enterprise-TOTAL_FORMS": len(result),
+        "url_mitigations_enterprise-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_mitigations_enterprise-{i}-id"] = element.external_reference
+        i = i + 1
+
+    print(data)
+    result_forms = form_sets_result(data, prefix="url_mitigations_enterprise")
+    print(result_forms.cleaned_data)
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+#######################################################################
+#######################################################################
+
+# Creating Forms for all URL Results in Tactics mobile
+def create_forms_url_result_tactics_mobile(result):
+    form_sets_result = formset_factory(TacticsMobileUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_tactics_mobile-TOTAL_FORMS": len(result),
+        "url_tactics_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_tactics_mobile-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_tactics_mobile")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Campaigns mobile
+def create_forms_url_result_campaigns_mobile(result):
+    form_sets_result = formset_factory(CampaignsMobileUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_campaigns_mobile-TOTAL_FORMS": len(result),
+        "url_campaigns_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_campaigns_mobile-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_campaigns_mobile")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Groups mobile
+def create_forms_url_result_groups_mobile(result):
+    form_sets_result = formset_factory(GroupsMobileUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_groups_mobile-TOTAL_FORMS": len(result),
+        "url_groups_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_groups_mobile-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_groups_mobile")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Techniques mobile
+def create_forms_url_result_techniques_mobile(result):
+    form_sets_result = formset_factory(TechniquesMobileUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_techniques_mobile-TOTAL_FORMS": len(result),
+        "url_techniques_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_techniques_mobile-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_techniques_mobile")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Software mobile
+def create_forms_url_result_software_mobile(result):
+    form_sets_result = formset_factory(SoftwareMobileUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_software_mobile-TOTAL_FORMS": len(result),
+        "url_software_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_software_mobile-{i}-id"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_software_mobile")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Mitigations mobile
+def create_forms_url_result_mitigations_mobile(result):
+    form_sets_result = formset_factory(MitigationsMobileUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_mitigations_mobile-TOTAL_FORMS": len(result),
+        "url_mitigations_mobile-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_mitigations_mobile-{i}-id"] = element.external_reference
+        i = i + 1
+
+    print(data)
+    result_forms = form_sets_result(data, prefix="url_mitigations_mobile")
+    print(result_forms.cleaned_data)
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+#######################################################################
+#######################################################################
+
+# Creating Forms for all URL Results in Tactics ics
+def create_forms_url_result_tactics_ics(result):
+    form_sets_result = formset_factory(TacticsEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_tactics_ics-TOTAL_FORMS": len(result),
+        "url_tactics_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_tactics_ics-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_tactics_ics")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Campaigns ics
+def create_forms_url_result_campaigns_ics(result):
+    form_sets_result = formset_factory(CampaignsIcsUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_campaigns_ics-TOTAL_FORMS": len(result),
+        "url_campaigns_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_campaigns_ics-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_campaigns_ics")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Groups ics
+def create_forms_url_result_groups_ics(result):
+    form_sets_result = formset_factory(GroupsIcsUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_groups_ics-TOTAL_FORMS": len(result),
+        "url_groups_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_groups_ics-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_groups_ics")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Techniques ics
+def create_forms_url_result_techniques_ics(result):
+    form_sets_result = formset_factory(TechniquesIcsUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_techniques_ics-TOTAL_FORMS": len(result),
+        "url_techniques_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_techniques_ics-{i}-url"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_techniques_ics")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Software ics
+def create_forms_url_result_software_ics(result):
+    form_sets_result = formset_factory(SoftwareIcsUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_software_ics-TOTAL_FORMS": len(result),
+        "url_software_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_software_ics-{i}-id"] = element.external_reference
+        i = i + 1
+
+    result_forms = form_sets_result(data, prefix="url_software_ics")
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
+
+# Creating Forms for all URL Results in Mitigations ics
+def create_forms_url_result_mitigations_ics(result):
+    form_sets_result = formset_factory(MitigationsIcsUrlsForm, extra=len(result), max_num=len(result))
+
+    data = {
+        "url_mitigations_ics-TOTAL_FORMS": len(result),
+        "url_mitigations_ics-INITIAL_FORMS": 0,
+    }
+
+    i = 0
+
+    for element in result:
+        data[f"url_mitigations_ics-{i}-id"] = element.external_reference
+        i = i + 1
+
+    print(data)
+    result_forms = form_sets_result(data, prefix="url_mitigations_ics")
+    print(result_forms.cleaned_data)
+
+    if result_forms.is_valid():
+        print("erfolgreich")
+        return result_forms
+
+    else:
+        print("Form not valid")
+        return "error"
