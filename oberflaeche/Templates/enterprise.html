@@ -117,7 +117,34 @@
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
-                <button class="block_button" type="submit">Mobile</button>
+                <form method="post" action="{% url "mobile" %}" enctype="multipart/form-data" >
+
+                    {% csrf_token %}
+
+                    {{Tactics_Enterprise_Form}}
+                    {{Campaigns_Enterprise_Form}}
+                    {{Groups_Enterprise_Form}}
+                    {{Techniques_Enterprise_Form}}
+                    {{Software_Enterprise_Form}}
+                    {{Mitigations_Enterprise_Form}}
+
+                    {{Tactics_Mobile_Form}}
+                    {{Campaigns_Mobile_Form}}
+                    {{Groups_Mobile_Form}}
+                    {{Techniques_Mobile_Form}}
+                    {{Software_Mobile_Form}}
+                    {{Mitigations_Mobile_Form}}
+
+                    {{Tactics_ICS_Form}}
+                    {{Campaigns_ICS_Form}}
+                    {{Groups_ICS_Form}}
+                    {{Techniques_ICS_Form}}
+                    {{Software_ICS_Form}}
+                    {{Mitigations_ICS_Form}}
+
+                    <button class="block_button" type="submit">Mobile</button>
+                </form>
+
 
                 <button class="block_button" type="submit">ICS</button>
             </div>

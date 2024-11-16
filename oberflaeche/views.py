@@ -1,4 +1,5 @@
 import datetime
+from multiprocessing.forkserver import connect_to_new_process
 
 import bs4
 from django.shortcuts import render
@@ -200,26 +201,59 @@ def enterprise(request):
 def mobile(request):
     if request.method == "POST":
 
-        testformset = ResultCountEnterpriseForm(request.POST, request.FILES, prefix="count_enterprise")
-        print(testformset)
-        if testformset.is_valid():
-            test = testformset.cleaned_data
-            zahl = test ['count']
-            print(zahl)
+        formset_cluster = formset_factory(MatrixIdForm)
 
-        testformset2 = ResultCountMobileForm(request.POST, request.FILES, prefix="count_mobile")
-        print(testformset2)
-        if testformset2.is_valid():
-            test = testformset2.cleaned_data
-            zahl = test ['count']
-            print(zahl)
+        tactics_form = formset_cluster(request.POST, request.FILES, prefix="tactics_enterprise")
+        campaigns_form = formset_cluster(request.POST, request.FILES, prefix="campaigns_enterprise")
+        groups_form = formset_cluster(request.POST, request.FILES, prefix="groups_enterprise")
+        techniques_form = formset_cluster(request.POST, request.FILES, prefix="techniques_enterprise")
+        software_form = formset_cluster(request.POST, request.FILES, prefix="software_enterprise")
+        mitigations_form = formset_cluster(request.POST, request.FILES, prefix="mitigations_enterprise")
 
-        testformset3 = ResultCountIcsForm(request.POST, request.FILES, prefix="count_ics")
-        print(testformset3)
-        if testformset3.is_valid():
-            test = testformset3.cleaned_data
-            zahl = test ['count']
-            print(zahl)
+        tactics = []
+        campaigns = []
+        groups = []
+        techniques = []
+        software = []
+        mitigations = []
+
+
+        for form in tactics_form:
+            if form.is_valid():
+                test = form.cleaned_data
+                tactics.append(test ['id'])
+
+        for form in campaigns_form:
+            if form.is_valid():
+                test = form.cleaned_data
+                campaigns.append(test ['id'])
+
+        for form in groups_form:
+            if form.is_valid():
+                test = form.cleaned_data
+                groups.append(test ['id'])
+
+        for form in techniques_form:
+            if form.is_valid():
+                test = form.cleaned_data
+                techniques.append(test ['id'])
+
+        for form in software_form:
+            if form.is_valid():
+                test = form.cleaned_data
+                software.append(test ['id'])
+
+        for form in mitigations_form:
+            if form.is_valid():
+                test = form.cleaned_data
+                mitigations.append(test ['id'])
+
+        print(tactics)
+        print(campaigns)
+        print(groups)
+        print(techniques)
+        print(software)
+        print(mitigations)
 
         return render(request, 'mobile.html')
     else:
@@ -233,11 +267,69 @@ def index_saved(request):
     if request.method == 'POST':
 
         keyword_form = KeywordForm(request.POST, request.FILES, prefix="keyword")
-        count_enterprise_form = ResultCountEnterpriseForm(request.POST, request.FILES, prefix="count_enterprise")
-        count_mobile_form = ResultCountMobileForm(request.POST, request.FILES, prefix="count_mobile")
-        count_ics_form = ResultCountIcsForm(request.POST, request.FILES, prefix="count_ics")
+        count_enterprise_form = ResultCountForm(request.POST, request.FILES, prefix="count_enterprise")
+        count_mobile_form = ResultCountForm(request.POST, request.FILES, prefix="count_mobile")
+        count_ics_form = ResultCountForm(request.POST, request.FILES, prefix="count_ics")
+
+        formset_cluster = formset_factory(MatrixIdForm)
+
+        tactics_form = formset_cluster(request.POST, request.FILES, prefix="tactics_enterprise")
+        campaigns_form = formset_cluster(request.POST, request.FILES, prefix="campaigns_enterprise")
+        groups_form = formset_cluster(request.POST, request.FILES, prefix="groups_enterprise")
+        techniques_form = formset_cluster(request.POST, request.FILES, prefix="techniques_enterprise")
+        software_form = formset_cluster(request.POST, request.FILES, prefix="software_enterprise")
+        mitigations_form = formset_cluster(request.POST, request.FILES, prefix="mitigations_enterprise")
+
+        tactics_form_mobile = formset_cluster(request.POST, request.FILES, prefix="tactics_mobile")
+        campaigns_form_mobile = formset_cluster(request.POST, request.FILES, prefix="campaigns_mobile")
+        groups_form_mobile = formset_cluster(request.POST, request.FILES, prefix="groups_mobile")
+        techniques_form_mobile = formset_cluster(request.POST, request.FILES, prefix="techniques_mobile")
+        software_form_mobile = formset_cluster(request.POST, request.FILES, prefix="software_mobile")
+        mitigations_form_mobile = formset_cluster(request.POST, request.FILES, prefix="mitigations_mobile")
+
+        tactics_form_ics = formset_cluster(request.POST, request.FILES, prefix="tactics_ics")
+        campaigns_form_ics = formset_cluster(request.POST, request.FILES, prefix="campaigns_ics")
+        groups_form_ics = formset_cluster(request.POST, request.FILES, prefix="groups_ics")
+        techniques_form_ics = formset_cluster(request.POST, request.FILES, prefix="techniques_ics")
+        software_form_ics = formset_cluster(request.POST, request.FILES, prefix="software_ics")
+        mitigations_form_ics = formset_cluster(request.POST, request.FILES, prefix="mitigations_ics")
+
+#########################################################################################################
+
+        formset_cluster_url = formset_factory(UrlsForm)
+
+        tactics_url_form = formset_cluster_url(request.POST, request.FILES, prefix="tactics_enterprise")
+        campaigns_url_form = formset_cluster_url(request.POST, request.FILES, prefix="campaigns_enterprise")
+        groups_url_form = formset_cluster_url(request.POST, request.FILES, prefix="groups_enterprise")
+        techniques_url_form = formset_cluster_url(request.POST, request.FILES, prefix="techniques_enterprise")
+        software_url_form = formset_cluster_url(request.POST, request.FILES, prefix="software_enterprise")
+        mitigations_url_form = formset_cluster_url(request.POST, request.FILES, prefix="mitigations_enterprise")
+
+        tactics_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="tactics_mobile")
+        campaigns_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="campaigns_mobile")
+        groups_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="groups_mobile")
+        techniques_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="techniques_mobile")
+        software_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="software_mobile")
+        mitigations_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="mitigations_mobile")
+
+        tactics_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="tactics_ics")
+        campaigns_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="campaigns_ics")
+        groups_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="groups_ics")
+        techniques_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="techniques_ics")
+        software_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="software_ics")
+        mitigations_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="mitigations_ics")
+
+#########################################################################################################
 
         keyword, count_enterprise, count_mobile, count_ics = get_index_parameters(keyword_form, count_enterprise_form, count_mobile_form, count_ics_form)
+
+        tactics, campaigns, groups, techniques, software, mitigations = get_matrix_ids_from_forms(tactics_form, campaigns_form, groups_form, techniques_form, software_form, mitigations_form)
+        tactics_mobile, campaigns_mobile, groups_mobile, techniques_mobile, software_mobile, mitigations_mobile = get_matrix_ids_from_forms(tactics_form_mobile, campaigns_form_mobile, groups_form_mobile, techniques_form_mobile, software_form_mobile, mitigations_form_mobile)
+        tactics_ics, campaigns_ics, groups_ics, techniques_ics, software_ics, mitigations_ics = get_matrix_ids_from_forms(tactics_form_ics, campaigns_form_ics, groups_form_ics, techniques_form_ics, software_form_ics, mitigations_form_ics)
+
+        tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url = get_urls_from_forms(tactics_url_form, campaigns_url_form, groups_url_form, techniques_url_form, software_url_form, mitigations_url_form)
+        tactics_mobile_url, campaigns_mobile_url, groups_mobile_url, techniques_mobile_url, software_mobile_url, mitigations_mobile_url = get_urls_from_forms(tactics_url_form_mobile, campaigns_url_form_mobile, groups_url_form_mobile, techniques_url_form_mobile, software_url_form_mobile, mitigations_url_form_mobile)
+        tactics_ics_url, campaigns_ics_url, groups_ics_url, techniques_ics_url, software_ics_url, mitigations_ics_url = get_urls_from_forms(tactics_url_form_ics, campaigns_url_form_ics, groups_url_form_ics, techniques_url_form_ics, software_url_form_ics, mitigations_url_form_ics)
 
         index_enterprise = IndexEnterprise(
             keyword = keyword,
@@ -245,17 +337,26 @@ def index_saved(request):
         )
         index_enterprise.save()
 
+        connect_index_with_enterprise_result(index_enterprise, tactics, campaigns, groups, techniques, software, mitigations)
+        connect_index_with_enterprise_url_result(index_enterprise, tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url)
+
         index_mobile = IndexMobile(
             keyword = keyword,
             answer_count = count_enterprise
         )
         index_mobile.save()
 
+        connect_index_with_mobile_result(index_mobile, tactics_mobile, campaigns_mobile, groups_mobile, techniques_mobile, software_mobile, mitigations_mobile)
+        connect_index_with_mobile_url_result(index_enterprise, tactics_mobile_url, campaigns_mobile_url, groups_mobile_url, techniques_mobile_url, software_mobile_url, mitigations_mobile_url)
+
         index_ics = IndexIcs(
             keyword = keyword,
             answer_count = count_enterprise
         )
         index_ics.save()
+
+        connect_index_with_ics_result(index_ics, tactics_ics, campaigns_ics, groups_ics, techniques_ics, software_ics, mitigations_ics)
+        connect_index_with_enterprise_url_result(index_enterprise, tactics_ics_url, campaigns_ics_url, groups_ics_url, techniques_ics_url, software_ics_url, mitigations_ics_url)
 
     return render(request, 'index_save_successfull.html')
 
@@ -1275,6 +1376,355 @@ def get_index_parameters(keyword_form, count_enterprise_form, count_mobile_form,
 
     return keyword, count_enterprise, count_mobile, count_ics
 
+def get_matrix_ids_from_forms(tactics_form, campaigns_form, groups_form, techniques_form, software_form, mitigations_form):
+
+    tactics_temp = []
+    campaigns_temp = []
+    groups_temp = []
+    techniques_temp = []
+    software_temp = []
+    mitigations_temp = []
+
+    for form in tactics_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            tactics_temp.append(test['id'])
+
+    for form in campaigns_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            campaigns_temp.append(test['id'])
+
+    for form in groups_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            groups_temp.append(test['id'])
+
+    for form in techniques_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            techniques_temp.append(test['id'])
+
+    for form in software_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            software_temp.append(test['id'])
+
+    for form in mitigations_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            mitigations_temp.append(test['id'])
+
+    return tactics_temp, campaigns_temp, groups_temp, techniques_temp, software_temp, mitigations_temp
+
+def get_urls_from_forms(tactics_url_form, campaigns_url_form, groups_url_form, techniques_url_form, software_url_form, mitigations_url_form):
+
+    tactics_url_temp = []
+    campaigns_url_temp = []
+    groups_url_temp = []
+    techniques_url_temp = []
+    software_url_temp = []
+    mitigations_url_temp = []
+
+    for form in tactics_url_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            tactics_url_temp.append(test['url'])
+
+    for form in campaigns_url_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            campaigns_url_temp.append(test['url'])
+
+    for form in groups_url_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            groups_url_temp.append(test['url'])
+
+    for form in techniques_url_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            techniques_url_temp.append(test['url'])
+
+    for form in software_url_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            software_url_temp.append(test['url'])
+
+    for form in mitigations_url_form:
+        if form.is_valid():
+            test = form.cleaned_data
+            mitigations_url_temp.append(test['url'])
+
+    return tactics_url_temp, campaigns_url_temp, groups_url_temp, techniques_url_temp, software_url_temp, mitigations_url_temp
+
+#######################################################################
+#######################################################################
+
+def connect_index_with_enterprise_result(index_object, tactics, campaigns, groups, techniques, software, mitigations):
+
+    for tactic in tactics:
+        if not tactic:
+            continue
+        else:
+            temp = Tactics.objects.get(mitre=tactic)
+            index_object.tactics.add(temp)
+
+    for campaign in campaigns:
+        if not campaign:
+            continue
+        else:
+            temp = Campaigns.objects.get(mitre=campaign)
+            index_object.campaigns.add(temp)
+
+    for group in groups:
+        if not group:
+            continue
+        else:
+            temp = Groups.objects.get(mitre=group)
+            index_object.groups.add(temp)
+
+    for technique in techniques:
+        if not technique:
+            continue
+        else:
+            temp = Techniques.objects.get(mitre=technique)
+            index_object.techniques.add(temp)
+
+    for soft in software:
+        if not soft:
+            continue
+        else:
+            temp = Software.objects.get(mitre=soft)
+            index_object.software.add(temp)
+
+    for mitigation in mitigations:
+        if not mitigation:
+            continue
+        else:
+            temp = Mitigations.objects.get(mitre=mitigation)
+            index_object.mitigations.add(temp)
+
+def connect_index_with_mobile_result(index_object, tactics, campaigns, groups, techniques, software, mitigations):
+
+    for tactic in tactics:
+        if not tactic:
+            continue
+        else:
+            temp = TacticsMobile.objects.get(mitre=tactic)
+            index_object.tacticsmobile.add(temp)
+
+    for campaign in campaigns:
+        if not campaign:
+            continue
+        else:
+            temp = Campaigns.objects.get(mitre=campaign)
+            index_object.campaignsmobile.add(temp)
+
+    for group in groups:
+        if not group:
+            continue
+        else:
+            temp = Groups.objects.get(mitre=group)
+            index_object.groupsmobile.add(temp)
+
+    for technique in techniques:
+        if not technique:
+            continue
+        else:
+            temp = Techniques.objects.get(mitre=technique)
+            index_object.techniquesmobile.add(temp)
+
+    for soft in software:
+        if not soft:
+            continue
+        else:
+            temp = Software.objects.get(mitre=soft)
+            index_object.softwaremobile.add(temp)
+
+    for mitigation in mitigations:
+        if not mitigation:
+            continue
+        else:
+            temp = Mitigations.objects.get(mitre=mitigation)
+            index_object.mitigationsmobile.add(temp)
+
+def connect_index_with_ics_result(index_object, tactics, campaigns, groups, techniques, software, mitigations):
+
+    for tactic in tactics:
+        if not tactic:
+            continue
+        else:
+            temp = TacticsIcs.objects.get(mitre=tactic)
+            index_object.tacticsics.add(temp)
+
+    for campaign in campaigns:
+        if not campaign:
+            continue
+        else:
+            temp = CampaignsIcs.objects.get(mitre=campaign)
+            index_object.campaignsics.add(temp)
+
+    for group in groups:
+        if not group:
+            continue
+        else:
+            temp = GroupsIcs.objects.get(mitre=group)
+            index_object.groupsics.add(temp)
+
+    for technique in techniques:
+        if not technique:
+            continue
+        else:
+            temp = TechniquesIcs.objects.get(mitre=technique)
+            index_object.techniquesics.add(temp)
+
+    for soft in software:
+        if not soft:
+            continue
+        else:
+            temp = SoftwareIcs.objects.get(mitre=soft)
+            index_object.softwareics.add(temp)
+
+    for mitigation in mitigations:
+        if not mitigation:
+            continue
+        else:
+            temp = MitigationsIcs.objects.get(mitre=mitigation)
+            index_object.mitigationsics.add(temp)
+
+def connect_index_with_enterprise_url_result(index_object, tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url):
+
+    for url in tactics_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesTacticEnterprise.objects.get(external_reference=url)
+            index_object.urlreferencestacticenterprise.add(temp)
+
+    for url in campaigns_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesCampaignsEnterprise.objects.get(external_reference=url)
+            index_object.urlreferencescampaignsenterprise.add(temp)
+
+    for url in groups_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesGroupsEnterprise.objects.get(external_reference=url)
+            index_object.urlreferencesgroupsenterprise.add(temp)
+
+    for url in techniques_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesTechniquesEnterprise.objects.get(external_reference=url)
+            index_object.urlreferencestechniquesenterprise.add(temp)
+
+    for url in software_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesSoftwareEnterprise.objects.get(external_reference=url)
+            index_object.urlreferencessoftwareenterprise.add(temp)
+
+    for url in mitigations_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesMitigationsEnterprise.objects.get(external_reference=url)
+            index_object.urlreferencesmitigationsenterprise.add(temp)
+
+def connect_index_with_mobile_url_result(index_object, tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url):
+
+    for url in tactics_url:
+        if not url:
+            continue
+        else:
+            temp = UrlRefsTacticMobile.objects.get(external_reference=url)
+            index_object.urlrefstacticmobile.add(temp)
+
+    for url in campaigns_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesCampaignsMobile.objects.get(external_reference=url)
+            index_object.urlreferencescampaignsmobile.add(temp)
+
+    for url in groups_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesGroupsMobile.objects.get(external_reference=url)
+            index_object.urlreferencesgroupsmobile.add(temp)
+
+    for url in techniques_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesTechniquesMobile.objects.get(external_reference=url)
+            index_object.urlreferencestechniquesmobile.add(temp)
+
+    for url in software_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesSoftwareMobile.objects.get(external_reference=url)
+            index_object.urlreferencessoftwaremobile.add(temp)
+
+    for url in mitigations_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesMitigationsMobile.objects.get(external_reference=url)
+            index_object.urlreferencesmitigationsmobile.add(temp)
+
+def connect_index_with_ics_url_result(index_object, tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url):
+
+    for url in tactics_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesTacticIcs.objects.get(external_reference=url)
+            index_object.urlreferencestacticics.add(temp)
+
+    for url in campaigns_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesCampaignsIcs.objects.get(external_reference=url)
+            index_object.urlreferencescampaignsics.add(temp)
+
+    for url in groups_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesGroupsIcs.objects.get(external_reference=url)
+            index_object.urlreferencesgroupsics.add(temp)
+
+    for url in techniques_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesTechniquesIcs.objects.get(external_reference=url)
+            index_object.urlreferencestechniquesics.add(temp)
+
+    for url in software_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesSoftwareIcs.objects.get(external_reference=url)
+            index_object.urlreferencessoftwareics.add(temp)
+
+    for url in mitigations_url:
+        if not url:
+            continue
+        else:
+            temp = UrlReferencesMitigationsIcs.objects.get(external_reference=url)
+            index_object.urlreferencesmitigationsics.add(temp)
+
 #######################################################################
 #######################################################################
 
@@ -1292,7 +1742,7 @@ def create_forms_result_keyword (keyword):
 
 def create_forms_result_count_enterprise(result_count):
 
-    result_count_form = ResultCountEnterpriseForm({"count_enterprise-count": result_count}, prefix="count_enterprise")
+    result_count_form = ResultCountForm({"count_enterprise-count": result_count}, prefix="count_enterprise")
     print (result_count_form)
 
     if result_count_form.is_valid():
@@ -1303,7 +1753,7 @@ def create_forms_result_count_enterprise(result_count):
 
 def create_forms_result_count_mobile(result_count):
 
-    result_count_form = ResultCountMobileForm({"count_mobile-count": result_count}, prefix="count_mobile")
+    result_count_form = ResultCountForm({"count_mobile-count": result_count}, prefix="count_mobile")
     if result_count_form.is_valid():
         return result_count_form
     else:
@@ -1312,7 +1762,7 @@ def create_forms_result_count_mobile(result_count):
 
 def create_forms_result_count_ics(result_count):
 
-    result_count_form = ResultCountIcsForm({"count_ics-count": result_count}, prefix="count_ics")
+    result_count_form = ResultCountForm({"count_ics-count": result_count}, prefix="count_ics")
     if result_count_form.is_valid():
         return result_count_form
     else:
@@ -1325,7 +1775,7 @@ def create_forms_result_count_ics(result_count):
 # Creating Forms for all Results in Tactics Enterprise
 def create_forms_result_tactics_enterprise (result):
 
-    form_sets_result = formset_factory(TacticsEnterpriseForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "tactics_enterprise-TOTAL_FORMS": len(result),
@@ -1351,7 +1801,7 @@ def create_forms_result_tactics_enterprise (result):
 # Creating Forms for all Results in Campaigns Enterprise
 def create_forms_result_campaigns_enterprise (result):
 
-    form_sets_result = formset_factory(CampaignsEnterpriseForm,extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm,extra=len(result), max_num=len(result))
 
     data = {
         "campaigns_enterprise-TOTAL_FORMS": len(result),
@@ -1377,7 +1827,7 @@ def create_forms_result_campaigns_enterprise (result):
 # Creating Forms for all Results in Groups Enterprise
 def create_forms_result_groups_enterprise (result):
 
-    form_sets_result = formset_factory(GroupsEnterpriseForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "groups_enterprise-TOTAL_FORMS": len(result),
@@ -1403,7 +1853,7 @@ def create_forms_result_groups_enterprise (result):
 # Creating Forms for all Results in Techniques Enterprise
 def create_forms_result_techniques_enterprise (result):
 
-    form_sets_result = formset_factory(TechniquesEnterpriseForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "techniques_enterprise-TOTAL_FORMS": len(result),
@@ -1429,7 +1879,7 @@ def create_forms_result_techniques_enterprise (result):
 # Creating Forms for all Results in Software Enterprise
 def create_forms_result_software_enterprise (result):
 
-    form_sets_result = formset_factory(SoftwareEnterpriseForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "software_enterprise-TOTAL_FORMS": len(result),
@@ -1455,7 +1905,7 @@ def create_forms_result_software_enterprise (result):
 # Creating Forms for all Results in Mitigations Enterprise
 def create_forms_result_mitigations_enterprise (result):
 
-    form_sets_result = formset_factory(MitigationsEnterpriseForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "mitigations_enterprise-TOTAL_FORMS": len(result),
@@ -1485,7 +1935,7 @@ def create_forms_result_mitigations_enterprise (result):
 
 # Creating Forms for all Results in Tactics Mobile
 def create_forms_result_tactics_mobile(result):
-    form_sets_result = formset_factory(TacticsMobileForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "tactics_mobile-TOTAL_FORMS": len(result),
@@ -1510,7 +1960,7 @@ def create_forms_result_tactics_mobile(result):
 
 # Creating Forms for all Results in Campaigns Mobile
 def create_forms_result_campaigns_mobile(result):
-    form_sets_result = formset_factory(CampaignsMobileForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "campaigns_mobile-TOTAL_FORMS": len(result),
@@ -1535,7 +1985,7 @@ def create_forms_result_campaigns_mobile(result):
 
 # Creating Forms for all Results in Groups Mobile
 def create_forms_result_groups_mobile(result):
-    form_sets_result = formset_factory(GroupsMobileForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "groups_mobile-TOTAL_FORMS": len(result),
@@ -1560,7 +2010,7 @@ def create_forms_result_groups_mobile(result):
 
 # Creating Forms for all Results in Techniques Mobile
 def create_forms_result_techniques_mobile(result):
-    form_sets_result = formset_factory(TechniquesMobileForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "techniques_mobile-TOTAL_FORMS": len(result),
@@ -1585,7 +2035,7 @@ def create_forms_result_techniques_mobile(result):
 
 # Creating Forms for all Results in Software Mobile
 def create_forms_result_software_mobile(result):
-    form_sets_result = formset_factory(SoftwareMobileForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "software_mobile-TOTAL_FORMS": len(result),
@@ -1610,7 +2060,7 @@ def create_forms_result_software_mobile(result):
 
 # Creating Forms for all Results in Mitigations Mobile
 def create_forms_result_mitigations_mobile(result):
-    form_sets_result = formset_factory(MitigationsMobileForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "mitigations_mobile-TOTAL_FORMS": len(result),
@@ -1640,7 +2090,7 @@ def create_forms_result_mitigations_mobile(result):
 
 # Creating Forms for all Results in Tactics Ics
 def create_forms_result_tactics_ics(result):
-    form_sets_result = formset_factory(TacticsIcsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "tactics_ics-TOTAL_FORMS": len(result),
@@ -1665,7 +2115,7 @@ def create_forms_result_tactics_ics(result):
 
 # Creating Forms for all Results in Campaigns Ics
 def create_forms_result_campaigns_ics(result):
-    form_sets_result = formset_factory(CampaignsIcsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "campaigns_ics-TOTAL_FORMS": len(result),
@@ -1690,7 +2140,7 @@ def create_forms_result_campaigns_ics(result):
 
 # Creating Forms for all Results in Groups Ics
 def create_forms_result_groups_ics(result):
-    form_sets_result = formset_factory(GroupsIcsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "groups_ics-TOTAL_FORMS": len(result),
@@ -1715,7 +2165,7 @@ def create_forms_result_groups_ics(result):
 
 # Creating Forms for all Results in Techniques Ics
 def create_forms_result_techniques_ics(result):
-    form_sets_result = formset_factory(TechniquesIcsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "techniques_ics-TOTAL_FORMS": len(result),
@@ -1740,7 +2190,7 @@ def create_forms_result_techniques_ics(result):
 
 # Creating Forms for all Results in Software Ics
 def create_forms_result_software_ics(result):
-    form_sets_result = formset_factory(SoftwareIcsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "software_ics-TOTAL_FORMS": len(result),
@@ -1765,7 +2215,7 @@ def create_forms_result_software_ics(result):
 
 # Creating Forms for all Results in Mitigations Ics
 def create_forms_result_mitigations_ics(result):
-    form_sets_result = formset_factory(MitigationsIcsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(MatrixIdForm, extra=len(result), max_num=len(result))
 
     data = {
         "mitigations_ics-TOTAL_FORMS": len(result),
@@ -1795,7 +2245,7 @@ def create_forms_result_mitigations_ics(result):
 
 # Creating Forms for all URL Results in Tactics Enterprise
 def create_forms_url_result_tactics_enterprise(result):
-    form_sets_result = formset_factory(TacticsEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_tactics_enterprise-TOTAL_FORMS": len(result),
@@ -1820,7 +2270,7 @@ def create_forms_url_result_tactics_enterprise(result):
 
 # Creating Forms for all URL Results in Campaigns Enterprise
 def create_forms_url_result_campaigns_enterprise(result):
-    form_sets_result = formset_factory(CampaignsEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_campaigns_enterprise-TOTAL_FORMS": len(result),
@@ -1845,7 +2295,7 @@ def create_forms_url_result_campaigns_enterprise(result):
 
 # Creating Forms for all URL Results in Groups Enterprise
 def create_forms_url_result_groups_enterprise(result):
-    form_sets_result = formset_factory(GroupsEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_groups_enterprise-TOTAL_FORMS": len(result),
@@ -1870,7 +2320,7 @@ def create_forms_url_result_groups_enterprise(result):
 
 # Creating Forms for all URL Results in Techniques Enterprise
 def create_forms_url_result_techniques_enterprise(result):
-    form_sets_result = formset_factory(TechniquesEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_techniques_enterprise-TOTAL_FORMS": len(result),
@@ -1895,7 +2345,7 @@ def create_forms_url_result_techniques_enterprise(result):
 
 # Creating Forms for all URL Results in Software Enterprise
 def create_forms_url_result_software_enterprise(result):
-    form_sets_result = formset_factory(SoftwareEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_software_enterprise-TOTAL_FORMS": len(result),
@@ -1920,7 +2370,7 @@ def create_forms_url_result_software_enterprise(result):
 
 # Creating Forms for all URL Results in Mitigations Enterprise
 def create_forms_url_result_mitigations_enterprise(result):
-    form_sets_result = formset_factory(MitigationsEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_mitigations_enterprise-TOTAL_FORMS": len(result),
@@ -1950,7 +2400,7 @@ def create_forms_url_result_mitigations_enterprise(result):
 
 # Creating Forms for all URL Results in Tactics mobile
 def create_forms_url_result_tactics_mobile(result):
-    form_sets_result = formset_factory(TacticsMobileUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_tactics_mobile-TOTAL_FORMS": len(result),
@@ -1975,7 +2425,7 @@ def create_forms_url_result_tactics_mobile(result):
 
 # Creating Forms for all URL Results in Campaigns mobile
 def create_forms_url_result_campaigns_mobile(result):
-    form_sets_result = formset_factory(CampaignsMobileUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_campaigns_mobile-TOTAL_FORMS": len(result),
@@ -2000,7 +2450,7 @@ def create_forms_url_result_campaigns_mobile(result):
 
 # Creating Forms for all URL Results in Groups mobile
 def create_forms_url_result_groups_mobile(result):
-    form_sets_result = formset_factory(GroupsMobileUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_groups_mobile-TOTAL_FORMS": len(result),
@@ -2025,7 +2475,7 @@ def create_forms_url_result_groups_mobile(result):
 
 # Creating Forms for all URL Results in Techniques mobile
 def create_forms_url_result_techniques_mobile(result):
-    form_sets_result = formset_factory(TechniquesMobileUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_techniques_mobile-TOTAL_FORMS": len(result),
@@ -2050,7 +2500,7 @@ def create_forms_url_result_techniques_mobile(result):
 
 # Creating Forms for all URL Results in Software mobile
 def create_forms_url_result_software_mobile(result):
-    form_sets_result = formset_factory(SoftwareMobileUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_software_mobile-TOTAL_FORMS": len(result),
@@ -2075,7 +2525,7 @@ def create_forms_url_result_software_mobile(result):
 
 # Creating Forms for all URL Results in Mitigations mobile
 def create_forms_url_result_mitigations_mobile(result):
-    form_sets_result = formset_factory(MitigationsMobileUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_mitigations_mobile-TOTAL_FORMS": len(result),
@@ -2105,7 +2555,7 @@ def create_forms_url_result_mitigations_mobile(result):
 
 # Creating Forms for all URL Results in Tactics ics
 def create_forms_url_result_tactics_ics(result):
-    form_sets_result = formset_factory(TacticsEnterpriseUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_tactics_ics-TOTAL_FORMS": len(result),
@@ -2130,7 +2580,7 @@ def create_forms_url_result_tactics_ics(result):
 
 # Creating Forms for all URL Results in Campaigns ics
 def create_forms_url_result_campaigns_ics(result):
-    form_sets_result = formset_factory(CampaignsIcsUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_campaigns_ics-TOTAL_FORMS": len(result),
@@ -2155,7 +2605,7 @@ def create_forms_url_result_campaigns_ics(result):
 
 # Creating Forms for all URL Results in Groups ics
 def create_forms_url_result_groups_ics(result):
-    form_sets_result = formset_factory(GroupsIcsUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_groups_ics-TOTAL_FORMS": len(result),
@@ -2180,7 +2630,7 @@ def create_forms_url_result_groups_ics(result):
 
 # Creating Forms for all URL Results in Techniques ics
 def create_forms_url_result_techniques_ics(result):
-    form_sets_result = formset_factory(TechniquesIcsUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_techniques_ics-TOTAL_FORMS": len(result),
@@ -2205,7 +2655,7 @@ def create_forms_url_result_techniques_ics(result):
 
 # Creating Forms for all URL Results in Software ics
 def create_forms_url_result_software_ics(result):
-    form_sets_result = formset_factory(SoftwareIcsUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_software_ics-TOTAL_FORMS": len(result),
@@ -2230,7 +2680,7 @@ def create_forms_url_result_software_ics(result):
 
 # Creating Forms for all URL Results in Mitigations ics
 def create_forms_url_result_mitigations_ics(result):
-    form_sets_result = formset_factory(MitigationsIcsUrlsForm, extra=len(result), max_num=len(result))
+    form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
         "url_mitigations_ics-TOTAL_FORMS": len(result),
