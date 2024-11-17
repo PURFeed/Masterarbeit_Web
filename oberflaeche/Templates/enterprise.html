@@ -413,7 +413,7 @@
                     {% for i in Campaigns_Urls %}
                         <tr>
                             <td>{{ i.campaign.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -429,7 +429,7 @@
                     {% for i in Tactics_Urls %}
                         <tr>
                             <td>{{ i.tactic.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -445,7 +445,7 @@
                     {% for i in Groups_Urls %}
                         <tr>
                             <td>{{ i.group.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -461,7 +461,7 @@
                     {% for i in Techniques_Urls %}
                         <tr>
                             <td>{{ i.technique.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -477,7 +477,7 @@
                     {% for i in Software_Urls %}
                         <tr>
                             <td>{{ i.software.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -493,7 +493,7 @@
                     {% for i in Mitigations_Urls %}
                         <tr>
                             <td>{{ i.mitigation.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -702,7 +702,7 @@
                     {% for i in Campaigns_Urls_Mobile %}
                         <tr>
                             <td>{{ i.campaign_mobile.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -718,7 +718,7 @@
                     {% for i in Tactics_Urls_Mobile %}
                         <tr>
                             <td>{{ i.tactic_mobile.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -734,7 +734,7 @@
                     {% for i in Groups_Urls_Mobile %}
                         <tr>
                             <td>{{ i.group_mobile.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -750,7 +750,7 @@
                     {% for i in Techniques_Urls_Mobile %}
                         <tr>
                             <td>{{ i.technique_mobile.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -766,7 +766,7 @@
                     {% for i in Software_Urls_Mobile %}
                         <tr>
                             <td>{{ i.software_mobile.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -782,7 +782,7 @@
                     {% for i in Mitigations_Urls_Mobile %}
                         <tr>
                             <td>{{ i.mitigation_mobile.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -991,7 +991,7 @@
                     {% for i in Campaigns_Urls_Ics %}
                         <tr>
                             <td>{{ i.campaign_ics.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -1007,7 +1007,7 @@
                     {% for i in Tactics_Urls_Ics %}
                         <tr>
                             <td>{{ i.tactic_ics.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -1023,7 +1023,7 @@
                     {% for i in Groups_Urls_Ics %}
                         <tr>
                             <td>{{ i.group_ics.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -1039,7 +1039,7 @@
                     {% for i in Techniques_Urls_Ics %}
                         <tr>
                             <td>{{ i.technique_ics.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -1055,7 +1055,7 @@
                     {% for i in Software_Urls_Ics %}
                         <tr>
                             <td>{{ i.software_ics.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -1071,7 +1071,7 @@
                     {% for i in Mitigations_Urls_Ics %}
                         <tr>
                             <td>{{ i.mitigation_ics.mitre }}</td>
-                            <td> <a href="{{i.external_references}}" target="_blank"> URL: {{i.external_references}}</a> </td>
+                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                         </tr>
                     {% endfor %}
                 </table>

@@ -2,6 +2,7 @@ import datetime
 from multiprocessing.forkserver import connect_to_new_process
 
 import bs4
+from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import render
 from django.forms import formset_factory
 from requests.exceptions import SSLError, InvalidURL, MissingSchema
@@ -298,26 +299,26 @@ def index_saved(request):
 
         formset_cluster_url = formset_factory(UrlsForm)
 
-        tactics_url_form = formset_cluster_url(request.POST, request.FILES, prefix="tactics_enterprise")
-        campaigns_url_form = formset_cluster_url(request.POST, request.FILES, prefix="campaigns_enterprise")
-        groups_url_form = formset_cluster_url(request.POST, request.FILES, prefix="groups_enterprise")
-        techniques_url_form = formset_cluster_url(request.POST, request.FILES, prefix="techniques_enterprise")
-        software_url_form = formset_cluster_url(request.POST, request.FILES, prefix="software_enterprise")
-        mitigations_url_form = formset_cluster_url(request.POST, request.FILES, prefix="mitigations_enterprise")
+        tactics_url_form = formset_cluster_url(request.POST, request.FILES, prefix="url_tactics_enterprise")
+        campaigns_url_form = formset_cluster_url(request.POST, request.FILES, prefix="url_campaigns_enterprise")
+        groups_url_form = formset_cluster_url(request.POST, request.FILES, prefix="url_groups_enterprise")
+        techniques_url_form = formset_cluster_url(request.POST, request.FILES, prefix="url_techniques_enterprise")
+        software_url_form = formset_cluster_url(request.POST, request.FILES, prefix="url_software_enterprise")
+        mitigations_url_form = formset_cluster_url(request.POST, request.FILES, prefix="url_mitigations_enterprise")
 
-        tactics_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="tactics_mobile")
-        campaigns_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="campaigns_mobile")
-        groups_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="groups_mobile")
-        techniques_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="techniques_mobile")
-        software_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="software_mobile")
-        mitigations_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="mitigations_mobile")
+        tactics_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="url_tactics_mobile")
+        campaigns_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="url_campaigns_mobile")
+        groups_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="url_groups_mobile")
+        techniques_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="url_techniques_mobile")
+        software_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="url_software_mobile")
+        mitigations_url_form_mobile = formset_cluster_url(request.POST, request.FILES, prefix="url_mitigations_mobile")
 
-        tactics_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="tactics_ics")
-        campaigns_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="campaigns_ics")
-        groups_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="groups_ics")
-        techniques_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="techniques_ics")
-        software_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="software_ics")
-        mitigations_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="mitigations_ics")
+        tactics_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="url_tactics_ics")
+        campaigns_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="url_campaigns_ics")
+        groups_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="url_groups_ics")
+        techniques_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="url_techniques_ics")
+        software_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="url_software_ics")
+        mitigations_url_form_ics = formset_cluster_url(request.POST, request.FILES, prefix="url_mitigations_ics")
 
 #########################################################################################################
 
@@ -342,21 +343,21 @@ def index_saved(request):
 
         index_mobile = IndexMobile(
             keyword = keyword,
-            answer_count = count_enterprise
+            answer_count = count_mobile
         )
         index_mobile.save()
 
         connect_index_with_mobile_result(index_mobile, tactics_mobile, campaigns_mobile, groups_mobile, techniques_mobile, software_mobile, mitigations_mobile)
-        connect_index_with_mobile_url_result(index_enterprise, tactics_mobile_url, campaigns_mobile_url, groups_mobile_url, techniques_mobile_url, software_mobile_url, mitigations_mobile_url)
+        connect_index_with_mobile_url_result(index_mobile, tactics_mobile_url, campaigns_mobile_url, groups_mobile_url, techniques_mobile_url, software_mobile_url, mitigations_mobile_url)
 
         index_ics = IndexIcs(
             keyword = keyword,
-            answer_count = count_enterprise
+            answer_count = count_ics
         )
         index_ics.save()
 
         connect_index_with_ics_result(index_ics, tactics_ics, campaigns_ics, groups_ics, techniques_ics, software_ics, mitigations_ics)
-        connect_index_with_enterprise_url_result(index_enterprise, tactics_ics_url, campaigns_ics_url, groups_ics_url, techniques_ics_url, software_ics_url, mitigations_ics_url)
+        connect_index_with_enterprise_url_result(index_ics, tactics_ics_url, campaigns_ics_url, groups_ics_url, techniques_ics_url, software_ics_url, mitigations_ics_url)
 
     return render(request, 'index_save_successfull.html')
 
@@ -1446,6 +1447,7 @@ def get_urls_from_forms(tactics_url_form, campaigns_url_form, groups_url_form, t
             test = form.cleaned_data
             techniques_url_temp.append(test['url'])
 
+    print(software_url_form)
     for form in software_url_form:
         if form.is_valid():
             test = form.cleaned_data
@@ -1512,42 +1514,42 @@ def connect_index_with_mobile_result(index_object, tactics, campaigns, groups, t
             continue
         else:
             temp = TacticsMobile.objects.get(mitre=tactic)
-            index_object.tacticsmobile.add(temp)
+            index_object.tactics.add(temp)
 
     for campaign in campaigns:
         if not campaign:
             continue
         else:
             temp = Campaigns.objects.get(mitre=campaign)
-            index_object.campaignsmobile.add(temp)
+            index_object.campaigns.add(temp)
 
     for group in groups:
         if not group:
             continue
         else:
             temp = Groups.objects.get(mitre=group)
-            index_object.groupsmobile.add(temp)
+            index_object.groups.add(temp)
 
     for technique in techniques:
         if not technique:
             continue
         else:
             temp = Techniques.objects.get(mitre=technique)
-            index_object.techniquesmobile.add(temp)
+            index_object.techniques.add(temp)
 
     for soft in software:
         if not soft:
             continue
         else:
             temp = Software.objects.get(mitre=soft)
-            index_object.softwaremobile.add(temp)
+            index_object.software.add(temp)
 
     for mitigation in mitigations:
         if not mitigation:
             continue
         else:
             temp = Mitigations.objects.get(mitre=mitigation)
-            index_object.mitigationsmobile.add(temp)
+            index_object.mitigations.add(temp)
 
 def connect_index_with_ics_result(index_object, tactics, campaigns, groups, techniques, software, mitigations):
 
@@ -1556,42 +1558,42 @@ def connect_index_with_ics_result(index_object, tactics, campaigns, groups, tech
             continue
         else:
             temp = TacticsIcs.objects.get(mitre=tactic)
-            index_object.tacticsics.add(temp)
+            index_object.tactics.add(temp)
 
     for campaign in campaigns:
         if not campaign:
             continue
         else:
             temp = CampaignsIcs.objects.get(mitre=campaign)
-            index_object.campaignsics.add(temp)
+            index_object.campaigns.add(temp)
 
     for group in groups:
         if not group:
             continue
         else:
             temp = GroupsIcs.objects.get(mitre=group)
-            index_object.groupsics.add(temp)
+            index_object.groups.add(temp)
 
     for technique in techniques:
         if not technique:
             continue
         else:
             temp = TechniquesIcs.objects.get(mitre=technique)
-            index_object.techniquesics.add(temp)
+            index_object.techniques.add(temp)
 
     for soft in software:
         if not soft:
             continue
         else:
             temp = SoftwareIcs.objects.get(mitre=soft)
-            index_object.softwareics.add(temp)
+            index_object.software.add(temp)
 
     for mitigation in mitigations:
         if not mitigation:
             continue
         else:
             temp = MitigationsIcs.objects.get(mitre=mitigation)
-            index_object.mitigationsics.add(temp)
+            index_object.mitigations.add(temp)
 
 def connect_index_with_enterprise_url_result(index_object, tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url):
 
@@ -1599,43 +1601,73 @@ def connect_index_with_enterprise_url_result(index_object, tactics_url, campaign
         if not url:
             continue
         else:
-            temp = UrlReferencesTacticEnterprise.objects.get(external_reference=url)
-            index_object.urlreferencestacticenterprise.add(temp)
+            try:
+                temp = UrlReferencesTacticEnterprise.objects.get(external_reference=url)
+                index_object.tactics_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesTacticEnterprise.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.tactics_refs.add(element)
 
     for url in campaigns_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesCampaignsEnterprise.objects.get(external_reference=url)
-            index_object.urlreferencescampaignsenterprise.add(temp)
+            try:
+                temp = UrlReferencesCampaignsEnterprise.objects.get(external_reference=url)
+                index_object.campaigns_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesCampaignsEnterprise.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.campaigns_refs.add(element)
 
     for url in groups_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesGroupsEnterprise.objects.get(external_reference=url)
-            index_object.urlreferencesgroupsenterprise.add(temp)
+            try:
+                temp = UrlReferencesGroupsEnterprise.objects.get(external_reference=url)
+                index_object.groups_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesGroupsEnterprise.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.groups_refs.add(element)
 
     for url in techniques_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesTechniquesEnterprise.objects.get(external_reference=url)
-            index_object.urlreferencestechniquesenterprise.add(temp)
+            try:
+                temp = UrlReferencesTechniquesEnterprise.objects.get(external_reference=url)
+                index_object.techniques_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesTechniquesEnterprise.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.techniques_refs.add(element)
 
     for url in software_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesSoftwareEnterprise.objects.get(external_reference=url)
-            index_object.urlreferencessoftwareenterprise.add(temp)
+            try:
+                temp = UrlReferencesSoftwareEnterprise.objects.get(external_reference=url)
+                index_object.software_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesSoftwareEnterprise.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.software_refs.add(element)
 
     for url in mitigations_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesMitigationsEnterprise.objects.get(external_reference=url)
-            index_object.urlreferencesmitigationsenterprise.add(temp)
+            try:
+                temp = UrlReferencesMitigationsEnterprise.objects.get(external_reference=url)
+                index_object.mitigations_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesMitigationsEnterprise.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.mitigations_refs.add(element)
 
 def connect_index_with_mobile_url_result(index_object, tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url):
 
@@ -1643,43 +1675,73 @@ def connect_index_with_mobile_url_result(index_object, tactics_url, campaigns_ur
         if not url:
             continue
         else:
-            temp = UrlRefsTacticMobile.objects.get(external_reference=url)
-            index_object.urlrefstacticmobile.add(temp)
+            try:
+                temp = UrlRefsTacticMobile.objects.get(external_reference=url)
+                index_object.tactics_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlRefsTacticMobile.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.tactics_refs.add(element)
 
     for url in campaigns_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesCampaignsMobile.objects.get(external_reference=url)
-            index_object.urlreferencescampaignsmobile.add(temp)
+            try:
+                temp = UrlReferencesCampaignsMobile.objects.get(external_reference=url)
+                index_object.campaigns_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesCampaignsMobile.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.campaigns_refs.add(element)
 
     for url in groups_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesGroupsMobile.objects.get(external_reference=url)
-            index_object.urlreferencesgroupsmobile.add(temp)
+            try:
+                temp = UrlReferencesGroupsMobile.objects.get(external_reference=url)
+                index_object.groups_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesGroupsMobile.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.groups_refs.add(element)
 
     for url in techniques_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesTechniquesMobile.objects.get(external_reference=url)
-            index_object.urlreferencestechniquesmobile.add(temp)
+            try:
+                temp = UrlReferencesTechniquesMobile.objects.get(external_reference=url)
+                index_object.techniques_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesTechniquesMobile.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.techniques_refs.add(element)
 
     for url in software_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesSoftwareMobile.objects.get(external_reference=url)
-            index_object.urlreferencessoftwaremobile.add(temp)
+            try:
+                temp = UrlReferencesSoftwareMobile.objects.get(external_reference=url)
+                index_object.software_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesSoftwareMobile.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.software_refs.add(element)
 
     for url in mitigations_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesMitigationsMobile.objects.get(external_reference=url)
-            index_object.urlreferencesmitigationsmobile.add(temp)
+            try:
+                temp = UrlReferencesMitigationsMobile.objects.get(external_reference=url)
+                index_object.mitigations_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesMitigationsMobile.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.mitigations_refs.add(element)
 
 def connect_index_with_ics_url_result(index_object, tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url):
 
@@ -1687,43 +1749,75 @@ def connect_index_with_ics_url_result(index_object, tactics_url, campaigns_url, 
         if not url:
             continue
         else:
-            temp = UrlReferencesTacticIcs.objects.get(external_reference=url)
-            index_object.urlreferencestacticics.add(temp)
+            try:
+                temp = UrlReferencesTacticIcs.objects.get(external_reference=url)
+                index_object.tactics_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesTacticIcs.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.tactics_refs.add(element)
+
 
     for url in campaigns_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesCampaignsIcs.objects.get(external_reference=url)
-            index_object.urlreferencescampaignsics.add(temp)
+            try:
+                temp = UrlReferencesCampaignsIcs.objects.get(external_reference=url)
+                index_object.campaigns_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesCampaignsIcs.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.campaigns_refs.add(element)
+
 
     for url in groups_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesGroupsIcs.objects.get(external_reference=url)
-            index_object.urlreferencesgroupsics.add(temp)
+            try:
+                temp = UrlReferencesGroupsIcs.objects.get(external_reference=url)
+                index_object.groups_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesGroupsIcs.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.groups_refs.add(element)
 
     for url in techniques_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesTechniquesIcs.objects.get(external_reference=url)
-            index_object.urlreferencestechniquesics.add(temp)
+            try:
+                temp = UrlReferencesTechniquesIcs.objects.get(external_reference=url)
+                index_object.techniques_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesTechniquesIcs.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.techniques_refs.add(element)
 
     for url in software_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesSoftwareIcs.objects.get(external_reference=url)
-            index_object.urlreferencessoftwareics.add(temp)
+            try:
+                temp = UrlReferencesSoftwareIcs.objects.get(external_reference=url)
+                index_object.software_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesSoftwareIcs.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.software_refs.add(element)
 
     for url in mitigations_url:
         if not url:
             continue
         else:
-            temp = UrlReferencesMitigationsIcs.objects.get(external_reference=url)
-            index_object.urlreferencesmitigationsics.add(temp)
+            try:
+                temp = UrlReferencesMitigationsIcs.objects.get(external_reference=url)
+                index_object.mitigations_refs.add(temp)
+            except MultipleObjectsReturned:
+                temp = UrlReferencesMitigationsIcs.objects.all().filter(external_reference=url)
+                for element in temp:
+                    index_object.mitigations_refs.add(element)
 
 #######################################################################
 #######################################################################
@@ -2345,6 +2439,7 @@ def create_forms_url_result_techniques_enterprise(result):
 
 # Creating Forms for all URL Results in Software Enterprise
 def create_forms_url_result_software_enterprise(result):
+
     form_sets_result = formset_factory(UrlsForm, extra=len(result), max_num=len(result))
 
     data = {
@@ -2355,7 +2450,7 @@ def create_forms_url_result_software_enterprise(result):
     i = 0
 
     for element in result:
-        data[f"url_software_enterprise-{i}-id"] = element.external_reference
+        data[f"url_software_enterprise-{i}-url"] = element.external_reference
         i = i + 1
 
     result_forms = form_sets_result(data, prefix="url_software_enterprise")
@@ -2380,7 +2475,7 @@ def create_forms_url_result_mitigations_enterprise(result):
     i = 0
 
     for element in result:
-        data[f"url_mitigations_enterprise-{i}-id"] = element.external_reference
+        data[f"url_mitigations_enterprise-{i}-url"] = element.external_reference
         i = i + 1
 
     print(data)
@@ -2510,8 +2605,10 @@ def create_forms_url_result_software_mobile(result):
     i = 0
 
     for element in result:
-        data[f"url_software_mobile-{i}-id"] = element.external_reference
+        data[f"url_software_mobile-{i}-url"] = element.external_reference
         i = i + 1
+
+    print(data)
 
     result_forms = form_sets_result(data, prefix="url_software_mobile")
 
@@ -2535,7 +2632,7 @@ def create_forms_url_result_mitigations_mobile(result):
     i = 0
 
     for element in result:
-        data[f"url_mitigations_mobile-{i}-id"] = element.external_reference
+        data[f"url_mitigations_mobile-{i}-url"] = element.external_reference
         i = i + 1
 
     print(data)
@@ -2665,8 +2762,10 @@ def create_forms_url_result_software_ics(result):
     i = 0
 
     for element in result:
-        data[f"url_software_ics-{i}-id"] = element.external_reference
+        data[f"url_software_ics-{i}-url"] = element.external_reference
         i = i + 1
+
+    print(data)
 
     result_forms = form_sets_result(data, prefix="url_software_ics")
 
@@ -2690,12 +2789,10 @@ def create_forms_url_result_mitigations_ics(result):
     i = 0
 
     for element in result:
-        data[f"url_mitigations_ics-{i}-id"] = element.external_reference
+        data[f"url_mitigations_ics-{i}-url"] = element.external_reference
         i = i + 1
 
-    print(data)
     result_forms = form_sets_result(data, prefix="url_mitigations_ics")
-    print(result_forms.cleaned_data)
 
     if result_forms.is_valid():
         print("erfolgreich")

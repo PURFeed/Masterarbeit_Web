@@ -78,10 +78,12 @@
 
         <form class="example" style="margin:auto;max-width:500px" action="{% url 'enterprise' %}" method="POST">
             {% csrf_token %}
-            <input type="checkbox" id="References" name="References" value="True">
-            <label for="References"> Check the References (Estd. Runtime >5 hours) </label>
-            <input type="text" placeholder="Search..." name="keyword">
-            <button type="submit" id="Search" value="Submit"> Search </button>
+            <div>
+                <input type="checkbox" id="References" name="References" value="True">
+                <label for="References"> Check the References (Estd. Runtime >2 hours) </label>
+                <input type="text" placeholder="Search..." name="keyword">
+                <button type="submit" id="Search" value="Submit"> Search </button>
+            </div>
         </form>
     </body>
 </html>
