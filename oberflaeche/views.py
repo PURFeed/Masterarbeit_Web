@@ -6,7 +6,6 @@ from django.forms import formset_factory
 from django.contrib import messages
 
 from requests.exceptions import SSLError, MissingSchema
-from cybox.objects.http_session_object import HTTPRequestResponse
 
 from .models import *
 from .forms import *
