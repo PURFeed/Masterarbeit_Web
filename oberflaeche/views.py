@@ -22,7 +22,8 @@ def home(request):
     return render(request, 'suche.html')
 
 def results_for_keyword(request):
-    if request.method == 'POST' and request.META["HTTP_REFERER"] == "/results":
+    print(request.META["HTTP_REFERER"])
+    if request.method == 'POST' and request.META["HTTP_REFERER"] == "http://127.0.0.1:8000/results/":
 
         keyword_form = KeywordForm(request.POST, request.FILES, prefix="keyword")
         all_index = IndexEnterprise.objects.all()
@@ -35,9 +36,12 @@ def results_for_keyword(request):
             keyword = keyword_form.cleaned_data['keyword']
             if keyword in all_index_keywords :
                 messages.error(request, 'Keyword exists already')
+                return render(request, 'index.html')
             else:
                 index_saved(request)
                 messages.success(request, 'Keyword added successfully')
+                return render(request, 'index.html')
+
     elif request.method == 'POST':
 
         print(datetime.datetime.now())
@@ -397,7 +401,7 @@ def index_saved(request):
         index_ics.save()
 
         connect_index_with_ics_result(index_ics, tactics_ics, campaigns_ics, groups_ics, techniques_ics, software_ics, mitigations_ics)
-        connect_index_with_enterprise_url_result(index_ics, tactics_ics_url, campaigns_ics_url, groups_ics_url, techniques_ics_url, software_ics_url, mitigations_ics_url)
+        connect_index_with_ics_url_result(index_ics, tactics_ics_url, campaigns_ics_url, groups_ics_url, techniques_ics_url, software_ics_url, mitigations_ics_url)
 
     return render(request, 'index_save_successfull.html')
 
@@ -1562,35 +1566,35 @@ def connect_index_with_mobile_result(index_object, tactics, campaigns, groups, t
         if not campaign:
             continue
         else:
-            temp = Campaigns.objects.get(mitre=campaign)
+            temp = CampaignsMobile.objects.get(mitre=campaign)
             index_object.campaigns.add(temp)
 
     for group in groups:
         if not group:
             continue
         else:
-            temp = Groups.objects.get(mitre=group)
+            temp = GroupsMobile.objects.get(mitre=group)
             index_object.groups.add(temp)
 
     for technique in techniques:
         if not technique:
             continue
         else:
-            temp = Techniques.objects.get(mitre=technique)
+            temp = TechniquesMobile.objects.get(mitre=technique)
             index_object.techniques.add(temp)
 
     for soft in software:
         if not soft:
             continue
         else:
-            temp = Software.objects.get(mitre=soft)
+            temp = SoftwareMobile.objects.get(mitre=soft)
             index_object.software.add(temp)
 
     for mitigation in mitigations:
         if not mitigation:
             continue
         else:
-            temp = Mitigations.objects.get(mitre=mitigation)
+            temp = MitigationsMobile.objects.get(mitre=mitigation)
             index_object.mitigations.add(temp)
 
 def connect_index_with_ics_result(index_object, tactics, campaigns, groups, techniques, software, mitigations):
