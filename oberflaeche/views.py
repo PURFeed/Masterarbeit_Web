@@ -226,6 +226,81 @@ def index(request):
     return render(request, 'index.html', {'keyword_list': keyword_list})
 
 def index_result(request):
+    if request.method == "GET":
+        keyword = request.GET.get('keyword', None).lower()
+        print(keyword)
+
+        object_enterprise = IndexEnterprise.objects.get(keyword=keyword)
+        object_mobile = IndexMobile.objects.get(keyword=keyword)
+        object_ics = IndexIcs.objects.get(keyword=keyword)
+
+        result_count_enterprise = object_enterprise.answer_count
+        result_count_mobile =object_mobile.answer_count
+        result_count_ics = object_ics.answer_count
+
+        #########################################################################################
+
+        tactics = object_enterprise.tactics.all()
+        campaigns = object_enterprise.campaigns.all()
+        groups = object_enterprise.groups.all()
+        techniques = object_enterprise.techniques.all()
+        software = object_enterprise.software.all()
+        mitigations = object_enterprise.mitigations.all()
+
+        result_tactics_refs = object_enterprise.tactics_refs.all()
+        result_campaigns_refs = object_enterprise.campaigns_refs.all()
+        result_groups_refs = object_enterprise.groups_refs.all()
+        result_techniques_refs = object_enterprise.techniques_refs.all()
+        result_software_refs = object_enterprise.software_refs.all()
+        result_mitigations_refs = object_enterprise.campaigns_refs.all()
+        #########################################################################################
+        #########################################################################################
+
+        tactics_mobile = object_mobile.tactics.all()
+        campaigns_mobile = object_mobile.campaigns.all()
+        groups_mobile = object_mobile.groups.all()
+        techniques_mobile = object_mobile.techniques.all()
+        software_mobile = object_mobile.software.all()
+        mitigations_mobile = object_mobile.mitigations.all()
+
+        result_tactics_refs_mobile = object_mobile.tactics_refs.all()
+        result_campaigns_refs_mobile = object_mobile.campaigns_refs.all()
+        result_groups_refs_mobile = object_mobile.groups_refs.all()
+        result_techniques_refs_mobile = object_mobile.techniques_refs.all()
+        result_software_refs_mobile = object_mobile.software_refs.all()
+        result_mitigations_refs_mobile = object_mobile.campaigns_refs.all()
+        #########################################################################################
+        #########################################################################################
+
+        tactics_ics = object_ics.tactics.all()
+        campaigns_ics = object_ics.campaigns.all()
+        groups_ics = object_ics.groups.all()
+        techniques_ics = object_ics.techniques.all()
+        software_ics = object_ics.software.all()
+        mitigations_ics = object_ics.mitigations.all()
+
+        result_tactics_refs_ics = object_ics.tactics_refs.all()
+        result_campaigns_refs_ics = object_ics.campaigns_refs.all()
+        result_groups_refs_ics = object_ics.groups_refs.all()
+        result_techniques_refs_ics = object_ics.techniques_refs.all()
+        result_software_refs_ics = object_ics.software_refs.all()
+        result_mitigations_refs_ics = object_ics.campaigns_refs.all()
+
+        return render(request, 'index_result.html', {"Keyword": keyword, "Result_Count_Enterprise": result_count_enterprise,
+             "Techniques_Enterprise": techniques, "Groups_Enterprise": groups,
+             "Mitigations_Enterprise": mitigations, "Software_Enterprise": software, "Campaigns_Enterprise": campaigns,
+             "Tactics_Enterprise": tactics, "Result_Count_Mobile": result_count_mobile, "Techniques_Mobile": techniques_mobile, "Groups_Mobile": groups_mobile,
+             "Mitigations_Mobile": mitigations_mobile, "Software_Mobile": software_mobile, "Campaigns_Mobile": campaigns_mobile,
+             "Tactics_Mobile": tactics_mobile, "Result_Count_ICS": result_count_ics, "Techniques_ICS": techniques_ics, "Groups_ICS": groups_ics,
+             "Mitigations_ICS": mitigations_ics, "Software_ICS": software_ics, "Campaigns_ICS": campaigns_ics,
+             "Tactics_ICS": tactics_ics, "Techniques_Urls": result_techniques_refs,
+             "Groups_Urls": result_groups_refs, "Mitigations_Urls": result_mitigations_refs, "Software_Urls": result_software_refs,
+             "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs, "Techniques_Urls_Mobile": result_techniques_refs_mobile,
+             "Groups_Urls_Mobile": result_groups_refs_mobile, "Mitigations_Urls_Mobile": result_mitigations_refs_mobile, "Software_Urls_Mobile": result_software_refs_mobile,
+             "Campaigns_Urls_Mobile": result_campaigns_refs_mobile, "Tactics_Urls_Mobile": result_tactics_refs_mobile, "Techniques_Urls_Ics": result_techniques_refs_ics,
+             "Groups_Urls_Ics": result_groups_refs_ics, "Mitigations_Urls_Ics": result_mitigations_refs_ics, "Software_Urls_Ics": result_software_refs_ics,
+             "Campaigns_Urls_Ics": result_campaigns_refs_ics, "Tactics_Urls_Ics": result_tactics_refs_ics})
+
     return render(request, 'index_result.html')
 
 def index_saved(request):

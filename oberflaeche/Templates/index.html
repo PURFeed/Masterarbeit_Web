@@ -62,11 +62,11 @@
           <a href={% url 'home' %}>Home</a>
         </div>
         <h1>Keywords:</h1>
-        <form action="{% url 'index_result' %}" method="POST">
-            {% csrf_token %}
-            {% for i in keyword_list %}
-                <button class="block_button" type="submit" value="{{ i }}"><b>{{ i }}</b></button>
-            {% endfor %}
-        </form>
+        {% for i in keyword_list %}
+            <form action="{% url 'index_result' %}" method="GET">
+                <input type="hidden" id="keyword" name="keyword" value="{{ i }}">
+                <button class="block_button" type="submit" value="Submit"><b>{{ i }}</b></button>
+            </form>
+        {% endfor %}
     </body>
 </html>
