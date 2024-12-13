@@ -3,94 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <style>
-            body {
-              font-family: Arial, Helvetica, sans-serif;
-            }
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+          font-family: Arial, Helvetica, sans-serif;
+        }
 
-            .navbar {
-              overflow: hidden;
-              background-color: #333;
-            }
+        .block_button {
+            display: block;
+            width: 15%;
+            background-color: #f9f9f9;
+            color: black;
+            padding: 14px 28px;
+            font-size: 25px;
+            cursor: pointer;
+            text-align: center;
 
-            .navbar a {
-              float: left;
-              font-size: 16px;
-              color: white;
-              text-align: center;
-              padding: 14px 16px;
-              text-decoration: none;
-            }
+        }
 
-            .dropdown {
-              float: left;
-              overflow: hidden;
-            }
+        .block_button:hover {
+          background-color: darkgrey;
+        }
 
-            .dropdown .dropbtn {
-              font-size: 16px;
-              border: none;
-              outline: none;
-              color: white;
-              padding: 14px 16px;
-              background-color: inherit;
-              font-family: inherit;
-              margin: 0;
-            }
+        .navbar {
+          overflow: hidden;
+          background-color: #333;
+        }
 
-            .navbar a:hover, .dropdown:hover .dropbtn {
-              background-color: red;
-            }
+        .navbar a {
+          float: left;
+          font-size: 16px;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
 
-            .dropdown-content {
-              display: none;
-              position: absolute;
-              background-color: #f9f9f9;
-              min-width: 160px;
-              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-              z-index: 1;
-            }
+        .navbar a:hover {
+          background-color: red;
+        }
 
-            .dropdown-content a {
-              float: none;
-              color: black;
-              padding: 12px 16px;
-              text-decoration: none;
-              display: block;
-              text-align: left;
-            }
+        .dropdown-content a {
+          float: none;
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+          text-align: left;
+        }
 
-            .dropdown-content a:hover {
-              background-color: #ddd;
-            }
-
-            .dropdown:hover .dropdown-content {
-              display: block;
-            }
-        </style>
-    </head>
-    <body style="background-color:white;">
+        .dropdown-content a:hover {
+          background-color: #ddd;
+        }
+    </style>
+    <body style="background-color:gray;">
 
         <div class="navbar">
           <a href={% url 'home' %}>Home</a>
-          <a href="{% url 'home' %}">Index</a>
-          <div class="dropdown">
-            <button class="dropbtn">Dropdown
-              <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-              <a href={% url 'home' %}>Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
-            </div>
-          </div>
         </div>
-
-        <h3>Test12</h3>
-        <p></p>
-
+        <h1>Keywords:</h1>
+        <form action="{% url 'index_result' %}" method="POST">
+            {% csrf_token %}
+            {% for i in keyword_list %}
+                <button class="block_button" type="submit" value="{{ i }}"><b>{{ i }}</b></button>
+            {% endfor %}
+        </form>
     </body>
 </html>

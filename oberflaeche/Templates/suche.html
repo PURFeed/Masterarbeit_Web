@@ -1,88 +1,117 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <meta charset="UTF-8">
     <title>Home</title>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-            body {
-              font-family: Arial, Helvetica, sans-serif;
-            }
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+          font-family: Arial, Helvetica, sans-serif;
+        }
 
-            .navbar {
-              overflow: hidden;
-              background-color: #333;
-            }
+        .navbar {
+          overflow: hidden;
+          background-color: #333;
+        }
 
-            .banner {
-                display: block;
-                width: 100%;
-                max-width: 800px;
-                margin-left: auto;
-                margin-right: auto;
-            }
+        .banner {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 100px;
+        }
 
-            .navbar a {
-              float: left;
-              font-size: 16px;
-              color: white;
-              text-align: center;
-              padding: 14px 16px;
-              text-decoration: none;
-            }
+        .navbar a {
+          float: left;
+          font-size: 16px;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
 
-            .dropdown:hover .dropdown-content {
-              display: block;
-            }
+        input[type=text]{
+          padding: 10px;
+          font-size: 17px;
+          border: 1px solid grey;
+          float: none;
+          width: 25%;
+          margin: auto;
+          display: block;
+        }
 
-            form.example input[type=text] {
-              padding: 10px;
-              font-size: 17px;
-              border: 1px solid grey;
-              float: left;
-              width: 80%;
-              background: #f1f1f1;
-            }
+        .label{
+          padding: 10px;
+          font-size: 17px;
+          border: 1px solid grey;
+          float: none;
+          width: 25%;
+          margin: auto;
+          display: block;
+        }
 
-            form.example button {
-              float: none;
-              width: 20%;
-              padding: 10px;
-              background: #2196F3;
-              color: white;
-              font-size: 17px;
-              border: 1px solid grey;
-              border-left: none;
-              cursor: pointer;
-            }
+        .label_check{
+          padding: 10px;
+          font-size: 17px;
+          border: 1px solid grey;
+          float: none;
+          width: 25%;
+          margin: auto;
+          display: block;
+        }
 
-            form.example button:hover {
-              background: #0b7dda;
-            }
+        .button{
+          float: none;
+          width: 15%;
+          padding: 10px;
+          background: #2196F3;
+          color: white;
+          font-size: 17px;
+          border: 1px solid grey;
+          border-left: none;
+          cursor: pointer;
+          margin: auto;
+          display: block;
+        }
 
-            form.example::after {
-              content: "";
-              clear: both;
-              display: table;
-            }
-        </style>
-    </head>
-    <body style="background-color:white;">
+        form.example button:hover {
+          background: #0b7dda;
+        }
+
+        .row::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+
+
+    </style>
+    <body style="background-color: gray;">
 
         <div class="navbar">
           <a href="/">Home</a>
           <a href="/index">Index</a>
         </div>
         
-        <img class="banner" src="https://www.manss.com/files/media-image/fachhochschule-brandenburg/fachhochschule-brandenburg-identity-1-1992.jpg" alt="Logo Webanwendung">
+        <img class="banner" src="{% static 'Logo_Web.png' %}" alt="Logo Webanwendung">
 
-        <form class="example" style="margin:auto;max-width:500px" action="{% url 'enterprise' %}" method="POST">
+        <form action="{% url 'results' %}" method="POST">
             {% csrf_token %}
-            <div>
-                <input type="checkbox" id="References" name="References" value="True">
-                <label for="References"> Check the References (Estd. Runtime >2 hours) </label>
-                <input type="text" placeholder="Search..." name="keyword">
-                <button type="submit" id="Search" value="Submit"> Search </button>
+            <div class="row">
+                <label class="label" for="keyword"><b>Please insert your Keyword:</b></label>
+                <input type="text" placeholder="Search..." id="keyword" name="keyword">
+            </div>
+            <div class="row">
+                <label class="label_check" for="References">
+                    <input type="checkbox" id="References" name="References" value="True">
+                    Search in the References for the Keyword too (Estd. Runtime >2 hours)
+                </label>
+            </div>
+            <div class="row">
+                <button class="button" type="submit" id="Search" value="Submit"> Search </button>
             </div>
         </form>
     </body>

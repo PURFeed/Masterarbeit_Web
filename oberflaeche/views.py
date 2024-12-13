@@ -1,16 +1,18 @@
 import datetime
-from multiprocessing.forkserver import connect_to_new_process
 
-import bs4
 from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import render
 from django.forms import formset_factory
-from requests.exceptions import SSLError, InvalidURL, MissingSchema
+from django.contrib import messages
+
+from requests.exceptions import SSLError, MissingSchema
+from cybox.objects.http_session_object import HTTPRequestResponse
 
 from .models import *
 from .forms import *
 from mitreattack.stix20 import MitreAttackData
 from urlextract import URLExtract
+import bs4
 from bs4 import BeautifulSoup
 import requests
 
@@ -19,10 +21,23 @@ import requests
 def home(request):
     return render(request, 'suche.html')
 
-def enterprise(request):
-    if request.method == 'POST' and request.META["HTTP_REFERER"] == "/models":
-        print("test")
+def results_for_keyword(request):
+    if request.method == 'POST' and request.META["HTTP_REFERER"] == "/results":
 
+        keyword_form = KeywordForm(request.POST, request.FILES, prefix="keyword")
+        all_index = IndexEnterprise.objects.all()
+        all_index_keywords = []
+
+        for i in all_index:
+            all_index_keywords.append(i.keyword)
+
+        if keyword_form.is_valid():
+            keyword = keyword_form.cleaned_data['keyword']
+            if keyword in all_index_keywords :
+                messages.error(request, 'Keyword exists already')
+            else:
+                index_saved(request)
+                messages.success(request, 'Keyword added successfully')
     elif request.method == 'POST':
 
         print(datetime.datetime.now())
@@ -146,7 +161,7 @@ def enterprise(request):
 
             print(datetime.datetime.now())
 
-            return render(request, 'enterprise.html', {"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
+            return render(request, 'results.html', {"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
                                             "Techniques_Enterprise": techniques,"Groups_Enterprise": groups,
                                             "Mitigations_Enterprise": mitigations, "Software_Enterprise": software,"Campaigns_Enterprise": campaigns,
                                             "Tactics_Enterprise": tactics, "Result_Count_Mobile": result_count_mobile, "Techniques_Mobile": techniques_mobile,"Groups_Mobile": groups_mobile,
@@ -157,28 +172,28 @@ def enterprise(request):
                                             "Groups_Urls": result_groups_refs, "Mitigations_Urls": result_mitigations_refs, "Software_Urls": result_software_refs,
                                             "Campaigns_Urls": result_campaigns_refs, "Tactics_Urls": result_tactics_refs, "Techniques_Urls_Mobile": result_techniques_refs_mobile,
                                             "Groups_Urls_Mobile": result_groups_refs_mobile, "Mitigations_Urls_Mobile": result_mitigations_refs_mobile, "Software_Urls_Mobile": result_software_refs_mobile,
-                                            "Campaigns_Urls_Mobile": result_campaigns_refs_mobile, "Tactics_Urls_Mobile": result_tactics_refs_mobile, "Techniques_Urls_Ics": result_techniques_refs_ics,
-                                            "Groups_Urls_Ics": result_groups_refs_ics, "Mitigations_Urls_Ics": result_mitigations_refs_ics, "Software_Urls_Ics": result_software_refs_ics,
-                                            "Campaigns_Urls_Ics": result_campaigns_refs_ics, "Tactics_Urls_Ics": result_tactics_refs_ics, "Keyword_Form":keyword_form, "Count_Enterprise_Form": result_count_enterprise_form,"Count_Mobile_Form": result_count_mobile_form,
-                                            "Count_Ics_Form": result_count_ics_form, "Techniques_Enterprise_Form": techniques_enterprise_form,"Groups_Enterprise_Form": groups_enterprise_form,
-                                            "Mitigations_Enterprise_Form": mitigations_enterprise_form, "Software_Enterprise_Form": software_enterprise_form,"Campaigns_Enterprise_Form": campaigns_enterprise_form,
-                                            "Tactics_Enterprise_Form": tactics_enterprise_form,
-                                            "Result_Count_Mobile_Form": result_count_mobile_form, "Techniques_Mobile_Form": techniques_mobile_form,"Groups_Mobile_Form": groups_mobile_form,
-                                            "Mitigations_Mobile_Form": mitigations_mobile_form, "Software_Mobile_Form": software_mobile_form,"Campaigns_Mobile_Form": campaigns_mobile_form,
-                                            "Tactics_Mobile_Form": tactics_mobile_form,
-                                            "Result_Count_ICS_Form": result_count_ics_form, "Techniques_ICS_Form": techniques_ics_form,"Groups_ICS_Form": groups_ics_form,
-                                            "Mitigations_ICS_Form": mitigations_ics_form, "Software_ICS_Form": software_ics_form,"Campaigns_ICS_Form": campaigns_ics_form,
-                                            "Tactics_ICS_Form": tactics_ics_form,
-                                            "Techniques_Urls_Form": result_techniques_refs_form, "Groups_Urls_Form": result_groups_refs_form, "Mitigations_Urls_Form": result_mitigations_refs_form, "Software_Urls_Form": result_software_refs_form,
-                                            "Campaigns_Urls_Form": result_campaigns_refs_form, "Tactics_Urls_Form": result_tactics_refs_form, "Techniques_Urls_Mobile_Form": result_techniques_mobile_refs_form,
-                                            "Groups_Urls_Mobile_Form": result_groups_mobile_refs_form, "Mitigations_Urls_Mobile_Form": result_mitigations_mobile_refs_form, "Software_Urls_Mobile_Form": result_software_mobile_refs_form,
-                                            "Campaigns_Urls_Mobile_Form": result_campaigns_mobile_refs_form, "Tactics_Urls_Mobile_Form": result_tactics_mobile_refs_form, "Techniques_Urls_Ics_Form": result_techniques_ics_refs_form,
-                                            "Groups_Urls_Ics_Form": result_groups_ics_refs_form, "Mitigations_Urls_Ics_Form": result_mitigations_ics_refs_form, "Software_Urls_Ics_Form": result_software_ics_refs_form,
-                                            "Campaigns_Urls_Ics_Form": result_campaigns_ics_refs_form, "Tactics_Urls_Ics_Form": result_tactics_ics_refs_form})
+                                                    "Campaigns_Urls_Mobile": result_campaigns_refs_mobile, "Tactics_Urls_Mobile": result_tactics_refs_mobile, "Techniques_Urls_Ics": result_techniques_refs_ics,
+                                                    "Groups_Urls_Ics": result_groups_refs_ics, "Mitigations_Urls_Ics": result_mitigations_refs_ics, "Software_Urls_Ics": result_software_refs_ics,
+                                                    "Campaigns_Urls_Ics": result_campaigns_refs_ics, "Tactics_Urls_Ics": result_tactics_refs_ics, "Keyword_Form":keyword_form, "Count_Enterprise_Form": result_count_enterprise_form, "Count_Mobile_Form": result_count_mobile_form,
+                                                    "Count_Ics_Form": result_count_ics_form, "Techniques_Enterprise_Form": techniques_enterprise_form, "Groups_Enterprise_Form": groups_enterprise_form,
+                                                    "Mitigations_Enterprise_Form": mitigations_enterprise_form, "Software_Enterprise_Form": software_enterprise_form, "Campaigns_Enterprise_Form": campaigns_enterprise_form,
+                                                    "Tactics_Enterprise_Form": tactics_enterprise_form,
+                                                    "Result_Count_Mobile_Form": result_count_mobile_form, "Techniques_Mobile_Form": techniques_mobile_form, "Groups_Mobile_Form": groups_mobile_form,
+                                                    "Mitigations_Mobile_Form": mitigations_mobile_form, "Software_Mobile_Form": software_mobile_form, "Campaigns_Mobile_Form": campaigns_mobile_form,
+                                                    "Tactics_Mobile_Form": tactics_mobile_form,
+                                                    "Result_Count_ICS_Form": result_count_ics_form, "Techniques_ICS_Form": techniques_ics_form, "Groups_ICS_Form": groups_ics_form,
+                                                    "Mitigations_ICS_Form": mitigations_ics_form, "Software_ICS_Form": software_ics_form, "Campaigns_ICS_Form": campaigns_ics_form,
+                                                    "Tactics_ICS_Form": tactics_ics_form,
+                                                    "Techniques_Urls_Form": result_techniques_refs_form, "Groups_Urls_Form": result_groups_refs_form, "Mitigations_Urls_Form": result_mitigations_refs_form, "Software_Urls_Form": result_software_refs_form,
+                                                    "Campaigns_Urls_Form": result_campaigns_refs_form, "Tactics_Urls_Form": result_tactics_refs_form, "Techniques_Urls_Mobile_Form": result_techniques_mobile_refs_form,
+                                                    "Groups_Urls_Mobile_Form": result_groups_mobile_refs_form, "Mitigations_Urls_Mobile_Form": result_mitigations_mobile_refs_form, "Software_Urls_Mobile_Form": result_software_mobile_refs_form,
+                                                    "Campaigns_Urls_Mobile_Form": result_campaigns_mobile_refs_form, "Tactics_Urls_Mobile_Form": result_tactics_mobile_refs_form, "Techniques_Urls_Ics_Form": result_techniques_ics_refs_form,
+                                                    "Groups_Urls_Ics_Form": result_groups_ics_refs_form, "Mitigations_Urls_Ics_Form": result_mitigations_ics_refs_form, "Software_Urls_Ics_Form": result_software_ics_refs_form,
+                                                    "Campaigns_Urls_Ics_Form": result_campaigns_ics_refs_form, "Tactics_Urls_Ics_Form": result_tactics_ics_refs_form})
 
         else:
 
-            return render(request, 'enterprise.html', {"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
+            return render(request, 'results.html', {"Refs_Bool": refs_needed, "Keyword": request.POST.get('keyword'), "Result_Count_Enterprise": result_count_enterprise,
                                             "Techniques_Enterprise": techniques,"Groups_Enterprise": groups,
                                             "Mitigations_Enterprise": mitigations, "Software_Enterprise": software,"Campaigns_Enterprise": campaigns,
                                             "Tactics_Enterprise": tactics,
@@ -189,79 +204,29 @@ def enterprise(request):
                                             "Mitigations_ICS": mitigations_ics, "Software_ICS": software_ics,"Campaigns_ICS": campaigns_ics,
                                             "Tactics_ICS": tactics_ics,
                                             "Keyword_Form":keyword_form, "Count_Enterprise_Form": result_count_enterprise_form,"Count_Mobile_Form": result_count_mobile_form,
-                                            "Count_Ics_Form": result_count_ics_form, "Techniques_Enterprise_Form": techniques_enterprise_form,"Groups_Enterprise_Form": groups_enterprise_form,
-                                            "Mitigations_Enterprise_Form": mitigations_enterprise_form, "Software_Enterprise_Form": software_enterprise_form,"Campaigns_Enterprise_Form": campaigns_enterprise_form,
-                                            "Tactics_Enterprise_Form": tactics_enterprise_form,
-                                            "Result_Count_Mobile_Form": result_count_mobile_form, "Techniques_Mobile_Form": techniques_mobile_form,"Groups_Mobile_Form": groups_mobile_form,
-                                            "Mitigations_Mobile_Form": mitigations_mobile_form, "Software_Mobile_Form": software_mobile_form,"Campaigns_Mobile_Form": campaigns_mobile_form,
-                                            "Tactics_Mobile_Form": tactics_mobile_form,
-                                            "Result_Count_ICS_Form": result_count_ics_form, "Techniques_ICS_Form": techniques_ics_form,"Groups_ICS_Form": groups_ics_form,
-                                            "Mitigations_ICS_Form": mitigations_ics_form, "Software_ICS_Form": software_ics_form,"Campaigns_ICS_Form": campaigns_ics_form,
-                                            "Tactics_ICS_Form": tactics_ics_form})
-
-def mobile(request):
-    if request.method == "POST":
-
-        formset_cluster = formset_factory(MatrixIdForm)
-
-        tactics_form = formset_cluster(request.POST, request.FILES, prefix="tactics_enterprise")
-        campaigns_form = formset_cluster(request.POST, request.FILES, prefix="campaigns_enterprise")
-        groups_form = formset_cluster(request.POST, request.FILES, prefix="groups_enterprise")
-        techniques_form = formset_cluster(request.POST, request.FILES, prefix="techniques_enterprise")
-        software_form = formset_cluster(request.POST, request.FILES, prefix="software_enterprise")
-        mitigations_form = formset_cluster(request.POST, request.FILES, prefix="mitigations_enterprise")
-
-        tactics = []
-        campaigns = []
-        groups = []
-        techniques = []
-        software = []
-        mitigations = []
-
-
-        for form in tactics_form:
-            if form.is_valid():
-                test = form.cleaned_data
-                tactics.append(test ['id'])
-
-        for form in campaigns_form:
-            if form.is_valid():
-                test = form.cleaned_data
-                campaigns.append(test ['id'])
-
-        for form in groups_form:
-            if form.is_valid():
-                test = form.cleaned_data
-                groups.append(test ['id'])
-
-        for form in techniques_form:
-            if form.is_valid():
-                test = form.cleaned_data
-                techniques.append(test ['id'])
-
-        for form in software_form:
-            if form.is_valid():
-                test = form.cleaned_data
-                software.append(test ['id'])
-
-        for form in mitigations_form:
-            if form.is_valid():
-                test = form.cleaned_data
-                mitigations.append(test ['id'])
-
-        print(tactics)
-        print(campaigns)
-        print(groups)
-        print(techniques)
-        print(software)
-        print(mitigations)
-
-        return render(request, 'mobile.html')
-    else:
-        return render(request, 'mobile.html')
+                                                    "Count_Ics_Form": result_count_ics_form, "Techniques_Enterprise_Form": techniques_enterprise_form, "Groups_Enterprise_Form": groups_enterprise_form,
+                                                    "Mitigations_Enterprise_Form": mitigations_enterprise_form, "Software_Enterprise_Form": software_enterprise_form, "Campaigns_Enterprise_Form": campaigns_enterprise_form,
+                                                    "Tactics_Enterprise_Form": tactics_enterprise_form,
+                                                    "Result_Count_Mobile_Form": result_count_mobile_form, "Techniques_Mobile_Form": techniques_mobile_form, "Groups_Mobile_Form": groups_mobile_form,
+                                                    "Mitigations_Mobile_Form": mitigations_mobile_form, "Software_Mobile_Form": software_mobile_form, "Campaigns_Mobile_Form": campaigns_mobile_form,
+                                                    "Tactics_Mobile_Form": tactics_mobile_form,
+                                                    "Result_Count_ICS_Form": result_count_ics_form, "Techniques_ICS_Form": techniques_ics_form, "Groups_ICS_Form": groups_ics_form,
+                                                    "Mitigations_ICS_Form": mitigations_ics_form, "Software_ICS_Form": software_ics_form, "Campaigns_ICS_Form": campaigns_ics_form,
+                                                    "Tactics_ICS_Form": tactics_ics_form})
 
 def index(request):
-    return render(request, 'index.html')
+    saved_index = IndexEnterprise.objects.all()
+    keyword_list = []
+
+    for element in saved_index:
+        keyword_list.append(element.keyword.capitalize())
+
+    keyword_list.sort()
+
+    return render(request, 'index.html', {'keyword_list': keyword_list})
+
+def index_result(request):
+    return render(request, 'index_result.html')
 
 def index_saved(request):
 
@@ -362,6 +327,8 @@ def index_saved(request):
     return render(request, 'index_save_successfull.html')
 
 def import_data(request):
+
+    messages.error(request, 'Test')
 
     # extract = URLExtract()
 

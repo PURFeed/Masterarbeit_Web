@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from oberflaeche import views
+from oberflaeche.views import index_saved
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,10 +28,12 @@ urlpatterns = [
 
     path('index/', views.index, name='index'),
 
+    path('index_result/', views.index_result, name='index_result'),
+
     path('index_save_successfull/', views.index_saved, name='success'),
 
-    path('enterprise/', views.enterprise, name='enterprise'),
+    path('results/', views.results_for_keyword, name='results'),
 
-    path('mobile/', views.mobile, name='mobile'),
+    path('import/', views.import_data, name='import')
 
 ]
