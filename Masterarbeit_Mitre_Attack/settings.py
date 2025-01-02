@@ -1,3 +1,7 @@
+#Author: Phillipp Gohlke
+#Last Edit: 02.01.2025
+#View for the Web-Application
+
 """
 Django settings for Masterarbeit_Mitre_Attack project.
 
@@ -129,4 +133,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None #Added because of the Max_NUMBER_FIELD Error

@@ -1,0 +1,4 @@
+Django~=5.1.4
+beautifulsoup4~=4.13.0b2
+requests~=2.32.3
+urlextract~=1.9.0

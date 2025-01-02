@@ -1,3 +1,7 @@
+#Author: Phillipp Gohlke
+#Last Edit: 02.01.2025
+#View for the Web-Application
+
 """
 URL configuration for Masterarbeit_Mitre_Attack project.
 
@@ -17,23 +21,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from oberflaeche import views
-from oberflaeche.views import index_saved
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', views.home, name='home'),
+    path('', views.home, name='home'), #Path for the Home-Page
 
-    # path('import/', views.import_data, name='import'),
+    path('index/', views.index, name='index'), #Path for the Saved Index
 
-    path('index/', views.index, name='index'),
+    path('index_result/', views.index_result, name='index_result'), #Path for the Index-Entry
 
-    path('index_result/', views.index_result, name='index_result'),
+    path('results/', views.results_for_keyword, name='results'), #Path for the Search Results
 
-    path('index_save_successfull/', views.index_saved, name='success'),
-
-    path('results/', views.results_for_keyword, name='results'),
-
-    path('import/', views.import_data, name='import')
+    path('import/', views.import_data, name='import') #Path to Import the Data Entries
 
 ]
