@@ -5,6 +5,7 @@
 import datetime
 
 from django.core.exceptions import MultipleObjectsReturned
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.forms import formset_factory
 from django.contrib import messages
@@ -33,17 +34,25 @@ def results_for_keyword(request):
         all_index_keywords = []
 
         for i in all_index:
-            all_index_keywords.append(i.keyword)
+            all_index_keywords.append(i.keyword.lower())
 
         if keyword_form.is_valid():
-            keyword = keyword_form.cleaned_data['keyword']
-            if keyword in all_index_keywords :
-                messages.error(request, 'Keyword exists already')
-                return render(request, 'index.html')
-            else:
-                index_saved(request)
-                messages.success(request, 'Keyword added successfully')
-                return render(request, 'index.html')
+
+            index_saved(request)
+            messages.success(request, 'Keyword added successfully')
+
+            saved_index = IndexEnterprise.objects.all()
+            keyword_list = []
+
+            for element in saved_index:
+                keyword_list.append(element.keyword.capitalize())
+
+            keyword_list.sort()
+
+            return render(request, 'index.html', {'keyword_list': keyword_list})
+        else:
+            messages.error(request, "Keyword not valid")
+            return render(request, 'index.html')
 
     elif request.method == 'POST':
 
@@ -1172,8 +1181,8 @@ def results_enterprise(keyword):
                     software.append(Software.objects.get(id=i.id))
                 case "course-of-action":
                     mitigations.append(Mitigations.objects.get(id=i.id))
-        except :
-            print ("Error in enterprise")
+        except ObjectDoesNotExist:
+            print ("Error in Result Enterprise")
             pass
 
     return tactics, campaigns, groups, techniques, software, mitigations
@@ -1207,8 +1216,8 @@ def results_mobile(keyword):
                     software.append(SoftwareMobile.objects.get(id=i.id))
                 case "course-of-action":
                     mitigations.append(MitigationsMobile.objects.get(id=i.id))
-        except :
-            print("Error in mobile")
+        except ObjectDoesNotExist:
+            print("Error in Result Mobile")
             pass
 
     return tactics, campaigns, groups, techniques, software, mitigations
@@ -1242,8 +1251,8 @@ def results_ics(keyword):
                     software.append(SoftwareIcs.objects.get(id=i.id))
                 case "course-of-action":
                     mitigations.append(MitigationsIcs.objects.get(id=i.id))
-        except :
-            print("Error in ics")
+        except ObjectDoesNotExist:
+            print("Error in Result ICS")
             pass
 
     return tactics, campaigns, groups, techniques, software, mitigations
@@ -1314,7 +1323,6 @@ def search_urls(keyword, urls_tactics, urls_campaigns, urls_groups, urls_techniq
             continue
         else:
             result_tactics.append(url)
-            print(url.external_reference)
 
     # All Refs with Keyword in Refs_Campaigns
     for url in urls_campaigns:
@@ -1343,7 +1351,6 @@ def search_urls(keyword, urls_tactics, urls_campaigns, urls_groups, urls_techniq
              continue
          else:
             result_campaigns.append(url)
-            print(url.external_reference)
 
     # All Refs with Keyword in Refs_Groups
     for url in urls_groups:
@@ -1372,7 +1379,6 @@ def search_urls(keyword, urls_tactics, urls_campaigns, urls_groups, urls_techniq
              continue
          else:
             result_groups.append(url)
-            print(url.external_reference)
 
     # All Refs with Keyword in Refs_Techniques
     for url in urls_techniques:
@@ -1401,7 +1407,6 @@ def search_urls(keyword, urls_tactics, urls_campaigns, urls_groups, urls_techniq
              continue
          else:
             result_techniques.append(url)
-            print(url.external_reference)
 
     # All Refs with Keyword in Refs_Software
     for url in urls_software:
@@ -1430,7 +1435,6 @@ def search_urls(keyword, urls_tactics, urls_campaigns, urls_groups, urls_techniq
              continue
          else:
             result_software.append(url)
-            print(url.external_reference)
 
     # All Refs with Keyword in Refs_Mitigations
     for url in urls_mitigations:
@@ -1459,7 +1463,6 @@ def search_urls(keyword, urls_tactics, urls_campaigns, urls_groups, urls_techniq
              continue
          else:
             result_mitigations.append(url)
-            print(url.external_reference)
 
     return result_tactics, result_campaigns, result_groups, result_techniques, result_software, result_mitigations
 
@@ -1469,7 +1472,7 @@ def search_urls(keyword, urls_tactics, urls_campaigns, urls_groups, urls_techniq
 def get_index_parameters(keyword_form, count_enterprise_form, count_mobile_form, count_ics_form ):
 
     if keyword_form.is_valid():
-        keyword = keyword_form.cleaned_data['keyword']
+        keyword = keyword_form.cleaned_data['keyword'].lower()
     else:
         keyword = 'error Key'
 
@@ -1560,7 +1563,6 @@ def get_urls_from_forms(tactics_url_form, campaigns_url_form, groups_url_form, t
             test = form.cleaned_data
             techniques_url_temp.append(test['url'])
 
-    print(software_url_form)
     for form in software_url_form:
         if form.is_valid():
             test = form.cleaned_data
@@ -1578,359 +1580,385 @@ def get_urls_from_forms(tactics_url_form, campaigns_url_form, groups_url_form, t
 
 def connect_index_with_enterprise_result(index_object, tactics, campaigns, groups, techniques, software, mitigations):
 
-    for tactic in tactics:
-        if not tactic:
-            continue
-        else:
-            temp = Tactics.objects.get(mitre=tactic)
-            index_object.tactics.add(temp)
+    try:
+        for tactic in tactics:
+            if not tactic:
+                continue
+            else:
+                temp = Tactics.objects.get(mitre=tactic)
+                index_object.tactics.add(temp)
 
-    for campaign in campaigns:
-        if not campaign:
-            continue
-        else:
-            temp = Campaigns.objects.get(mitre=campaign)
-            index_object.campaigns.add(temp)
+        for campaign in campaigns:
+            if not campaign:
+                continue
+            else:
+                temp = Campaigns.objects.get(mitre=campaign)
+                index_object.campaigns.add(temp)
 
-    for group in groups:
-        if not group:
-            continue
-        else:
-            temp = Groups.objects.get(mitre=group)
-            index_object.groups.add(temp)
+        for group in groups:
+            if not group:
+                continue
+            else:
+                temp = Groups.objects.get(mitre=group)
+                index_object.groups.add(temp)
 
-    for technique in techniques:
-        if not technique:
-            continue
-        else:
-            temp = Techniques.objects.get(mitre=technique)
-            index_object.techniques.add(temp)
+        for technique in techniques:
+            if not technique:
+                continue
+            else:
+                temp = Techniques.objects.get(mitre=technique)
+                index_object.techniques.add(temp)
 
-    for soft in software:
-        if not soft:
-            continue
-        else:
-            temp = Software.objects.get(mitre=soft)
-            index_object.software.add(temp)
+        for soft in software:
+            if not soft:
+                continue
+            else:
+                temp = Software.objects.get(mitre=soft)
+                index_object.software.add(temp)
 
-    for mitigation in mitigations:
-        if not mitigation:
-            continue
-        else:
-            temp = Mitigations.objects.get(mitre=mitigation)
-            index_object.mitigations.add(temp)
+        for mitigation in mitigations:
+            if not mitigation:
+                continue
+            else:
+                temp = Mitigations.objects.get(mitre=mitigation)
+                index_object.mitigations.add(temp)
+
+    except ObjectDoesNotExist:
+        print (f"Does not exist Error: Connect Index with Enterprise")
+        pass
 
 def connect_index_with_mobile_result(index_object, tactics, campaigns, groups, techniques, software, mitigations):
 
-    for tactic in tactics:
-        if not tactic:
-            continue
-        else:
-            temp = TacticsMobile.objects.get(mitre=tactic)
-            index_object.tactics.add(temp)
+    try:
+        for tactic in tactics:
+            if not tactic:
+                continue
+            else:
+                temp = TacticsMobile.objects.get(mitre=tactic)
+                index_object.tactics.add(temp)
 
-    for campaign in campaigns:
-        if not campaign:
-            continue
-        else:
-            temp = CampaignsMobile.objects.get(mitre=campaign)
-            index_object.campaigns.add(temp)
+        for campaign in campaigns:
+            if not campaign:
+                continue
+            else:
+                temp = CampaignsMobile.objects.get(mitre=campaign)
+                index_object.campaigns.add(temp)
 
-    for group in groups:
-        if not group:
-            continue
-        else:
-            temp = GroupsMobile.objects.get(mitre=group)
-            index_object.groups.add(temp)
+        for group in groups:
+            if not group:
+                continue
+            else:
+                temp = GroupsMobile.objects.get(mitre=group)
+                index_object.groups.add(temp)
 
-    for technique in techniques:
-        if not technique:
-            continue
-        else:
-            temp = TechniquesMobile.objects.get(mitre=technique)
-            index_object.techniques.add(temp)
+        for technique in techniques:
+            if not technique:
+                continue
+            else:
+                temp = TechniquesMobile.objects.get(mitre=technique)
+                index_object.techniques.add(temp)
 
-    for soft in software:
-        if not soft:
-            continue
-        else:
-            temp = SoftwareMobile.objects.get(mitre=soft)
-            index_object.software.add(temp)
+        for soft in software:
+            if not soft:
+                continue
+            else:
+                temp = SoftwareMobile.objects.get(mitre=soft)
+                index_object.software.add(temp)
 
-    for mitigation in mitigations:
-        if not mitigation:
-            continue
-        else:
-            temp = MitigationsMobile.objects.get(mitre=mitigation)
-            index_object.mitigations.add(temp)
+        for mitigation in mitigations:
+            if not mitigation:
+                continue
+            else:
+                temp = MitigationsMobile.objects.get(mitre=mitigation)
+                index_object.mitigations.add(temp)
+
+    except ObjectDoesNotExist:
+        print (f"Does not exist Error: Connect Index with Mobile")
+        pass
 
 def connect_index_with_ics_result(index_object, tactics, campaigns, groups, techniques, software, mitigations):
+    try:
+        for tactic in tactics:
+            if not tactic:
+                continue
+            else:
+                temp = TacticsIcs.objects.get(mitre=tactic)
+                index_object.tactics.add(temp)
 
-    for tactic in tactics:
-        if not tactic:
-            continue
-        else:
-            temp = TacticsIcs.objects.get(mitre=tactic)
-            index_object.tactics.add(temp)
+        for campaign in campaigns:
+            if not campaign:
+                continue
+            else:
+                temp = CampaignsIcs.objects.get(mitre=campaign)
+                index_object.campaigns.add(temp)
 
-    for campaign in campaigns:
-        if not campaign:
-            continue
-        else:
-            temp = CampaignsIcs.objects.get(mitre=campaign)
-            index_object.campaigns.add(temp)
+        for group in groups:
+            if not group:
+                continue
+            else:
+                temp = GroupsIcs.objects.get(mitre=group)
+                index_object.groups.add(temp)
 
-    for group in groups:
-        if not group:
-            continue
-        else:
-            temp = GroupsIcs.objects.get(mitre=group)
-            index_object.groups.add(temp)
+        for technique in techniques:
+            if not technique:
+                continue
+            else:
+                temp = TechniquesIcs.objects.get(mitre=technique)
+                index_object.techniques.add(temp)
 
-    for technique in techniques:
-        if not technique:
-            continue
-        else:
-            temp = TechniquesIcs.objects.get(mitre=technique)
-            index_object.techniques.add(temp)
+        for soft in software:
+            if not soft:
+                continue
+            else:
+                temp = SoftwareIcs.objects.get(mitre=soft)
+                index_object.software.add(temp)
 
-    for soft in software:
-        if not soft:
-            continue
-        else:
-            temp = SoftwareIcs.objects.get(mitre=soft)
-            index_object.software.add(temp)
+        for mitigation in mitigations:
+            if not mitigation:
+                continue
+            else:
+                temp = MitigationsIcs.objects.get(mitre=mitigation)
+                index_object.mitigations.add(temp)
 
-    for mitigation in mitigations:
-        if not mitigation:
-            continue
-        else:
-            temp = MitigationsIcs.objects.get(mitre=mitigation)
-            index_object.mitigations.add(temp)
+    except ObjectDoesNotExist:
+        print (f"Does not exist Error: Connect Index with ICS")
+        pass
 
 def connect_index_with_enterprise_url_result(index_object, tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url):
 
-    for url in tactics_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesTacticEnterprise.objects.get(external_reference=url)
-                index_object.tactics_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesTacticEnterprise.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.tactics_refs.add(element)
+    try:
+        for url in tactics_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesTacticEnterprise.objects.get(external_reference=url)
+                    index_object.tactics_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesTacticEnterprise.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.tactics_refs.add(element)
 
-    for url in campaigns_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesCampaignsEnterprise.objects.get(external_reference=url)
-                index_object.campaigns_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesCampaignsEnterprise.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.campaigns_refs.add(element)
+        for url in campaigns_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesCampaignsEnterprise.objects.get(external_reference=url)
+                    index_object.campaigns_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesCampaignsEnterprise.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.campaigns_refs.add(element)
 
-    for url in groups_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesGroupsEnterprise.objects.get(external_reference=url)
-                index_object.groups_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesGroupsEnterprise.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.groups_refs.add(element)
+        for url in groups_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesGroupsEnterprise.objects.get(external_reference=url)
+                    index_object.groups_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesGroupsEnterprise.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.groups_refs.add(element)
 
-    for url in techniques_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesTechniquesEnterprise.objects.get(external_reference=url)
-                index_object.techniques_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesTechniquesEnterprise.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.techniques_refs.add(element)
+        for url in techniques_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesTechniquesEnterprise.objects.get(external_reference=url)
+                    index_object.techniques_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesTechniquesEnterprise.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.techniques_refs.add(element)
 
-    for url in software_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesSoftwareEnterprise.objects.get(external_reference=url)
-                index_object.software_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesSoftwareEnterprise.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.software_refs.add(element)
+        for url in software_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesSoftwareEnterprise.objects.get(external_reference=url)
+                    index_object.software_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesSoftwareEnterprise.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.software_refs.add(element)
 
-    for url in mitigations_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesMitigationsEnterprise.objects.get(external_reference=url)
-                index_object.mitigations_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesMitigationsEnterprise.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.mitigations_refs.add(element)
+        for url in mitigations_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesMitigationsEnterprise.objects.get(external_reference=url)
+                    index_object.mitigations_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesMitigationsEnterprise.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.mitigations_refs.add(element)
+    except ObjectDoesNotExist:
+        print(f"Does not exist Error: Connect Index with Enterprise URL")
+        pass
 
 def connect_index_with_mobile_url_result(index_object, tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url):
 
-    for url in tactics_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlRefsTacticMobile.objects.get(external_reference=url)
-                index_object.tactics_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlRefsTacticMobile.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.tactics_refs.add(element)
+    try:
+        for url in tactics_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlRefsTacticMobile.objects.get(external_reference=url)
+                    index_object.tactics_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlRefsTacticMobile.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.tactics_refs.add(element)
 
-    for url in campaigns_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesCampaignsMobile.objects.get(external_reference=url)
-                index_object.campaigns_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesCampaignsMobile.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.campaigns_refs.add(element)
+        for url in campaigns_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesCampaignsMobile.objects.get(external_reference=url)
+                    index_object.campaigns_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesCampaignsMobile.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.campaigns_refs.add(element)
 
-    for url in groups_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesGroupsMobile.objects.get(external_reference=url)
-                index_object.groups_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesGroupsMobile.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.groups_refs.add(element)
+        for url in groups_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesGroupsMobile.objects.get(external_reference=url)
+                    index_object.groups_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesGroupsMobile.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.groups_refs.add(element)
 
-    for url in techniques_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesTechniquesMobile.objects.get(external_reference=url)
-                index_object.techniques_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesTechniquesMobile.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.techniques_refs.add(element)
+        for url in techniques_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesTechniquesMobile.objects.get(external_reference=url)
+                    index_object.techniques_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesTechniquesMobile.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.techniques_refs.add(element)
 
-    for url in software_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesSoftwareMobile.objects.get(external_reference=url)
-                index_object.software_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesSoftwareMobile.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.software_refs.add(element)
+        for url in software_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesSoftwareMobile.objects.get(external_reference=url)
+                    index_object.software_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesSoftwareMobile.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.software_refs.add(element)
 
-    for url in mitigations_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesMitigationsMobile.objects.get(external_reference=url)
-                index_object.mitigations_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesMitigationsMobile.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.mitigations_refs.add(element)
+        for url in mitigations_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesMitigationsMobile.objects.get(external_reference=url)
+                    index_object.mitigations_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesMitigationsMobile.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.mitigations_refs.add(element)
+    except ObjectDoesNotExist:
+        print(f"Does not exist Error: Connect Index with Mobile URL")
+        pass
 
 def connect_index_with_ics_url_result(index_object, tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url):
 
-    for url in tactics_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesTacticIcs.objects.get(external_reference=url)
-                index_object.tactics_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesTacticIcs.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.tactics_refs.add(element)
+    try:
+        for url in tactics_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesTacticIcs.objects.get(external_reference=url)
+                    index_object.tactics_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesTacticIcs.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.tactics_refs.add(element)
 
 
-    for url in campaigns_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesCampaignsIcs.objects.get(external_reference=url)
-                index_object.campaigns_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesCampaignsIcs.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.campaigns_refs.add(element)
+        for url in campaigns_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesCampaignsIcs.objects.get(external_reference=url)
+                    index_object.campaigns_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesCampaignsIcs.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.campaigns_refs.add(element)
 
 
-    for url in groups_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesGroupsIcs.objects.get(external_reference=url)
-                index_object.groups_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesGroupsIcs.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.groups_refs.add(element)
+        for url in groups_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesGroupsIcs.objects.get(external_reference=url)
+                    index_object.groups_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesGroupsIcs.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.groups_refs.add(element)
 
-    for url in techniques_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesTechniquesIcs.objects.get(external_reference=url)
-                index_object.techniques_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesTechniquesIcs.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.techniques_refs.add(element)
+        for url in techniques_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesTechniquesIcs.objects.get(external_reference=url)
+                    index_object.techniques_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesTechniquesIcs.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.techniques_refs.add(element)
 
-    for url in software_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesSoftwareIcs.objects.get(external_reference=url)
-                index_object.software_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesSoftwareIcs.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.software_refs.add(element)
+        for url in software_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesSoftwareIcs.objects.get(external_reference=url)
+                    index_object.software_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesSoftwareIcs.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.software_refs.add(element)
 
-    for url in mitigations_url:
-        if not url:
-            continue
-        else:
-            try:
-                temp = UrlReferencesMitigationsIcs.objects.get(external_reference=url)
-                index_object.mitigations_refs.add(temp)
-            except MultipleObjectsReturned:
-                temp = UrlReferencesMitigationsIcs.objects.all().filter(external_reference=url)
-                for element in temp:
-                    index_object.mitigations_refs.add(element)
+        for url in mitigations_url:
+            if not url:
+                continue
+            else:
+                try:
+                    temp = UrlReferencesMitigationsIcs.objects.get(external_reference=url)
+                    index_object.mitigations_refs.add(temp)
+                except MultipleObjectsReturned:
+                    temp = UrlReferencesMitigationsIcs.objects.all().filter(external_reference=url)
+                    for element in temp:
+                        index_object.mitigations_refs.add(element)
+    except ObjectDoesNotExist:
+        print(f"Does not exist Error: Connect Index with ICS URL")
+        pass
 
 #######################################################################
 #######################################################################
@@ -1941,7 +1969,7 @@ def create_forms_result_keyword (keyword):
     if keyword_form.is_valid():
         return keyword_form
     else:
-        print ("Form not valid")
+        print ("Form not valid: Create Forms Result Keyword")
         return None
 
 #######################################################################
@@ -1950,12 +1978,11 @@ def create_forms_result_keyword (keyword):
 def create_forms_result_count_enterprise(result_count):
 
     result_count_form = ResultCountForm({"count_enterprise-count": result_count}, prefix="count_enterprise")
-    print (result_count_form)
 
     if result_count_form.is_valid():
         return result_count_form
     else:
-        print ("Form not valid")
+        print ("Form not valid: : Create Forms Result Count Enterprise")
         return None
 
 def create_forms_result_count_mobile(result_count):
@@ -1964,7 +1991,7 @@ def create_forms_result_count_mobile(result_count):
     if result_count_form.is_valid():
         return result_count_form
     else:
-        print ("Form not valid")
+        print ("Form not valid : Create Forms Result Count Mobile")
         return None
 
 def create_forms_result_count_ics(result_count):
@@ -1973,7 +2000,7 @@ def create_forms_result_count_ics(result_count):
     if result_count_form.is_valid():
         return result_count_form
     else:
-        print ("Form not valid")
+        print ("Form not valid: Create Forms Result Count ICS")
         return None
 
 #######################################################################
