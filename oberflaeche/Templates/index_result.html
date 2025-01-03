@@ -1,3 +1,5 @@
+{% load replace%}
+
 <!DOCTYPE html>
 <html lang="en">
     <meta charset="UTF-8">
@@ -19,22 +21,6 @@
 
          .collapsible:hover {
             background-color: #555;
-        }
-
-        .block_button {
-            display: block;
-            width: 100%;
-            border: none;
-            background-color: #f9f9f9;
-            color: black;
-            padding: 14px 28px;
-            font-size: 14px;
-            cursor: pointer;
-            text-align: left;
-        }
-
-        .block_button:hover {
-            background-color: darkgrey;
         }
 
         .navbar {
@@ -83,7 +69,10 @@
         <h1>Matches found in Mobile: {{ Result_Count_Mobile}}</h1>
         <h1>Matches found in Ics: {{ Result_Count_ICS}}</h1>
 
+
         <!-----  Showing Results from Enterprise Matrix ----->
+
+
         <h1>Enterprise</h1>
         <div id="results">
             {% if Tactics_Enterprise|length != 0 %}
@@ -100,7 +89,11 @@
                         <td>{{ i.name }} </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
@@ -129,7 +122,11 @@
                         </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                         <td>
@@ -156,15 +153,22 @@
                     <tr>
                         <td> <a href="https://attack.mitre.org/groups/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
                         <td>{{ i.name }} </td>
-                        <td>{% for element in i.campaigns_set.all %}
+                        <td>
+                            {% for element in i.campaigns_set.all %}
                                 <a href="https://attack.mitre.org/campaigns/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
                             {% endfor %}
                         </td>
-                        <td>{% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                        <td>
+                            {% for element in i.techniques.all %}
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
-                        <td>{% for element in i.software.all %}
+                        <td>
+                            {% for element in i.software.all %}
                                 <a href="https://attack.mitre.org/software/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
                             {% endfor %}
                         </td>
@@ -187,7 +191,13 @@
                 </tr>
                 {% for i in Techniques_Enterprise %}
                     <tr>
-                        <td> <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
+                        <td>
+                            {% if "." in i.mitre %}
+                                <a href="https://attack.mitre.org/techniques/{{ i.mitre|replace}}" target="_blank">{{i.mitre}} ;</a>
+                            {% else %}
+                                <a href="https://attack.mitre.org/techniques/{{ i.mitre }}/" target="_blank">{{i.mitre}} ;</a>
+                            {% endif %}
+                        </td>
                         <td>{{ i.name }} </td>
                         <td>
                             {% for element in i.tactics_set.all %}
@@ -233,7 +243,11 @@
                         <td>{{ i.name }} </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
@@ -267,7 +281,11 @@
                         </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
@@ -275,7 +293,9 @@
             </table>
             {% endif %}
 
+
             <!-----  Showing Url Results from Enterprise Matrix ----->
+
 
             <h1>Referencen</h1>
             {% if Campaigns_Urls|length != 0  %}
@@ -396,7 +416,11 @@
                         <td>{{ i.name }} </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
@@ -425,7 +449,11 @@
                         </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                         <td>
@@ -456,8 +484,13 @@
                                 <a href="https://attack.mitre.org/campaigns/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
                             {% endfor %}
                         </td>
-                        <td>{% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                        <td>
+                            {% for element in i.techniques.all %}
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                         <td>{% for element in i.software.all %}
@@ -483,7 +516,13 @@
                 </tr>
                 {% for i in Techniques_Mobile %}
                     <tr>
-                        <td> <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
+                        <td>
+                            {% if "." in i.mitre %}
+                                <a href="https://attack.mitre.org/techniques/{{ i.mitre|replace}}" target="_blank">{{i.mitre}} ;</a>
+                            {% else %}
+                                <a href="https://attack.mitre.org/techniques/{{ i.mitre }}/" target="_blank">{{i.mitre}} ;</a>
+                            {% endif %}
+                        </td>
                         <td>{{ i.name }} </td>
                         <td>
                             {% for element in i.tacticsmobile_set.all %}
@@ -529,7 +568,11 @@
                         <td>{{ i.name }} </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
@@ -563,7 +606,11 @@
                         </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
@@ -687,7 +734,11 @@
                         <td>{{ i.name }} </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
@@ -716,7 +767,11 @@
                         </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                         <td>
@@ -747,8 +802,13 @@
                                 <a href="https://attack.mitre.org/campaigns/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
                             {% endfor %}
                         </td>
-                        <td>{% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                        <td>
+                            {% for element in i.techniques.all %}
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                         <td>{% for element in i.software.all %}
@@ -774,7 +834,13 @@
                 </tr>
                 {% for i in Techniques_ICS %}
                     <tr>
-                        <td> <a href="https://attack.mitre.org/techniques/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
+                        <td>
+                            {% if "." in i.mitre %}
+                                <a href="https://attack.mitre.org/techniques/{{ i.mitre|replace}}" target="_blank">{{i.mitre}} ;</a>
+                            {% else %}
+                                <a href="https://attack.mitre.org/techniques/{{ i.mitre }}/" target="_blank">{{i.mitre}} ;</a>
+                            {% endif %}
+                        </td>
                         <td>{{ i.name }} </td>
                         <td>
                             {% for element in i.tacticsics_set.all %}
@@ -820,7 +886,11 @@
                         <td>{{ i.name }} </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
@@ -854,7 +924,11 @@
                         </td>
                         <td>
                             {% for element in i.techniques.all %}
-                                <a href="https://attack.mitre.org/techniques/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                                {% if "." in element.mitre %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                                {% else %}
+                                    <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                                {% endif %}
                             {% endfor %}
                         </td>
                     </tr>

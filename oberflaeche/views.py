@@ -49,7 +49,7 @@ def results_for_keyword(request):
 
         print(datetime.datetime.now())
 
-        keyword = request.POST.get('keyword').lower()
+        keyword = request.POST.get('keyword')
         refs_needed = request.POST.get('References')
 
         tactics, campaigns, groups, techniques, software, mitigations = results_enterprise(keyword)
@@ -411,7 +411,7 @@ def import_data(request):
 
     # Import Data from Enterprise-Matrix
 
-    mitre_attack_data_e = MitreAttackData("enterprise-attack.json") #Enter the Path for the ICS-JSON-File
+    mitre_attack_data_e = MitreAttackData("enterprise-attack.json") #Enter the Path for the Enterprise-Matrix-JSON-File
     alle_technique_e = mitre_attack_data_e.get_techniques(remove_revoked_deprecated=True)
     alle_tactics_e = mitre_attack_data_e.get_tactics(remove_revoked_deprecated=True)
     alle_software_e = mitre_attack_data_e.get_software(remove_revoked_deprecated=True)
@@ -544,7 +544,7 @@ def import_data(request):
 
     # Import Data from Mobile-Matrix
 
-    mitre_attack_data_m = MitreAttackData("mobile-attack.json") #Enter the Path for the ICS-JSON-File
+    mitre_attack_data_m = MitreAttackData("mobile-attack.json") #Enter the Path for the Mobile-Matrix-JSON-File
     alle_technique_m = mitre_attack_data_m.get_techniques(remove_revoked_deprecated=True)
     alle_tactics_m = mitre_attack_data_m.get_tactics(remove_revoked_deprecated=True)
     alle_software_m = mitre_attack_data_m.get_software(remove_revoked_deprecated=True)
@@ -677,7 +677,7 @@ def import_data(request):
 
     # Import Data from ICS-Matrix
 
-    mitre_attack_data_i = MitreAttackData("ics-attack.json") #Enter the Path for the ICS-JSON-File
+    mitre_attack_data_i = MitreAttackData("ics-attack.json") #Enter the Path for the ICS-Matrix-JSON-File
     alle_technique_i = mitre_attack_data_i.get_techniques(remove_revoked_deprecated=True)
     alle_tactics_i = mitre_attack_data_i.get_tactics(remove_revoked_deprecated=True)
     alle_software_i = mitre_attack_data_i.get_software(remove_revoked_deprecated=True)
@@ -1145,34 +1145,106 @@ def import_data(request):
 
 def results_enterprise(keyword):
 
-    techniques = Techniques.objects.all().filter(description__contains=keyword)
-    mitigations = Mitigations.objects.all().filter(description__contains=keyword)
-    software = Software.objects.all().filter(description__contains=keyword)
-    campaigns = Campaigns.objects.all().filter(description__contains=keyword)
-    groups = Groups.objects.all().filter(description__contains=keyword)
-    tactics = Tactics.objects.all().filter(description__contains=keyword)
+    mitre_matrix = MitreAttackData("C://Users\phill\PycharmProjects\Masterarbeit_Mitre_Attack\json-Datein\enterprise-attack.json")
+    result = mitre_matrix.get_objects_by_content(keyword)
+
+    tactics = []
+    campaigns = []
+    groups = []
+    techniques = []
+    software = []
+    mitigations = []
+
+    for i in result:
+        try:
+            match i.type:
+                case "x-mitre-tactic":
+                    tactics.append(Tactics.objects.get(id=i.id))
+                case "campaign":
+                    campaigns.append(Campaigns.objects.get(id=i.id))
+                case "intrusion-set":
+                    groups.append(Groups.objects.get(id=i.id))
+                case "attack-pattern":
+                    techniques.append(Techniques.objects.get(id=i.id))
+                case "tools":
+                    software.append(Software.objects.get(id=i.id))
+                case "malware":
+                    software.append(Software.objects.get(id=i.id))
+                case "course-of-action":
+                    mitigations.append(Mitigations.objects.get(id=i.id))
+        except :
+            print ("Error in enterprise")
+            pass
 
     return tactics, campaigns, groups, techniques, software, mitigations
 
 def results_mobile(keyword):
 
-    techniques = TechniquesMobile.objects.all().filter(description__contains=keyword)
-    mitigations = MitigationsMobile.objects.all().filter(description__contains=keyword)
-    software = SoftwareMobile.objects.all().filter(description__contains=keyword)
-    campaigns = CampaignsMobile.objects.all().filter(description__contains=keyword)
-    groups = GroupsMobile.objects.all().filter(description__contains=keyword)
-    tactics = TacticsMobile.objects.all().filter(description__contains=keyword)
+    mitre_matrix = MitreAttackData("C://Users\phill\PycharmProjects\Masterarbeit_Mitre_Attack\json-Datein\mobile-attack.json")
+    result = mitre_matrix.get_objects_by_content(keyword)
+
+    tactics = []
+    campaigns = []
+    groups = []
+    techniques = []
+    software = []
+    mitigations = []
+
+    for i in result:
+        try:
+            match i.type:
+                case "x-mitre-tactic":
+                    tactics.append(TacticsMobile.objects.get(id=i.id))
+                case "campaign":
+                    campaigns.append(CampaignsMobile.objects.get(id=i.id))
+                case "intrusion-set":
+                    groups.append(GroupsMobile.objects.get(id=i.id))
+                case "attack-pattern":
+                    techniques.append(TechniquesMobile.objects.get(id=i.id))
+                case "tools":
+                    software.append(SoftwareMobile.objects.get(id=i.id))
+                case "malware":
+                    software.append(SoftwareMobile.objects.get(id=i.id))
+                case "course-of-action":
+                    mitigations.append(MitigationsMobile.objects.get(id=i.id))
+        except :
+            print("Error in mobile")
+            pass
 
     return tactics, campaigns, groups, techniques, software, mitigations
 
 def results_ics(keyword):
 
-    techniques = TechniquesIcs.objects.all().filter(description__contains=keyword)
-    mitigations = MitigationsIcs.objects.all().filter(description__contains=keyword)
-    software = SoftwareIcs.objects.all().filter(description__contains=keyword)
-    campaigns = CampaignsIcs.objects.all().filter(description__contains=keyword)
-    groups = GroupsIcs.objects.all().filter(description__contains=keyword)
-    tactics = TacticsIcs.objects.all().filter(description__contains=keyword)
+    mitre_matrix = MitreAttackData("C://Users\phill\PycharmProjects\Masterarbeit_Mitre_Attack\json-Datein\ics-attack.json")
+    result = mitre_matrix.get_objects_by_content(keyword)
+
+    tactics = []
+    campaigns = []
+    groups = []
+    techniques = []
+    software = []
+    mitigations = []
+
+    for i in result:
+        try:
+            match i.type:
+                case "x-mitre-tactic":
+                    tactics.append(TacticsIcs.objects.get(id=i.id))
+                case "campaign":
+                    campaigns.append(CampaignsIcs.objects.get(id=i.id))
+                case "intrusion-set":
+                    groups.append(GroupsIcs.objects.get(id=i.id))
+                case "attack-pattern":
+                    techniques.append(TacticsIcs.objects.get(id=i.id))
+                case "tools":
+                    software.append(SoftwareIcs.objects.get(id=i.id))
+                case "malware":
+                    software.append(SoftwareIcs.objects.get(id=i.id))
+                case "course-of-action":
+                    mitigations.append(MitigationsIcs.objects.get(id=i.id))
+        except :
+            print("Error in ics")
+            pass
 
     return tactics, campaigns, groups, techniques, software, mitigations
 
