@@ -378,13 +378,20 @@ def index_saved(request):
 
     keyword, count_enterprise, count_mobile, count_ics = get_index_parameters(keyword_form, count_enterprise_form, count_mobile_form, count_ics_form)
 
+
     tactics, campaigns, groups, techniques, software, mitigations = get_matrix_ids_from_forms(tactics_form, campaigns_form, groups_form, techniques_form, software_form, mitigations_form)
+
     tactics_mobile, campaigns_mobile, groups_mobile, techniques_mobile, software_mobile, mitigations_mobile = get_matrix_ids_from_forms(tactics_form_mobile, campaigns_form_mobile, groups_form_mobile, techniques_form_mobile, software_form_mobile, mitigations_form_mobile)
+
     tactics_ics, campaigns_ics, groups_ics, techniques_ics, software_ics, mitigations_ics = get_matrix_ids_from_forms(tactics_form_ics, campaigns_form_ics, groups_form_ics, techniques_form_ics, software_form_ics, mitigations_form_ics)
 
+
     tactics_url, campaigns_url, groups_url, techniques_url, software_url, mitigations_url = get_urls_from_forms(tactics_url_form, campaigns_url_form, groups_url_form, techniques_url_form, software_url_form, mitigations_url_form)
+
     tactics_mobile_url, campaigns_mobile_url, groups_mobile_url, techniques_mobile_url, software_mobile_url, mitigations_mobile_url = get_urls_from_forms(tactics_url_form_mobile, campaigns_url_form_mobile, groups_url_form_mobile, techniques_url_form_mobile, software_url_form_mobile, mitigations_url_form_mobile)
+
     tactics_ics_url, campaigns_ics_url, groups_ics_url, techniques_ics_url, software_ics_url, mitigations_ics_url = get_urls_from_forms(tactics_url_form_ics, campaigns_url_form_ics, groups_url_form_ics, techniques_url_form_ics, software_url_form_ics, mitigations_url_form_ics)
+
 
     index_enterprise = IndexEnterprise(
         keyword = keyword,
@@ -1504,33 +1511,33 @@ def get_matrix_ids_from_forms(tactics_form, campaigns_form, groups_form, techniq
 
     for form in tactics_form:
         if form.is_valid():
-            test = form.cleaned_data
-            tactics_temp.append(test['id'])
+            mitre_id = form.cleaned_data
+            tactics_temp.append(mitre_id['id'])
 
     for form in campaigns_form:
         if form.is_valid():
-            test = form.cleaned_data
-            campaigns_temp.append(test['id'])
+            mitre_id = form.cleaned_data
+            campaigns_temp.append(mitre_id['id'])
 
     for form in groups_form:
         if form.is_valid():
-            test = form.cleaned_data
-            groups_temp.append(test['id'])
+            mitre_id = form.cleaned_data
+            groups_temp.append(mitre_id['id'])
 
     for form in techniques_form:
         if form.is_valid():
-            test = form.cleaned_data
-            techniques_temp.append(test['id'])
+            mitre_id = form.cleaned_data
+            techniques_temp.append(mitre_id['id'])
 
     for form in software_form:
         if form.is_valid():
-            test = form.cleaned_data
-            software_temp.append(test['id'])
+            mitre_id = form.cleaned_data
+            software_temp.append(mitre_id['id'])
 
     for form in mitigations_form:
         if form.is_valid():
-            test = form.cleaned_data
-            mitigations_temp.append(test['id'])
+            mitre_id = form.cleaned_data
+            mitigations_temp.append(mitre_id['id'])
 
     return tactics_temp, campaigns_temp, groups_temp, techniques_temp, software_temp, mitigations_temp
 
@@ -1545,33 +1552,33 @@ def get_urls_from_forms(tactics_url_form, campaigns_url_form, groups_url_form, t
 
     for form in tactics_url_form:
         if form.is_valid():
-            test = form.cleaned_data
-            tactics_url_temp.append(test['url'])
+            url_id = form.cleaned_data
+            tactics_url_temp.append(url_id['url'])
 
     for form in campaigns_url_form:
         if form.is_valid():
-            test = form.cleaned_data
-            campaigns_url_temp.append(test['url'])
+            url_id = form.cleaned_data
+            campaigns_url_temp.append(url_id['url'])
 
     for form in groups_url_form:
         if form.is_valid():
-            test = form.cleaned_data
-            groups_url_temp.append(test['url'])
+            url_id = form.cleaned_data
+            groups_url_temp.append(url_id['url'])
 
     for form in techniques_url_form:
         if form.is_valid():
-            test = form.cleaned_data
-            techniques_url_temp.append(test['url'])
+            url_id = form.cleaned_data
+            techniques_url_temp.append(url_id['url'])
 
     for form in software_url_form:
         if form.is_valid():
-            test = form.cleaned_data
-            software_url_temp.append(test['url'])
+            url_id = form.cleaned_data
+            software_url_temp.append(url_id['url'])
 
     for form in mitigations_url_form:
         if form.is_valid():
-            test = form.cleaned_data
-            mitigations_url_temp.append(test['url'])
+            url_id = form.cleaned_data
+            mitigations_url_temp.append(url_id['url'])
 
     return tactics_url_temp, campaigns_url_temp, groups_url_temp, techniques_url_temp, software_url_temp, mitigations_url_temp
 
