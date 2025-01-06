@@ -149,335 +149,337 @@
 
     <!-----  Showing Results from Enterprise Matrix ----->
     <h1>Enterprise</h1>
-    <div id="results">
-        {% if Tactics_Enterprise|length != 0 %}
-        <button type="button" class="collapsible">Tactics: {{ Tactics_Enterprise|length }} Findings</button>
-        <table style="width:100%">
+    {% if Tactics_Enterprise|length != 0 %}
+    <button type="button" class="collapsible">Tactics: {{ Tactics_Enterprise|length }} Findings</button>
+    <table style="width:100%">
+        <tr>
+            <th onclick="sortTable(0)">Mitre ID</th>
+            <th onclick="sortTable(1)">Name</th>
+            <th onclick="sortTable(2)">Relations to Techniques</th>
+        </tr>
+        {% for i in Tactics_Enterprise %}
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Techniques</th>
-            </tr>
-            {% for i in Tactics_Enterprise %}
-                <tr>
-                    <td> <a href="https://attack.mitre.org/tactics/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
-                    <td>{{ i.name }} </td>
-                    <td>
-                        {% for element in i.techniques.all %}
-                            {% if "." in element.mitre %}
-                                <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
-                            {% else %}
-                                <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
-        <p></p>
-        {% if Campaigns_Enterprise|length != 0  %}
-        <button type="button" class="collapsible">Campaigns: {{ Campaigns_Enterprise|length }} Findings</button>
-        <table style="width:100%">
-            <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Groups</th>
-                <th>Relations to Techniques</th>
-                <th>Relations to Software</th>
-            </tr>
-            {% for i in Campaigns_Enterprise %}
-                <tr>
-                    <td> <a href="https://attack.mitre.org/campaigns/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
-                    <td>{{ i.name }} </td>
-                    <td>
-                        {% for element in i.groups.all %}
-                            <a href="https://attack.mitre.org/groups/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for element in i.techniques.all %}
-                            {% if "." in element.mitre %}
-                                <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
-                            {% else %}
-                                <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for element in i.software.all %}
-                            <a href="https://attack.mitre.org/software/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
-        <p></p>
-        {% if Groups_Enterprise|length != 0  %}
-        <button type="button" class="collapsible">Groups: {{ Groups_Enterprise|length }} Findings</button>
-        <table style="width:100%">
-            <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Campaigns</th>
-                <th>Relations to Techniques</th>
-                <th>Relations to Software</th>
-            </tr>
-            {% for i in Groups_Enterprise %}
-                <tr>
-                    <td> <a href="https://attack.mitre.org/groups/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
-                    <td>{{ i.name }} </td>
-                    <td>{% for element in i.campaigns_set.all %}
-                            <a href="https://attack.mitre.org/campaigns/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for element in i.techniques.all %}
-                            {% if "." in element.mitre %}
-                                <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
-                            {% else %}
-                                <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>{% for element in i.software.all %}
-                            <a href="https://attack.mitre.org/software/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
-        <p></p>
-        {% if Techniques_Enterprise|length != 0  %}
-        <button type="button" class="collapsible">Techniques: {{ Techniques_Enterprise|length }} Findings</button>
-        <table style="width:100%">
-            <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Tactics</th>
-                <th>Relations to Campaigns</th>
-                <th>Relations to Groups</th>
-                <th>Relations to Software</th>
-                <th>Relations to Mitigations</th>
-            </tr>
-            {% for i in Techniques_Enterprise %}
-                <tr>
-                    <td>
-                        {% if "." in i.mitre %}
-                            <a href="https://attack.mitre.org/techniques/{{ i.mitre|replace}}" target="_blank">{{i.mitre}} ;</a>
+                <td> <a href="https://attack.mitre.org/tactics/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
+                <td>{{ i.name }} </td>
+                <td>
+                    {% for element in i.techniques.all %}
+                        {% if "." in element.mitre %}
+                            <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
                         {% else %}
-                            <a href="https://attack.mitre.org/techniques/{{ i.mitre }}/" target="_blank">{{i.mitre}} ;</a>
+                            <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
                         {% endif %}
-                    </td>
-                    <td>{{ i.name }} </td>
-                    <td>
-                        {% for element in i.tactics_set.all %}
-                            <a href="https://attack.mitre.org/tactics/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for element in i.campaigns_set.all %}
-                            <a href="https://attack.mitre.org/campaigns/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for element in i.groups_set.all %}
-                            <a href="https://attack.mitre.org/groups/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for element in i.software_set.all %}
-                            <a href="https://attack.mitre.org/software/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for element in i.mitigations_set.all %}
-                            <a href="https://attack.mitre.org/mitigations/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
-        <p></p>
-        {% if Mitigations_Enterprise|length != 0  %}
-        <button type="button" class="collapsible">Mitigations: {{ Mitigations_Enterprise|length }} Findings</button>
-        <table style="width:100%">
-            <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Techniques</th>
+                    {% endfor %}
+                </td>
             </tr>
-            {% for i in Mitigations_Enterprise %}
-                <tr>
-                    <td> <a href="https://attack.mitre.org/mitigations/{{element.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
-                    <td>{{ i.name }} </td>
-                    <td>
-                        {% for element in i.techniques.all %}
-                            {% if "." in element.mitre %}
-                                <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
-                            {% else %}
-                                <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
-        <p></p>
-        {% if Software_Enterprise|length != 0  %}
-        <button type="button" class="collapsible">Software: {{ Software_Enterprise|length }} Findings</button>
-        <table style="width:100%">
+        {% endfor %}
+    </table>
+    {% endif %}
+    <p></p>
+    {% if Campaigns_Enterprise|length != 0  %}
+    <button type="button" class="collapsible">Campaigns: {{ Campaigns_Enterprise|length }} Findings</button>
+    <table style="width:100%">
+        <tr>
+            <th onclick="sortTable(0)">Mitre ID</th>
+            <th onclick="sortTable(1)">Name</th>
+            <th onclick="sortTable(2)">Relations to Groups</th>
+            <th onclick="sortTable(3)">Relations to Techniques</th>
+            <th onclick="sortTable(4)">Relations to Software</th>
+        </tr>
+        {% for i in Campaigns_Enterprise %}
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Campaigns</th>
-                <th>Relations to Groups</th>
-                <th>Relations to Techniques</th>
+                <td> <a href="https://attack.mitre.org/campaigns/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
+                <td>{{ i.name }} </td>
+                <td>
+                    {% for element in i.groups.all %}
+                        <a href="https://attack.mitre.org/groups/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for element in i.techniques.all %}
+                        {% if "." in element.mitre %}
+                            <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                        {% else %}
+                            <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for element in i.software.all %}
+                        <a href="https://attack.mitre.org/software/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
             </tr>
-            {% for i in Software_Enterprise %}
-                <tr>
-                    <td> <a href="https://attack.mitre.org/software/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
-                    <td>{{ i.name }} </td>
-                    <td>
-                        {% for element in i.campaigns_set.all %}
-                            <a href="https://attack.mitre.org/campaigns/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for element in i.groups_set.all %}
-                            <a href="https://attack.mitre.org/groups/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for element in i.techniques.all %}
-                            {% if "." in element.mitre %}
-                                <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
-                            {% else %}
-                                <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
+        {% endfor %}
+    </table>
+    {% endif %}
+    <p></p>
+    {% if Groups_Enterprise|length != 0  %}
+    <button type="button" class="collapsible">Groups: {{ Groups_Enterprise|length }} Findings</button>
+    <table style="width:100%">
+        <tr>
+            <th onclick="sortTable(0)">Mitre ID</th>
+            <th onclick="sortTable(1)">Name</th>
+            <th onclick="sortTable(2)">Relations to Campaigns</th>
+            <th onclick="sortTable(3)">Relations to Techniques</th>
+            <th onclick="sortTable(4)">Relations to Software</th>
+        </tr>
+        {% for i in Groups_Enterprise %}
+            <tr>
+                <td> <a href="https://attack.mitre.org/groups/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
+                <td>{{ i.name }} </td>
+                <td>{% for element in i.campaigns_set.all %}
+                        <a href="https://attack.mitre.org/campaigns/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for element in i.techniques.all %}
+                        {% if "." in element.mitre %}
+                            <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                        {% else %}
+                            <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{% for element in i.software.all %}
+                        <a href="https://attack.mitre.org/software/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <p></p>
+    {% if Techniques_Enterprise|length != 0  %}
+    <button type="button" class="collapsible">Techniques: {{ Techniques_Enterprise|length }} Findings</button>
+    <table style="width:100%">
+        <tr>
+            <th onclick="sortTable(0)">Mitre ID</th>
+            <th onclick="sortTable(1)">Name</th>
+            <th onclick="sortTable(2)">Relations to Tactics</th>
+            <th onclick="sortTable(3)">Relations to Campaigns</th>
+            <th onclick="sortTable(4)">Relations to Groups</th>
+            <th onclick="sortTable(5)">Relations to Software</th>
+            <th onclick="sortTable(6)">Relations to Mitigations</th>
+        </tr>
+        {% for i in Techniques_Enterprise %}
+            <tr>
+                <td>
+                    {% if "." in i.mitre %}
+                        <a href="https://attack.mitre.org/techniques/{{ i.mitre|replace}}" target="_blank">{{i.mitre}} ;</a>
+                    {% else %}
+                        <a href="https://attack.mitre.org/techniques/{{ i.mitre }}/" target="_blank">{{i.mitre}} ;</a>
+                    {% endif %}
+                </td>
+                <td>{{ i.name }} </td>
+                <td>
+                    {% for element in i.tactics_set.all %}
+                        <a href="https://attack.mitre.org/tactics/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for element in i.campaigns_set.all %}
+                        <a href="https://attack.mitre.org/campaigns/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for element in i.groups_set.all %}
+                        <a href="https://attack.mitre.org/groups/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for element in i.software_set.all %}
+                        <a href="https://attack.mitre.org/software/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for element in i.mitigations_set.all %}
+                        <a href="https://attack.mitre.org/mitigations/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <p></p>
+    {% if Mitigations_Enterprise|length != 0  %}
+    <button type="button" class="collapsible">Mitigations: {{ Mitigations_Enterprise|length }} Findings</button>
+    <table style="width:100%">
+        <tr>
+            <th onclick="sortTable(0)">Mitre ID</th>
+            <th onclick="sortTable(1)">Name</th>
+            <th onclick="sortTable(2)">Relations to Techniques</th>
+        </tr>
+        {% for i in Mitigations_Enterprise %}
+            <tr>
+                <td> <a href="https://attack.mitre.org/mitigations/{{element.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
+                <td>{{ i.name }} </td>
+                <td>
+                    {% for element in i.techniques.all %}
+                        {% if "." in element.mitre %}
+                            <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                        {% else %}
+                            <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <p></p>
+    {% if Software_Enterprise|length != 0  %}
+    <button type="button" class="collapsible">Software: {{ Software_Enterprise|length }} Findings</button>
+    <table style="width:100%">
+        <tr>
+            <th onclick="sortTable(0)">Mitre ID</th>
+            <th onclick="sortTable(1)">Name</th>
+            <th onclick="sortTable(2)">Relations to Campaigns</th>
+            <th onclick="sortTable(3)">Relations to Groups</th>
+            <th onclick="sortTable(4)">Relations to Techniques</th>
+        </tr>
+        {% for i in Software_Enterprise %}
+            <tr>
+                <td> <a href="https://attack.mitre.org/software/{{i.mitre}}/" target="_blank">{{i.mitre}}</a> </td>
+                <td>{{ i.name }} </td>
+                <td>
+                    {% for element in i.campaigns_set.all %}
+                        <a href="https://attack.mitre.org/campaigns/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for element in i.groups_set.all %}
+                        <a href="https://attack.mitre.org/groups/{{element.mitre}}/" target="_blank">{{element.mitre}} ;</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for element in i.techniques.all %}
+                        {% if "." in element.mitre %}
+                            <a href="https://attack.mitre.org/techniques/{{ element.mitre|replace}}" target="_blank">{{element.mitre}} ;</a>
+                        {% else %}
+                            <a href="https://attack.mitre.org/techniques/{{ element.mitre }}/" target="_blank">{{element.mitre}} ;</a>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
 
         <!-----  Showing Url Results from Enterprise Matrix ----->
 
-        {% if Refs_Bool == "True"%}
-            <h1>References in Enterprise Matrix</h1>
-            {% if Campaigns_Urls|length != 0  %}
-                <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls|length }} Findings</button>
-                <table style="width:100%">
+    {% if Refs_Bool == "True"%}
+        <h1>References in Enterprise Matrix</h1>
+        {% if Campaigns_Urls|length != 0  %}
+            <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls|length }} Findings</button>
+            <table style="width:100%">
+                <tr>
+                    <th onclick="sortTable(0)">Mitre ID</th>
+                    <th onclick="sortTable(1)">URL</th>
+                </tr>
+                {% for i in Campaigns_Urls %}
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <td>{{ i.campaign.mitre }}</td>
+                        <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
                     </tr>
-                    {% for i in Campaigns_Urls %}
-                        <tr>
-                            <td>{{ i.campaign.mitre }}</td>
-                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
-            <p></p>
-            {% if Tactics_Urls|length != 0  %}
-                <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls|length }} Findings</button>
-                <table style="width:100%">
-                    <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
-                    </tr>
-                    {% for i in Tactics_Urls %}
-                        <tr>
-                            <td>{{ i.tactic.mitre }}</td>
-                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
-             <p></p>
-            {% if Groups_Urls|length != 0  %}
-                <button type="button" class="collapsible">References in Groups: {{ Groups_Urls|length }} Findings</button>
-                <table style="width:100%">
-                    <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
-                    </tr>
-                    {% for i in Groups_Urls %}
-                        <tr>
-                            <td>{{ i.group.mitre }}</td>
-                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
-             <p></p>
-            {% if Techniques_Urls|length != 0  %}
-                <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls|length }} Findings</button>
-                <table style="width:100%">
-                    <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
-                    </tr>
-                    {% for i in Techniques_Urls %}
-                        <tr>
-                            <td>{{ i.technique.mitre }}</td>
-                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
-             <p></p>
-            {% if Software_Urls|length != 0  %}
-                <button type="button" class="collapsible">References in Software: {{ Software_Urls|length }} Findings</button>
-                <table style="width:100%">
-                    <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
-                    </tr>
-                    {% for i in Software_Urls %}
-                        <tr>
-                            <td>{{ i.software.mitre }}</td>
-                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
-             <p></p>
-            {% if Mitigations_Urls|length != 0  %}
-                <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls|length }} Findings</button>
-                <table style="width:100%">
-                    <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
-                    </tr>
-                    {% for i in Mitigations_Urls %}
-                        <tr>
-                            <td>{{ i.mitigation.mitre }}</td>
-                            <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
+                {% endfor %}
+            </table>
         {% endif %}
-    </div>
+        <p></p>
+        {% if Tactics_Urls|length != 0  %}
+            <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls|length }} Findings</button>
+            <table style="width:100%">
+                <tr>
+                    <th onclick="sortTable(0)">Mitre ID</th>
+                    <th onclick="sortTable(1)">URL</th>
+                </tr>
+                {% for i in Tactics_Urls %}
+                    <tr>
+                        <td>{{ i.tactic.mitre }}</td>
+                        <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+         <p></p>
+        {% if Groups_Urls|length != 0  %}
+            <button type="button" class="collapsible">References in Groups: {{ Groups_Urls|length }} Findings</button>
+            <table style="width:100%">
+                <tr>
+                    <th onclick="sortTable(0)">Mitre ID</th>
+                    <th onclick="sortTable(1)">URL</th>
+                </tr>
+                {% for i in Groups_Urls %}
+                    <tr>
+                        <td>{{ i.group.mitre }}</td>
+                        <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+         <p></p>
+        {% if Techniques_Urls|length != 0  %}
+            <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls|length }} Findings</button>
+            <table style="width:100%">
+                <tr>
+                    <th onclick="sortTable(0)">Mitre ID</th>
+                    <th onclick="sortTable(1)">URL</th>
+                </tr>
+                {% for i in Techniques_Urls %}
+                    <tr>
+                        <td>{{ i.technique.mitre }}</td>
+                        <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+         <p></p>
+        {% if Software_Urls|length != 0  %}
+            <button type="button" class="collapsible">References in Software: {{ Software_Urls|length }} Findings</button>
+            <table style="width:100%">
+                <tr>
+                    <th onclick="sortTable(0)">Mitre ID</th>
+                    <th onclick="sortTable(1)">URL</th>
+                </tr>
+                {% for i in Software_Urls %}
+                    <tr>
+                        <td>{{ i.software.mitre }}</td>
+                        <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+         <p></p>
+        {% if Mitigations_Urls|length != 0  %}
+            <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls|length }} Findings</button>
+            <table style="width:100%">
+                <tr>
+                    <th onclick="sortTable(0)">Mitre ID</th>
+                    <th onclick="sortTable(1)">URL</th>
+                </tr>
+                {% for i in Mitigations_Urls %}
+                    <tr>
+                        <td>{{ i.mitigation.mitre }}</td>
+                        <td> <a href="{{i.external_reference}}" target="_blank"> URL: {{i.external_reference}}</a> </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    {% endif %}
+
+
 
     <!-----  Showing Results from Mobile Matrix ----->
+
+
 
     <h1>Mobile </h1>
     {% if Tactics_Mobile|length != 0 %}
         <button type="button" class="collapsible">Tactics: {{ Tactics_Mobile|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Techniques</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Techniques</th>
             </tr>
             {% for i in Tactics_Mobile %}
                 <tr>
@@ -501,11 +503,11 @@
         <button type="button" class="collapsible">Campaigns: {{ Campaigns_Mobile|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Groups</th>
-                <th>Relations to Techniques</th>
-                <th>Relations to Software</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Groups</th>
+                <th onclick="sortTable(3)">Relations to Techniques</th>
+                <th onclick="sortTable(4)">Relations to Software</th>
             </tr>
             {% for i in Campaigns_Mobile %}
                 <tr>
@@ -539,11 +541,11 @@
         <button type="button" class="collapsible">Groups: {{ Groups_Mobile|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Campaigns</th>
-                <th>Relations to Techniques</th>
-                <th>Relations to Software</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Campaigns</th>
+                <th onclick="sortTable(3)">Relations to Techniques</th>
+                <th onclick="sortTable(4)">Relations to Software</th>
             </tr>
             {% for i in Groups_Mobile %}
                 <tr>
@@ -575,13 +577,13 @@
         <button type="button" class="collapsible">Techniques: {{ Techniques_Mobile|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Tactics</th>
-                <th>Relations to Campaigns</th>
-                <th>Relations to Groups</th>
-                <th>Relations to Software</th>
-                <th>Relations to Mitigations</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Tactics</th>
+                <th onclick="sortTable(3)">Relations to Campaigns</th>
+                <th onclick="sortTable(4)">Relations to Groups</th>
+                <th onclick="sortTable(5)">Relations to Software</th>
+                <th onclick="sortTable(6)">Relations to Mitigations</th>
             </tr>
             {% for i in Techniques_Mobile %}
                 <tr>
@@ -627,9 +629,9 @@
         <button type="button" class="collapsible">Mitigations: {{ Mitigations_Mobile|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Techniques</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Techniques</th>
             </tr>
             {% for i in Mitigations_Mobile %}
                 <tr>
@@ -653,11 +655,11 @@
         <button type="button" class="collapsible">Software: {{ Software_Mobile|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Campaigns</th>
-                <th>Relations to Groups</th>
-                <th>Relations to Techniques</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Campaigns</th>
+                <th onclick="sortTable(3)">Relations to Groups</th>
+                <th onclick="sortTable(4)">Relations to Techniques</th>
             </tr>
             {% for i in Software_Mobile %}
                 <tr>
@@ -687,7 +689,9 @@
         </table>
         {% endif %}
 
+
     <!------------ Showing URL Results from Mobile Matrix --------------------->
+
 
         {% if Refs_Bool == "True"%}
             <h1>References in Mobile-Matrix</h1>
@@ -695,8 +699,8 @@
                 <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Campaigns_Urls_Mobile %}
                         <tr>
@@ -711,8 +715,8 @@
                 <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Tactics_Urls_Mobile %}
                         <tr>
@@ -727,8 +731,8 @@
                 <button type="button" class="collapsible">References in Groups: {{ Groups_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Groups_Urls_Mobile %}
                         <tr>
@@ -743,8 +747,8 @@
                 <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Techniques_Urls_Mobile %}
                         <tr>
@@ -759,8 +763,8 @@
                 <button type="button" class="collapsible">References in Software: {{ Software_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Software_Urls_Mobile %}
                         <tr>
@@ -775,8 +779,8 @@
                 <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Mitigations_Urls_Mobile %}
                         <tr>
@@ -789,7 +793,9 @@
         {% endif %}
 
 
+
     <!-----  Showing Results from ICS Matrix ----->
+
 
 
     <h1>ICS</h1>
@@ -797,9 +803,9 @@
         <button type="button" class="collapsible">Tactics: {{ Tactics_ICS|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Techniques</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Techniques</th>
             </tr>
             {% for i in Tactics_ICS %}
                 <tr>
@@ -823,11 +829,11 @@
         <button type="button" class="collapsible">Campaigns: {{ Campaigns_ICS|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Groups</th>
-                <th>Relations to Techniques</th>
-                <th>Relations to Software</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Groups</th>
+                <th onclick="sortTable(3)">Relations to Techniques</th>
+                <th onclick="sortTable(4)">Relations to Software</th>
             </tr>
             {% for i in Campaigns_ICS %}
                 <tr>
@@ -861,11 +867,11 @@
         <button type="button" class="collapsible">Groups: {{ Groups_ICS|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Campaigns</th>
-                <th>Relations to Techniques</th>
-                <th>Relations to Software</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Campaigns</th>
+                <th onclick="sortTable(3)">Relations to Techniques</th>
+                <th onclick="sortTable(4)">Relations to Software</th>
             </tr>
             {% for i in Groups_ICS %}
                 <tr>
@@ -898,13 +904,13 @@
         <button type="button" class="collapsible">Techniques: {{ Techniques_ICS|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Tactics</th>
-                <th>Relations to Campaigns</th>
-                <th>Relations to Groups</th>
-                <th>Relations to Software</th>
-                <th>Relations to Mitigations</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Tactics</th>
+                <th onclick="sortTable(3)">Relations to Campaigns</th>
+                <th onclick="sortTable(4)">Relations to Groups</th>
+                <th onclick="sortTable(5)">Relations to Software</th>
+                <th onclick="sortTable(6)">Relations to Mitigations</th>
             </tr>
             {% for i in Techniques_ICS %}
                 <tr>
@@ -950,9 +956,9 @@
         <button type="button" class="collapsible">Mitigations: {{ Mitigations_ICS|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Techniques</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Techniques</th>
             </tr>
             {% for i in Mitigations_ICS %}
                 <tr>
@@ -976,11 +982,11 @@
         <button type="button" class="collapsible">Software: {{ Software_ICS|length }} Findings</button>
         <table style="width:100%">
             <tr>
-                <th>Mitre ID</th>
-                <th>Name</th>
-                <th>Relations to Campaigns</th>
-                <th>Relations to Groups</th>
-                <th>Relations to Techniques</th>
+                <th onclick="sortTable(0)">Mitre ID</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Relations to Campaigns</th>
+                <th onclick="sortTable(3)">Relations to Groups</th>
+                <th onclick="sortTable(4)">Relations to Techniques</th>
             </tr>
             {% for i in Software_ICS %}
                 <tr>
@@ -1010,7 +1016,9 @@
         </table>
         {% endif %}
 
+
     <!----------- References Result from ICS-Matrix -------------->
+
 
         {% if Refs_Bool == "True"%}
             <h1>References in ICS-Matrix</h1>
@@ -1018,8 +1026,8 @@
                 <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Campaigns_Urls_Ics %}
                         <tr>
@@ -1034,8 +1042,8 @@
                 <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Tactics_Urls_Ics %}
                         <tr>
@@ -1050,8 +1058,8 @@
                 <button type="button" class="collapsible">References in Groups: {{ Groups_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Groups_Urls_Ics %}
                         <tr>
@@ -1066,8 +1074,8 @@
                 <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Techniques_Urls_Ics %}
                         <tr>
@@ -1082,8 +1090,8 @@
                 <button type="button" class="collapsible">References in Software: {{ Software_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Software_Urls_Ics %}
                         <tr>
@@ -1098,8 +1106,8 @@
                 <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
                     <tr>
-                        <th>Mitre ID</th>
-                        <th>URL</th>
+                        <th onclick="sortTable(0)">Mitre ID</th>
+                        <th onclick="sortTable(1)">URL</th>
                     </tr>
                     {% for i in Mitigations_Urls_Ics %}
                         <tr>
@@ -1126,6 +1134,61 @@
                         }
                       });
                     }
+
+            function sortTable(n) {
+              let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+              table = document.getElementById("myTable");
+              switching = true;
+              //Set the sorting direction to ascending:
+              dir = "asc";
+              /*Make a loop that will continue until
+              no switching has been done:*/
+              while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+                for (i = 1; i < (rows.length - 1); i++) {
+                  //start by saying there should be no switching:
+                  shouldSwitch = false;
+                  /*Get the two elements you want to compare,
+                  one from current row and one from the next:*/
+                  x = rows[i].getElementsByTagName("TD")[n];
+                  y = rows[i + 1].getElementsByTagName("TD")[n];
+                  /*check if the two rows should switch place,
+                  based on the direction, asc or desc:*/
+                  if (dir === "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                      //if so, mark as a switch and break the loop:
+                      shouldSwitch= true;
+                      break;
+                    }
+                  } else if (dir === "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                      //if so, mark as a switch and break the loop:
+                      shouldSwitch = true;
+                      break;
+                    }
+                  }
+                }
+                if (shouldSwitch) {
+                  /*If a switch has been marked, make the switch
+                  and mark that a switch has been done:*/
+                  rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                  switching = true;
+                  //Each time a switch is done, increase this count by 1:
+                  switchcount ++;
+                } else {
+                  /*If no switching has been done AND the direction is "asc",
+                  set the direction to "desc" and run the while loop again.*/
+                  if (switchcount === 0 && dir === "asc") {
+                    dir = "desc";
+                    switching = true;
+                  }
+                }
+              }
+            }
     </script>
 </body>
 </html>
