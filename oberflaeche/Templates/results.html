@@ -82,10 +82,13 @@
       <a href="/index">Index</a>
     </div>
 
-    <h1>Chosen Keyword: {{ Keyword }}</h1>
-    <h1>Matches found in Enterprise: {{ Result_Count_Enterprise}}</h1>
-    <h1>Matches found in Mobile: {{ Result_Count_Mobile}}</h1>
-    <h1>Matches found in Ics: {{ Result_Count_ICS}}</h1>
+    <div>
+        <h1>Chosen Keyword: {{ Keyword }}</h1>
+        <h2>Matches found in Enterprise: {{ Result_Count_Enterprise}}</h2>
+        <h2>Matches found in Mobile: {{ Result_Count_Mobile}}</h2>
+        <h2>Matches found in Ics: {{ Result_Count_ICS}}</h2>
+    </div>
+
 
     {% if Refs_Bool == "True" %}
         <form style="margin:auto; max-width:500px" action="{% url 'results' %}" method="POST" enctype="multipart/form-data">
@@ -366,7 +369,7 @@
         <!-----  Showing Url Results from Enterprise Matrix ----->
 
         {% if Refs_Bool == "True"%}
-            <h1>Referencen</h1>
+            <h1>References in Enterprise Matrix</h1>
             {% if Campaigns_Urls|length != 0  %}
                 <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls|length }} Findings</button>
                 <table style="width:100%">
@@ -382,7 +385,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Tactics_Urls|length != 0  %}
                 <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls|length }} Findings</button>
                 <table style="width:100%">
@@ -398,7 +401,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Groups_Urls|length != 0  %}
                 <button type="button" class="collapsible">References in Groups: {{ Groups_Urls|length }} Findings</button>
                 <table style="width:100%">
@@ -414,7 +417,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Techniques_Urls|length != 0  %}
                 <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls|length }} Findings</button>
                 <table style="width:100%">
@@ -430,7 +433,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Software_Urls|length != 0  %}
                 <button type="button" class="collapsible">References in Software: {{ Software_Urls|length }} Findings</button>
                 <table style="width:100%">
@@ -446,7 +449,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Mitigations_Urls|length != 0  %}
                 <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls|length }} Findings</button>
                 <table style="width:100%">
@@ -465,11 +468,7 @@
         {% endif %}
     </div>
 
-
-
-    <!-----  Showing Url Results from Mobile Matrix ----->
-
-
+    <!-----  Showing Results from Mobile Matrix ----->
 
     <h1>Mobile </h1>
     {% if Tactics_Mobile|length != 0 %}
@@ -688,8 +687,10 @@
         </table>
         {% endif %}
 
+    <!------------ Showing URL Results from Mobile Matrix --------------------->
+
         {% if Refs_Bool == "True"%}
-            <h1>Referencen</h1>
+            <h1>References in Mobile-Matrix</h1>
             {% if Campaigns_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
@@ -705,7 +706,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Tactics_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
@@ -721,7 +722,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Groups_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Groups: {{ Groups_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
@@ -737,7 +738,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Techniques_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
@@ -753,7 +754,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Software_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Software: {{ Software_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
@@ -769,7 +770,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Mitigations_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls_Mobile|length }} Findings</button>
                 <table style="width:100%">
@@ -1009,8 +1010,10 @@
         </table>
         {% endif %}
 
+    <!----------- References Result from ICS-Matrix -------------->
+
         {% if Refs_Bool == "True"%}
-            <h1>Referencen</h1>
+            <h1>References in ICS-Matrix</h1>
             {% if Campaigns_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
@@ -1026,7 +1029,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Tactics_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
@@ -1042,7 +1045,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Groups_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Groups: {{ Groups_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
@@ -1058,7 +1061,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Techniques_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
@@ -1074,7 +1077,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Software_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Software: {{ Software_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">
@@ -1090,7 +1093,7 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+             <p></p>
             {% if Mitigations_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls_Ics|length }} Findings</button>
                 <table style="width:100%">

@@ -268,7 +268,7 @@ def index_result(request):
         result_groups_refs = object_enterprise.groups_refs.all()
         result_techniques_refs = object_enterprise.techniques_refs.all()
         result_software_refs = object_enterprise.software_refs.all()
-        result_mitigations_refs = object_enterprise.campaigns_refs.all()
+        result_mitigations_refs = object_enterprise.mitigations_refs.all()
         #########################################################################################
         #########################################################################################
 
@@ -284,7 +284,7 @@ def index_result(request):
         result_groups_refs_mobile = object_mobile.groups_refs.all()
         result_techniques_refs_mobile = object_mobile.techniques_refs.all()
         result_software_refs_mobile = object_mobile.software_refs.all()
-        result_mitigations_refs_mobile = object_mobile.campaigns_refs.all()
+        result_mitigations_refs_mobile = object_mobile.mitigations_refs.all()
         #########################################################################################
         #########################################################################################
 
@@ -300,7 +300,7 @@ def index_result(request):
         result_groups_refs_ics = object_ics.groups_refs.all()
         result_techniques_refs_ics = object_ics.techniques_refs.all()
         result_software_refs_ics = object_ics.software_refs.all()
-        result_mitigations_refs_ics = object_ics.campaigns_refs.all()
+        result_mitigations_refs_ics = object_ics.mitigations_refs.all()
 
         return render(request, 'index_result.html', {"Keyword": keyword, "Result_Count_Enterprise": result_count_enterprise,
              "Techniques_Enterprise": techniques, "Groups_Enterprise": groups,
@@ -1161,8 +1161,9 @@ def import_data(request):
 
 def results_enterprise(keyword):
 
-    mitre_matrix = MitreAttackData("C://Users\phill\PycharmProjects\Masterarbeit_Mitre_Attack\json-Datein\enterprise-attack.json")
-    result = mitre_matrix.get_objects_by_content(keyword)
+    #Use Path to JSON-File
+    mitre_matrix = MitreAttackData("C:\\Users\\phill\\PycharmProjects\\Masterarbeit_Mitre_Attack\\json-Datein\\enterprise-attack.json")
+    result = mitre_matrix.get_objects_by_content(keyword, remove_revoked_deprecated=True)
 
     tactics = []
     campaigns = []
@@ -1196,8 +1197,9 @@ def results_enterprise(keyword):
 
 def results_mobile(keyword):
 
-    mitre_matrix = MitreAttackData("C://Users\phill\PycharmProjects\Masterarbeit_Mitre_Attack\json-Datein\mobile-attack.json")
-    result = mitre_matrix.get_objects_by_content(keyword)
+    #Use Path to JSON-File
+    mitre_matrix = MitreAttackData("C:\\Users\\phill\\PycharmProjects\\Masterarbeit_Mitre_Attack\\json-Datein\\mobile-attack.json")
+    result = mitre_matrix.get_objects_by_content(keyword, remove_revoked_deprecated=True)
 
     tactics = []
     campaigns = []
@@ -1231,8 +1233,9 @@ def results_mobile(keyword):
 
 def results_ics(keyword):
 
-    mitre_matrix = MitreAttackData("C://Users\phill\PycharmProjects\Masterarbeit_Mitre_Attack\json-Datein\ics-attack.json")
-    result = mitre_matrix.get_objects_by_content(keyword)
+    #Use Path to JSON-File
+    mitre_matrix = MitreAttackData("C:\\Users\\phill\\PycharmProjects\\Masterarbeit_Mitre_Attack\\json-Datein\\ics-attack.json")
+    result = mitre_matrix.get_objects_by_content(keyword, remove_revoked_deprecated=True)
 
     tactics = []
     campaigns = []
@@ -1251,7 +1254,7 @@ def results_ics(keyword):
                 case "intrusion-set":
                     groups.append(GroupsIcs.objects.get(id=i.id))
                 case "attack-pattern":
-                    techniques.append(TacticsIcs.objects.get(id=i.id))
+                    techniques.append(TechniquesIcs.objects.get(id=i.id))
                 case "tools":
                     software.append(SoftwareIcs.objects.get(id=i.id))
                 case "malware":
