@@ -78,7 +78,7 @@
         <h1>Enterprise</h1>
         {% if Tactics_Enterprise|length != 0 %}
         <button type="button" class="collapsible">Tactics: {{ Tactics_Enterprise|length }} Findings</button>
-        <table style="width:100%">
+        <table style="width:100%" id="myTable">
             <tr>
                 <th onclick="sortTable(0)">Mitre ID</th>
                 <th onclick="sortTable(1)">Name</th>
@@ -104,7 +104,7 @@
         <p></p>
         {% if Campaigns_Enterprise|length != 0  %}
         <button type="button" class="collapsible">Campaigns: {{ Campaigns_Enterprise|length }} Findings</button>
-        <table style="width:100%">
+        <table id="myTable" style="width:100%">
             <tr>
                 <th onclick="sortTable(0)">Mitre ID</th>
                 <th onclick="sortTable(1)">Name</th>
@@ -180,7 +180,7 @@
         <p></p>
         {% if Techniques_Enterprise|length != 0  %}
         <button type="button" class="collapsible">Techniques: {{ Techniques_Enterprise|length }} Findings</button>
-        <table style="width:100%">
+        <table id="myTable" style="width:100%">
             <tr>
                 <th onclick="sortTable(0)">Mitre ID</th>
                 <th onclick="sortTable(1)">Name</th>
@@ -232,7 +232,7 @@
         <p></p>
         {% if Mitigations_Enterprise|length != 0  %}
         <button type="button" class="collapsible">Mitigations: {{ Mitigations_Enterprise|length }} Findings</button>
-        <table style="width:100%">
+        <table id="myTable"  style="width:100%">
             <tr>
                 <th onclick="sortTable(0)">Mitre ID</th>
                 <th onclick="sortTable(1)">Name</th>
@@ -258,7 +258,7 @@
         <p></p>
         {% if Software_Enterprise|length != 0  %}
         <button type="button" class="collapsible">Software: {{ Software_Enterprise|length }} Findings</button>
-        <table style="width:100%">
+        <table id="myTable"  style="width:100%">
             <tr>
                 <th onclick="sortTable(0)">Mitre ID</th>
                 <th onclick="sortTable(1)">Name</th>
@@ -301,7 +301,7 @@
         <h1>References</h1>
         {% if Campaigns_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable" style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">URL</th>
@@ -333,7 +333,7 @@
         <p></p>
         {% if Groups_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Groups: {{ Groups_Urls|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">URL</th>
@@ -349,7 +349,7 @@
         <p></p>
         {% if Techniques_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">URL</th>
@@ -365,7 +365,7 @@
         <p></p>
         {% if Software_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Software: {{ Software_Urls|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">URL</th>
@@ -381,7 +381,7 @@
         <p></p>
         {% if Mitigations_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">URL</th>
@@ -403,7 +403,7 @@
         <h1>Mobile </h1>
         {% if Tactics_Mobile|length != 0 %}
             <button type="button" class="collapsible">Tactics: {{ Tactics_Mobile|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -429,7 +429,7 @@
             <p></p>
             {% if Campaigns_Mobile|length != 0  %}
             <button type="button" class="collapsible">Campaigns: {{ Campaigns_Mobile|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -467,7 +467,7 @@
             <p></p>
             {% if Groups_Mobile|length != 0  %}
             <button type="button" class="collapsible">Groups: {{ Groups_Mobile|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -503,7 +503,7 @@
             <p></p>
             {% if Techniques_Mobile|length != 0  %}
             <button type="button" class="collapsible">Techniques: {{ Techniques_Mobile|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -555,7 +555,7 @@
             <p></p>
             {% if Mitigations_Mobile|length != 0  %}
             <button type="button" class="collapsible">Mitigations: {{ Mitigations_Mobile|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -581,7 +581,7 @@
             <p></p>
             {% if Software_Mobile|length != 0  %}
             <button type="button" class="collapsible">Software: {{ Software_Mobile|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable" style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -624,7 +624,7 @@
             <h1>References</h1>
             {% if Campaigns_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls_Mobile|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable" style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -640,7 +640,7 @@
 
             {% if Tactics_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls_Mobile|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable" style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -656,7 +656,7 @@
 
             {% if Groups_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Groups: {{ Groups_Urls_Mobile|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable"  style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -672,7 +672,7 @@
 
             {% if Techniques_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls_Mobile|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable"  style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -688,7 +688,7 @@
 
             {% if Software_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Software: {{ Software_Urls_Mobile|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable"  style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -704,7 +704,7 @@
 
             {% if Mitigations_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls_Mobile|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable"  style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -727,7 +727,7 @@
         <h1>ICS</h1>
         {% if Tactics_ICS|length != 0 %}
             <button type="button" class="collapsible">Tactics: {{ Tactics_ICS|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -753,7 +753,7 @@
             <p></p>
             {% if Campaigns_ICS|length != 0  %}
             <button type="button" class="collapsible">Campaigns: {{ Campaigns_ICS|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -791,7 +791,7 @@
             <p></p>
             {% if Groups_ICS|length != 0  %}
             <button type="button" class="collapsible">Groups: {{ Groups_ICS|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -827,7 +827,7 @@
             <p></p>
             {% if Techniques_ICS|length != 0  %}
             <button type="button" class="collapsible">Techniques: {{ Techniques_ICS|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -879,7 +879,7 @@
             <p></p>
             {% if Mitigations_ICS|length != 0  %}
             <button type="button" class="collapsible">Mitigations: {{ Mitigations_ICS|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable" style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -905,7 +905,7 @@
             <p></p>
             {% if Software_ICS|length != 0  %}
             <button type="button" class="collapsible">Software: {{ Software_ICS|length }} Findings</button>
-            <table style="width:100%">
+            <table id="myTable"  style="width:100%">
                 <tr>
                     <th onclick="sortTable(0)">Mitre ID</th>
                     <th onclick="sortTable(1)">Name</th>
@@ -948,7 +948,7 @@
             <h1>References</h1>
             {% if Campaigns_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls_Ics|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable"  style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -964,7 +964,7 @@
 
             {% if Tactics_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls_Ics|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable" style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -980,7 +980,7 @@
 
             {% if Groups_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Groups: {{ Groups_Urls_Ics|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable" style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -996,7 +996,7 @@
 
             {% if Techniques_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls_Ics|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable" style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -1012,7 +1012,7 @@
 
             {% if Software_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Software: {{ Software_Urls_Ics|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable" style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
@@ -1028,7 +1028,7 @@
 
             {% if Mitigations_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls_Ics|length }} Findings</button>
-                <table style="width:100%">
+                <table id="myTable" style="width:100%">
                     <tr>
                         <th onclick="sortTable(0)">Mitre ID</th>
                         <th onclick="sortTable(1)">URL</th>
