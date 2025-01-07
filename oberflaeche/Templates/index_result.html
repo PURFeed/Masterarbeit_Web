@@ -78,11 +78,11 @@
         <h1>Enterprise</h1>
         {% if Tactics_Enterprise|length != 0 %}
         <button type="button" class="collapsible">Tactics: {{ Tactics_Enterprise|length }} Findings</button>
-        <table style="width:100%" id="myTable">
+        <table style="width:100%" id="myTable_Enterprise_Tactics">
             <tr>
-                <th onclick="sortTable(0)">Mitre ID</th>
-                <th onclick="sortTable(1)">Name</th>
-                <th onclick="sortTable(2)">Relations to Techniques</th>
+                <th onclick="sortTable('myTable_Enterprise_Tactics', 0)">Mitre ID</th>
+                <th onclick="sortTable('myTable_Enterprise_Tactics', 1)">Name</th>
+                <th onclick="sortTable('myTable_Enterprise_Tactics', 2)">Relations to Techniques</th>
             </tr>
             {% for i in Tactics_Enterprise %}
                 <tr>
@@ -104,13 +104,13 @@
         <p></p>
         {% if Campaigns_Enterprise|length != 0  %}
         <button type="button" class="collapsible">Campaigns: {{ Campaigns_Enterprise|length }} Findings</button>
-        <table id="myTable" style="width:100%">
+        <table id='myTable_enter_cam' style="width:100%">
             <tr>
-                <th onclick="sortTable(0)">Mitre ID</th>
-                <th onclick="sortTable(1)">Name</th>
-                <th onclick="sortTable(2)">Relations to Groups</th>
-                <th onclick="sortTable(3)">Relations to Techniques</th>
-                <th onclick="sortTable(4)">Relations to Software</th>
+                <th onclick="sortTable('myTable_enter_cam' ,0)">Mitre ID</th>
+                <th onclick="sortTable('myTable_enter_cam' ,1)">Name</th>
+                <th onclick="sortTable('myTable_enter_cam' ,2)">Relations to Groups</th>
+                <th onclick="sortTable('myTable_enter_cam' ,3)">Relations to Techniques</th>
+                <th onclick="sortTable('myTable_enter_cam' ,4)">Relations to Software</th>
             </tr>
             {% for i in Campaigns_Enterprise %}
                 <tr>
@@ -142,13 +142,13 @@
         <p></p>
         {% if Groups_Enterprise|length != 0  %}
         <button type="button" class="collapsible">Groups: {{ Groups_Enterprise|length }} Findings</button>
-        <table style="width:100%" id="myTable">
+        <table style="width:100%" id='enter_group'>
             <tr>
-                <th onclick="sortTable(0)">Mitre ID</th>
-                <th onclick="sortTable(1)">Name</th>
-                <th onclick="sortTable(2)">Relations to Campaigns</th>
-                <th onclick="sortTable(3)">Relations to Techniques</th>
-                <th onclick="sortTable(4)">Relations to Software</th>
+                <th onclick="sortTable('enter_group',0)">Mitre ID</th>
+                <th onclick="sortTable('enter_group',1)">Name</th>
+                <th onclick="sortTable('enter_group',2)">Relations to Campaigns</th>
+                <th onclick="sortTable('enter_group',3)">Relations to Techniques</th>
+                <th onclick="sortTable('enter_group',4)">Relations to Software</th>
             </tr>
             {% for i in Groups_Enterprise %}
                 <tr>
@@ -180,15 +180,15 @@
         <p></p>
         {% if Techniques_Enterprise|length != 0  %}
         <button type="button" class="collapsible">Techniques: {{ Techniques_Enterprise|length }} Findings</button>
-        <table id="myTable" style="width:100%">
+        <table id='enter_tech' style="width:100%">
             <tr>
-                <th onclick="sortTable(0)">Mitre ID</th>
-                <th onclick="sortTable(1)">Name</th>
-                <th onclick="sortTable(2)">Relations to Tactics</th>
-                <th onclick="sortTable(3)">Relations to Campaigns</th>
-                <th onclick="sortTable(4)">Relations to Groups</th>
-                <th onclick="sortTable(5)">Relations to Software</th>
-                <th onclick="sortTable(6)">Relations to Mitigations</th>
+                <th onclick="sortTable('enter_tech',0)">Mitre ID</th>
+                <th onclick="sortTable('enter_tech',1)">Name</th>
+                <th onclick="sortTable('enter_tech',2)">Relations to Tactics</th>
+                <th onclick="sortTable('enter_tech',3)">Relations to Campaigns</th>
+                <th onclick="sortTable('enter_tech',4)">Relations to Groups</th>
+                <th onclick="sortTable('enter_tech',5)">Relations to Software</th>
+                <th onclick="sortTable('enter_tech',6)">Relations to Mitigations</th>
             </tr>
             {% for i in Techniques_Enterprise %}
                 <tr>
@@ -232,11 +232,11 @@
         <p></p>
         {% if Mitigations_Enterprise|length != 0  %}
         <button type="button" class="collapsible">Mitigations: {{ Mitigations_Enterprise|length }} Findings</button>
-        <table id="myTable"  style="width:100%">
+        <table id='enter_miti'  style="width:100%">
             <tr>
-                <th onclick="sortTable(0)">Mitre ID</th>
-                <th onclick="sortTable(1)">Name</th>
-                <th onclick="sortTable(2)">Relations to Techniques</th>
+                <th onclick="sortTable('enter_miti', 0)">Mitre ID</th>
+                <th onclick="sortTable('enter_miti', 1)">Name</th>
+                <th onclick="sortTable('enter_miti', 2)">Relations to Techniques</th>
             </tr>
             {% for i in Mitigations_Enterprise %}
                 <tr>
@@ -258,13 +258,13 @@
         <p></p>
         {% if Software_Enterprise|length != 0  %}
         <button type="button" class="collapsible">Software: {{ Software_Enterprise|length }} Findings</button>
-        <table id="myTable"  style="width:100%">
+        <table id='enter_soft' style="width:100%">
             <tr>
-                <th onclick="sortTable(0)">Mitre ID</th>
-                <th onclick="sortTable(1)">Name</th>
-                <th onclick="sortTable(2)">Relations to Campaigns</th>
-                <th onclick="sortTable(3)">Relations to Groups</th>
-                <th onclick="sortTable(4)">Relations to Techniques</th>
+                <th onclick="sortTable('enter_soft',0)">Mitre ID</th>
+                <th onclick="sortTable('enter_soft',1)">Name</th>
+                <th onclick="sortTable('enter_soft',2)">Relations to Campaigns</th>
+                <th onclick="sortTable('enter_soft',3)">Relations to Groups</th>
+                <th onclick="sortTable('enter_soft',4)">Relations to Techniques</th>
             </tr>
             {% for i in Software_Enterprise %}
                 <tr>
@@ -301,10 +301,10 @@
         <h1>References</h1>
         {% if Campaigns_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls|length }} Findings</button>
-            <table id="myTable" style="width:100%">
+            <table id='enter_ref_tac' style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">URL</th>
+                    <th onclick="sortTable('enter_ref_tac',0)">Mitre ID</th>
+                    <th onclick="sortTable('enter_ref_tac',1)">URL</th>
                 </tr>
                 {% for i in Campaigns_Urls %}
                     <tr>
@@ -317,10 +317,10 @@
         <p></p>
         {% if Tactics_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls|length }} Findings</button>
-            <table style="width:100%">
+            <table id="enter_ref_cam" style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">URL</th>
+                    <th onclick="sortTable('enter_ref_cam',0)">Mitre ID</th>
+                    <th onclick="sortTable('enter_ref_cam',1)">URL</th>
                 </tr>
                 {% for i in Tactics_Urls %}
                     <tr>
@@ -333,10 +333,10 @@
         <p></p>
         {% if Groups_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Groups: {{ Groups_Urls|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="enter_ref_gr"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">URL</th>
+                    <th onclick="sortTable('enter_ref_gr',0)">Mitre ID</th>
+                    <th onclick="sortTable('enter_ref_gr',1)">URL</th>
                 </tr>
                 {% for i in Groups_Urls %}
                     <tr>
@@ -349,10 +349,10 @@
         <p></p>
         {% if Techniques_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="enter_ref_tech"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">URL</th>
+                    <th onclick="sortTable('enter_ref_tech',0)">Mitre ID</th>
+                    <th onclick="sortTable('enter_ref_tech',1)">URL</th>
                 </tr>
                 {% for i in Techniques_Urls %}
                     <tr>
@@ -365,10 +365,10 @@
         <p></p>
         {% if Software_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Software: {{ Software_Urls|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="enter_ref_soft"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">URL</th>
+                    <th onclick="sortTable('enter_ref_soft',0)">Mitre ID</th>
+                    <th onclick="sortTable('enter_ref_soft',1)">URL</th>
                 </tr>
                 {% for i in Software_Urls %}
                     <tr>
@@ -381,10 +381,10 @@
         <p></p>
         {% if Mitigations_Urls|length != 0  %}
             <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="enter_ref_miti"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">URL</th>
+                    <th onclick="sortTable('enter_ref_miti',0)">Mitre ID</th>
+                    <th onclick="sortTable('enter_ref_miti',1)">URL</th>
                 </tr>
                 {% for i in Mitigations_Urls %}
                     <tr>
@@ -403,11 +403,11 @@
         <h1>Mobile </h1>
         {% if Tactics_Mobile|length != 0 %}
             <button type="button" class="collapsible">Tactics: {{ Tactics_Mobile|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="mob_1"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Techniques</th>
+                    <th onclick="sortTable('mob_1',0)">Mitre ID</th>
+                    <th onclick="sortTable('mob_1',1)">Name</th>
+                    <th onclick="sortTable('mob_1',2)">Relations to Techniques</th>
                 </tr>
                 {% for i in Tactics_Mobile %}
                     <tr>
@@ -429,13 +429,13 @@
             <p></p>
             {% if Campaigns_Mobile|length != 0  %}
             <button type="button" class="collapsible">Campaigns: {{ Campaigns_Mobile|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="mob_2"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Groups</th>
-                    <th onclick="sortTable(3)">Relations to Techniques</th>
-                    <th onclick="sortTable(4)">Relations to Software</th>
+                    <th onclick="sortTable('mob_2',0)">Mitre ID</th>
+                    <th onclick="sortTable('mob_2',1)">Name</th>
+                    <th onclick="sortTable('mob_2',2)">Relations to Groups</th>
+                    <th onclick="sortTable('mob_2',3)">Relations to Techniques</th>
+                    <th onclick="sortTable('mob_2',4)">Relations to Software</th>
                 </tr>
                 {% for i in Campaigns_Mobile %}
                     <tr>
@@ -467,13 +467,13 @@
             <p></p>
             {% if Groups_Mobile|length != 0  %}
             <button type="button" class="collapsible">Groups: {{ Groups_Mobile|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="mob_3"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Campaigns</th>
-                    <th onclick="sortTable(3)">Relations to Techniques</th>
-                    <th onclick="sortTable(4)">Relations to Software</th>
+                    <th onclick="sortTable('mob_3',0)">Mitre ID</th>
+                    <th onclick="sortTable('mob_3',1)">Name</th>
+                    <th onclick="sortTable('mob_3',2)">Relations to Campaigns</th>
+                    <th onclick="sortTable('mob_3',3)">Relations to Techniques</th>
+                    <th onclick="sortTable('mob_3',4)">Relations to Software</th>
                 </tr>
                 {% for i in Groups_Mobile %}
                     <tr>
@@ -503,15 +503,15 @@
             <p></p>
             {% if Techniques_Mobile|length != 0  %}
             <button type="button" class="collapsible">Techniques: {{ Techniques_Mobile|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="mob_4"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Tactics</th>
-                    <th onclick="sortTable(3)">Relations to Campaigns</th>
-                    <th onclick="sortTable(4)">Relations to Groups</th>
-                    <th onclick="sortTable(5)">Relations to Software</th>
-                    <th onclick="sortTable(6)">Relations to Mitigations</th>
+                    <th onclick="sortTable('mob_4',0)">Mitre ID</th>
+                    <th onclick="sortTable('mob_4',1)">Name</th>
+                    <th onclick="sortTable('mob_4',2)">Relations to Tactics</th>
+                    <th onclick="sortTable('mob_4',3)">Relations to Campaigns</th>
+                    <th onclick="sortTable('mob_4',4)">Relations to Groups</th>
+                    <th onclick="sortTable('mob_4',5)">Relations to Software</th>
+                    <th onclick="sortTable('mob_4',6)">Relations to Mitigations</th>
                 </tr>
                 {% for i in Techniques_Mobile %}
                     <tr>
@@ -555,11 +555,11 @@
             <p></p>
             {% if Mitigations_Mobile|length != 0  %}
             <button type="button" class="collapsible">Mitigations: {{ Mitigations_Mobile|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="mob_5"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Techniques</th>
+                    <th onclick="sortTable('mob_5',0)">Mitre ID</th>
+                    <th onclick="sortTable('mob_5',1)">Name</th>
+                    <th onclick="sortTable('mob_5',2)">Relations to Techniques</th>
                 </tr>
                 {% for i in Mitigations_Mobile %}
                     <tr>
@@ -581,13 +581,13 @@
             <p></p>
             {% if Software_Mobile|length != 0  %}
             <button type="button" class="collapsible">Software: {{ Software_Mobile|length }} Findings</button>
-            <table id="myTable" style="width:100%">
+            <table id="mob_6" style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Campaigns</th>
-                    <th onclick="sortTable(3)">Relations to Groups</th>
-                    <th onclick="sortTable(4)">Relations to Techniques</th>
+                    <th onclick="sortTable('mob_6',0)">Mitre ID</th>
+                    <th onclick="sortTable('mob_6',1)">Name</th>
+                    <th onclick="sortTable('mob_6',2)">Relations to Campaigns</th>
+                    <th onclick="sortTable('mob_6',3)">Relations to Groups</th>
+                    <th onclick="sortTable('mob_6',4)">Relations to Techniques</th>
                 </tr>
                 {% for i in Software_Mobile %}
                     <tr>
@@ -624,10 +624,10 @@
             <h1>References</h1>
             {% if Campaigns_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls_Mobile|length }} Findings</button>
-                <table id="myTable" style="width:100%">
+                <table id="mob_ref_cam" style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('mob_ref_cam',0)">Mitre ID</th>
+                        <th onclick="sortTable('mob_ref_cam',1)">URL</th>
                     </tr>
                     {% for i in Campaigns_Urls_Mobile %}
                         <tr>
@@ -637,13 +637,13 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Tactics_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls_Mobile|length }} Findings</button>
-                <table id="myTable" style="width:100%">
+                <table id="mob_ref_tac" style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('mob_ref_tac',0)">Mitre ID</th>
+                        <th onclick="sortTable('mob_ref_tac',1)">URL</th>
                     </tr>
                     {% for i in Tactics_Urls_Mobile %}
                         <tr>
@@ -653,13 +653,13 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Groups_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Groups: {{ Groups_Urls_Mobile|length }} Findings</button>
-                <table id="myTable"  style="width:100%">
+                <table id="mob_ref_mob"  style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('mob_ref_mob',0)">Mitre ID</th>
+                        <th onclick="sortTable('mob_ref_mob',1)">URL</th>
                     </tr>
                     {% for i in Groups_Urls_Mobile %}
                         <tr>
@@ -669,13 +669,13 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Techniques_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls_Mobile|length }} Findings</button>
-                <table id="myTable"  style="width:100%">
+                <table id="mob_ref_tech"  style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('mob_ref_tech',0)">Mitre ID</th>
+                        <th onclick="sortTable('mob_ref_tech',1)">URL</th>
                     </tr>
                     {% for i in Techniques_Urls_Mobile %}
                         <tr>
@@ -685,13 +685,13 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Software_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Software: {{ Software_Urls_Mobile|length }} Findings</button>
-                <table id="myTable"  style="width:100%">
+                <table id="mob_ref_soft"  style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('mob_ref_soft',0)">Mitre ID</th>
+                        <th onclick="sortTable('mob_ref_soft',1)">URL</th>
                     </tr>
                     {% for i in Software_Urls_Mobile %}
                         <tr>
@@ -701,13 +701,13 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Mitigations_Urls_Mobile|length != 0  %}
                 <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls_Mobile|length }} Findings</button>
-                <table id="myTable"  style="width:100%">
+                <table id="mob_ref_miti"  style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('mob_ref_miti',0)">Mitre ID</th>
+                        <th onclick="sortTable('mob_ref_miti',1)">URL</th>
                     </tr>
                     {% for i in Mitigations_Urls_Mobile %}
                         <tr>
@@ -727,11 +727,11 @@
         <h1>ICS</h1>
         {% if Tactics_ICS|length != 0 %}
             <button type="button" class="collapsible">Tactics: {{ Tactics_ICS|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id='ics_1'  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Techniques</th>
+                    <th onclick="sortTable('ics_1',0)">Mitre ID</th>
+                    <th onclick="sortTable('ics_1',1)">Name</th>
+                    <th onclick="sortTable('ics_1',2)">Relations to Techniques</th>
                 </tr>
                 {% for i in Tactics_ICS %}
                     <tr>
@@ -753,13 +753,13 @@
             <p></p>
             {% if Campaigns_ICS|length != 0  %}
             <button type="button" class="collapsible">Campaigns: {{ Campaigns_ICS|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="ics_2"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Groups</th>
-                    <th onclick="sortTable(3)">Relations to Techniques</th>
-                    <th onclick="sortTable(4)">Relations to Software</th>
+                    <th onclick="sortTable('ics_2',0)">Mitre ID</th>
+                    <th onclick="sortTable('ics_2',1)">Name</th>
+                    <th onclick="sortTable('ics_2',2)">Relations to Groups</th>
+                    <th onclick="sortTable('ics_2',3)">Relations to Techniques</th>
+                    <th onclick="sortTable('ics_2',4)">Relations to Software</th>
                 </tr>
                 {% for i in Campaigns_ICS %}
                     <tr>
@@ -791,13 +791,13 @@
             <p></p>
             {% if Groups_ICS|length != 0  %}
             <button type="button" class="collapsible">Groups: {{ Groups_ICS|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="ics_3"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Campaigns</th>
-                    <th onclick="sortTable(3)">Relations to Techniques</th>
-                    <th onclick="sortTable(4)">Relations to Software</th>
+                    <th onclick="sortTable('ics_3',0)">Mitre ID</th>
+                    <th onclick="sortTable('ics_3',1)">Name</th>
+                    <th onclick="sortTable('ics_3',2)">Relations to Campaigns</th>
+                    <th onclick="sortTable('ics_3',3)">Relations to Techniques</th>
+                    <th onclick="sortTable('ics_3',4)">Relations to Software</th>
                 </tr>
                 {% for i in Groups_ICS %}
                     <tr>
@@ -827,15 +827,15 @@
             <p></p>
             {% if Techniques_ICS|length != 0  %}
             <button type="button" class="collapsible">Techniques: {{ Techniques_ICS|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="ics_4"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Tactics</th>
-                    <th onclick="sortTable(3)">Relations to Campaigns</th>
-                    <th onclick="sortTable(4)">Relations to Groups</th>
-                    <th onclick="sortTable(5)">Relations to Software</th>
-                    <th onclick="sortTable(6)">Relations to Mitigations</th>
+                    <th onclick="sortTable('ics_4',0)">Mitre ID</th>
+                    <th onclick="sortTable('ics_4',1)">Name</th>
+                    <th onclick="sortTable('ics_4',2)">Relations to Tactics</th>
+                    <th onclick="sortTable('ics_4',3)">Relations to Campaigns</th>
+                    <th onclick="sortTable('ics_4',4)">Relations to Groups</th>
+                    <th onclick="sortTable('ics_4',5)">Relations to Software</th>
+                    <th onclick="sortTable('ics_4',6)">Relations to Mitigations</th>
                 </tr>
                 {% for i in Techniques_ICS %}
                     <tr>
@@ -879,11 +879,11 @@
             <p></p>
             {% if Mitigations_ICS|length != 0  %}
             <button type="button" class="collapsible">Mitigations: {{ Mitigations_ICS|length }} Findings</button>
-            <table id="myTable" style="width:100%">
+            <table id="ics_5" style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Techniques</th>
+                    <th onclick="sortTable('ics_5',0)">Mitre ID</th>
+                    <th onclick="sortTable('ics_5',1)">Name</th>
+                    <th onclick="sortTable('ics_5',2)">Relations to Techniques</th>
                 </tr>
                 {% for i in Mitigations_ICS %}
                     <tr>
@@ -905,13 +905,13 @@
             <p></p>
             {% if Software_ICS|length != 0  %}
             <button type="button" class="collapsible">Software: {{ Software_ICS|length }} Findings</button>
-            <table id="myTable"  style="width:100%">
+            <table id="ics_6"  style="width:100%">
                 <tr>
-                    <th onclick="sortTable(0)">Mitre ID</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Relations to Campaigns</th>
-                    <th onclick="sortTable(3)">Relations to Groups</th>
-                    <th onclick="sortTable(4)">Relations to Techniques</th>
+                    <th onclick="sortTable('ics_6',0)">Mitre ID</th>
+                    <th onclick="sortTable('ics_6',1)">Name</th>
+                    <th onclick="sortTable('ics_6',2)">Relations to Campaigns</th>
+                    <th onclick="sortTable('ics_6',3)">Relations to Groups</th>
+                    <th onclick="sortTable('ics_6',4)">Relations to Techniques</th>
                 </tr>
                 {% for i in Software_ICS %}
                     <tr>
@@ -948,10 +948,10 @@
             <h1>References</h1>
             {% if Campaigns_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Campaigns: {{ Campaigns_Urls_Ics|length }} Findings</button>
-                <table id="myTable"  style="width:100%">
+                <table id="ics_ref_1"  style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('ics_ref_1',0)">Mitre ID</th>
+                        <th onclick="sortTable('ics_ref_1',1)">URL</th>
                     </tr>
                     {% for i in Campaigns_Urls_Ics %}
                         <tr>
@@ -961,13 +961,13 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Tactics_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Tactics: {{ Tactics_Urls_Ics|length }} Findings</button>
-                <table id="myTable" style="width:100%">
+                <table id="ics_ref_2" style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('ics_ref_2',0)">Mitre ID</th>
+                        <th onclick="sortTable('ics_ref_2',1)">URL</th>
                     </tr>
                     {% for i in Tactics_Urls_Ics %}
                         <tr>
@@ -977,13 +977,13 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Groups_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Groups: {{ Groups_Urls_Ics|length }} Findings</button>
-                <table id="myTable" style="width:100%">
+                <table id="ics_ref_3" style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('ics_ref_3',0)">Mitre ID</th>
+                        <th onclick="sortTable('ics_ref_3',1)">URL</th>
                     </tr>
                     {% for i in Groups_Urls_Ics %}
                         <tr>
@@ -993,13 +993,13 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Techniques_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Techniques: {{ Techniques_Urls_Ics|length }} Findings</button>
-                <table id="myTable" style="width:100%">
+                <table id="ics_ref_4" style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('ics_ref_4',0)">Mitre ID</th>
+                        <th onclick="sortTable('ics_ref_4',1)">URL</th>
                     </tr>
                     {% for i in Techniques_Urls_Ics %}
                         <tr>
@@ -1009,13 +1009,13 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Software_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Software: {{ Software_Urls_Ics|length }} Findings</button>
-                <table id="myTable" style="width:100%">
+                <table id="ics_ref_5" style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('ics_ref_5',0)">Mitre ID</th>
+                        <th onclick="sortTable('ics_ref_5',1)">URL</th>
                     </tr>
                     {% for i in Software_Urls_Ics %}
                         <tr>
@@ -1025,13 +1025,13 @@
                     {% endfor %}
                 </table>
             {% endif %}
-
+            <p></p>
             {% if Mitigations_Urls_Ics|length != 0  %}
                 <button type="button" class="collapsible">References in Mitigations: {{ Mitigations_Urls_Ics|length }} Findings</button>
-                <table id="myTable" style="width:100%">
+                <table id="ics_ref_6" style="width:100%">
                     <tr>
-                        <th onclick="sortTable(0)">Mitre ID</th>
-                        <th onclick="sortTable(1)">URL</th>
+                        <th onclick="sortTable('ics_ref_6',0)">Mitre ID</th>
+                        <th onclick="sortTable('ics_ref_6',1)">URL</th>
                     </tr>
                     {% for i in Mitigations_Urls_Ics %}
                         <tr>
@@ -1058,9 +1058,9 @@
                           });
                         }
 
-                function sortTable(n) {
+                function sortTable(m, n) {
                   let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-                  table = document.getElementById("myTable");
+                  table = document.getElementById(m);
                   switching = true;
                   //Set the sorting direction to ascending:
                   dir = "asc";

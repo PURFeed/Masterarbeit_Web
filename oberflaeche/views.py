@@ -1183,7 +1183,7 @@ def results_enterprise(keyword):
                     groups.append(Groups.objects.get(id=i.id))
                 case "attack-pattern":
                     techniques.append(Techniques.objects.get(id=i.id))
-                case "tools":
+                case "tool":
                     software.append(Software.objects.get(id=i.id))
                 case "malware":
                     software.append(Software.objects.get(id=i.id))
@@ -1219,7 +1219,7 @@ def results_mobile(keyword):
                     groups.append(GroupsMobile.objects.get(id=i.id))
                 case "attack-pattern":
                     techniques.append(TechniquesMobile.objects.get(id=i.id))
-                case "tools":
+                case "tool":
                     software.append(SoftwareMobile.objects.get(id=i.id))
                 case "malware":
                     software.append(SoftwareMobile.objects.get(id=i.id))
@@ -1255,7 +1255,7 @@ def results_ics(keyword):
                     groups.append(GroupsIcs.objects.get(id=i.id))
                 case "attack-pattern":
                     techniques.append(TechniquesIcs.objects.get(id=i.id))
-                case "tools":
+                case "tool":
                     software.append(SoftwareIcs.objects.get(id=i.id))
                 case "malware":
                     software.append(SoftwareIcs.objects.get(id=i.id))
