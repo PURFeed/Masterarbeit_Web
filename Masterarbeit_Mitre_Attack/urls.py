@@ -1,6 +1,5 @@
 #Author: Phillipp Gohlke
-#Last Edit: 02.01.2025
-#View for the Web-Application
+#Last Edit: 08.01.2025
 
 """
 URL configuration for Masterarbeit_Mitre_Attack project.

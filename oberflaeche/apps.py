@@ -1,3 +1,6 @@
+#Author: Phillipp Gohlke
+#Last Edit: 08.01.2025
+
 from django.apps import AppConfig
 
 

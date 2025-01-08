@@ -1,5 +1,5 @@
 #Author: Phillipp Gohlke
-#Last Edit: 02.01.2025
+#Last Edit: 08.01.2025
 #View for the Web-Application
 
 import datetime
@@ -20,7 +20,6 @@ import bs4
 from bs4 import BeautifulSoup
 import requests
 
-# Create your views here.
 
 def home(request):
     return render(request, 'suche.html')
@@ -318,6 +317,8 @@ def index_result(request):
              "Campaigns_Urls_Ics": result_campaigns_refs_ics, "Tactics_Urls_Ics": result_tactics_refs_ics})
 
     return render(request, 'index_result.html')
+
+#Method to save the results as an Index-Entry
 
 def index_saved(request):
 
@@ -1159,6 +1160,8 @@ def import_data(request):
 #######################################################################
 #######################################################################
 
+# Methods to get the Entries from the Framework
+
 def results_enterprise(keyword):
 
     #Use Path to JSON-File
@@ -1269,6 +1272,8 @@ def results_ics(keyword):
 
 #######################################################################
 #######################################################################
+
+# Methods to get the URLs from the Framework
 
 def urls_enterprise ():
 

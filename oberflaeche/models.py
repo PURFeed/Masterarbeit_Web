@@ -1,6 +1,9 @@
+#Author: Phillipp Gohlke
+#Last Edit: 08.01.2025
+
 from django.db import models
 
-# All Models for DB basierend auf .json Data provided by Mitre
+# All Models for DB basierend auf JSON-Data provided by Mitre
 # Dataversion: v15.1 letzter Stand: 17.10.2024
 
 # Enterprise matrix
