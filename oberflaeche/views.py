@@ -20,6 +20,9 @@ import bs4
 from bs4 import BeautifulSoup
 import requests
 
+mitre_attack_data_e = MitreAttackData("C:\\Users\\phill\\PycharmProjects\\Masterarbeit_Mitre_Attack\\json-Datein\\enterprise-attack.json")  # Enter the Path for the Enterprise-Matrix-JSON-File
+mitre_attack_data_m = MitreAttackData("C:\\Users\\phill\\PycharmProjects\\Masterarbeit_Mitre_Attack\\json-Datein\\mobile-attack.json")  # Enter the Path for the Mobile-Matrix-JSON-File
+mitre_attack_data_i = MitreAttackData("C:\\Users\\phill\\PycharmProjects\\Masterarbeit_Mitre_Attack\\json-Datein\\ics-attack.json")  # Enter the Path for the ICS-Matrix-JSON-File
 
 def home(request):
     return render(request, 'suche.html')
@@ -429,7 +432,6 @@ def import_data(request):
 
     # Import Data from Enterprise-Matrix
 
-    mitre_attack_data_e = MitreAttackData("enterprise-attack.json") #Enter the Path for the Enterprise-Matrix-JSON-File
     alle_technique_e = mitre_attack_data_e.get_techniques(remove_revoked_deprecated=True)
     alle_tactics_e = mitre_attack_data_e.get_tactics(remove_revoked_deprecated=True)
     alle_software_e = mitre_attack_data_e.get_software(remove_revoked_deprecated=True)
@@ -562,7 +564,6 @@ def import_data(request):
 
     # Import Data from Mobile-Matrix
 
-    mitre_attack_data_m = MitreAttackData("mobile-attack.json") #Enter the Path for the Mobile-Matrix-JSON-File
     alle_technique_m = mitre_attack_data_m.get_techniques(remove_revoked_deprecated=True)
     alle_tactics_m = mitre_attack_data_m.get_tactics(remove_revoked_deprecated=True)
     alle_software_m = mitre_attack_data_m.get_software(remove_revoked_deprecated=True)
@@ -695,7 +696,6 @@ def import_data(request):
 
     # Import Data from ICS-Matrix
 
-    mitre_attack_data_i = MitreAttackData("ics-attack.json") #Enter the Path for the ICS-Matrix-JSON-File
     alle_technique_i = mitre_attack_data_i.get_techniques(remove_revoked_deprecated=True)
     alle_tactics_i = mitre_attack_data_i.get_tactics(remove_revoked_deprecated=True)
     alle_software_i = mitre_attack_data_i.get_software(remove_revoked_deprecated=True)
@@ -1166,7 +1166,7 @@ def import_data(request):
 def results_enterprise(keyword):
 
     #Use Path to JSON-File
-    mitre_matrix = MitreAttackData("C:\\Users\\phill\\PycharmProjects\\Masterarbeit_Mitre_Attack\\json-Datein\\enterprise-attack.json")
+    mitre_matrix = mitre_attack_data_e
     result = mitre_matrix.get_objects_by_content(keyword, remove_revoked_deprecated=True)
 
     tactics = []
@@ -1204,7 +1204,7 @@ def results_enterprise(keyword):
 def results_mobile(keyword):
 
     #Use Path to JSON-File
-    mitre_matrix = MitreAttackData("C:\\Users\\phill\\PycharmProjects\\Masterarbeit_Mitre_Attack\\json-Datein\\mobile-attack.json")
+    mitre_matrix = mitre_attack_data_m
     result = mitre_matrix.get_objects_by_content(keyword, remove_revoked_deprecated=True)
 
     tactics = []
@@ -1240,7 +1240,7 @@ def results_mobile(keyword):
 def results_ics(keyword):
 
     #Use Path to JSON-File
-    mitre_matrix = MitreAttackData("C:\\Users\\phill\\PycharmProjects\\Masterarbeit_Mitre_Attack\\json-Datein\\ics-attack.json")
+    mitre_matrix = mitre_attack_data_i
     result = mitre_matrix.get_objects_by_content(keyword, remove_revoked_deprecated=True)
 
     tactics = []
