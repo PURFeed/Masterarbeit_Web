@@ -24,6 +24,7 @@ import requests
 def home(request):
     return render(request, 'suche.html')
 
+#Method to get the Results for the Keyword
 def results_for_keyword(request):
 
     if request.method == 'POST' and request.META["HTTP_REFERER"] == "http://127.0.0.1:8000/results/":
@@ -1192,6 +1193,8 @@ def results_enterprise(keyword):
                     software.append(Software.objects.get(id=i.id))
                 case "course-of-action":
                     mitigations.append(Mitigations.objects.get(id=i.id))
+                case _:
+                    continue
         except ObjectDoesNotExist:
             print ("Error in Result Enterprise")
             pass
